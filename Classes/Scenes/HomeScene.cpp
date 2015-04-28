@@ -39,6 +39,7 @@ bool HomeScene::init(){
         m_pBg->runAction(Sequence::create(DelayTime::create(1.0), EaseSineInOut::create(Animate::create(pAnimation)), CallFunc::create([=]{
             this->addBowlThings();
         }),NULL));
+        
 
         return true;
     }

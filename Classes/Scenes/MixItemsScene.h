@@ -33,23 +33,26 @@ protected:
     void pourFlavor();
     void pourMilk();
     void showflovar(float);
+    void showmilk(float);
     void cutMilk();
     void ontouchLine(Ref* pRef,Widget::TouchEventType rtype);
 private:
     float upH = -335 + 40;
     ControlButton* flavorBox = nullptr;
-    ControlButton* milkBox = nullptr;
+    Sprite* milkBox = nullptr;
     Sprite* flavorinBowl = nullptr;
     Sprite* milkinBowl = nullptr;
     Sprite* tiltSprite = nullptr;
     Texture2D* flavorTexture = nullptr;
     RenderTexture* maskRender = nullptr;
-    Layout* lineTip = nullptr;
+    Button* lineTip = nullptr;
+    ParticleSystemQuad* _pourMilk = nullptr;
     float tableMaxy = 0;
     float maxmove = 0;
     float moveDistance = 0;
     int cutCount = 3;
     Node* currentItem = nullptr;
+    Sprite* spoon = nullptr;
     
 };
 

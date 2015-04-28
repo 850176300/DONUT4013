@@ -40,7 +40,7 @@
 		<string>http://svn.stm.com/svn/common/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix</string>
 		<key>3d9062eb-60b9-402f-8692-328e1e9d83a3++9383</key>
 		<string>http://svn.stm.com/svn/common/frameworks/FlurrySDK/tags/v6.2.0</string>
-		<key>8c7073de-beb0-4afe-9ecb-ba97113c4573++5956</key>
+		<key>58B2025529A988D7279C4955886EBF5F46F2092F</key>
 		<string>http://svn.stm.com/svn/make/trunk/DONUT4013</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
@@ -77,7 +77,7 @@
 		<string>../../..proj.ios_mac/ios/Depends/3rdLib/MoPubSDK</string>
 		<key>3d9062eb-60b9-402f-8692-328e1e9d83a3++9383</key>
 		<string>../../..proj.ios_mac/ios/Depends/3rdLib/FlurrySDK</string>
-		<key>8c7073de-beb0-4afe-9ecb-ba97113c4573++5956</key>
+		<key>58B2025529A988D7279C4955886EBF5F46F2092F</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectRepositoryRootDictionary</key>
@@ -112,7 +112,7 @@
 		<string>http://svn.stm.com/svn/common</string>
 		<key>3d9062eb-60b9-402f-8692-328e1e9d83a3++9383</key>
 		<string>http://svn.stm.com/svn/common</string>
-		<key>8c7073de-beb0-4afe-9ecb-ba97113c4573++5956</key>
+		<key>58B2025529A988D7279C4955886EBF5F46F2092F</key>
 		<string>http://svn.stm.com/svn/make</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -120,7 +120,7 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>8c7073de-beb0-4afe-9ecb-ba97113c4573++5956</string>
+	<string>58B2025529A988D7279C4955886EBF5F46F2092F</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -199,7 +199,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.subversion</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>8c7073de-beb0-4afe-9ecb-ba97113c4573++5956</string>
+			<string>58B2025529A988D7279C4955886EBF5F46F2092F</string>
 			<key>IDESourceControlWCCName</key>
 			<string>DONUT4013</string>
 		</dict>

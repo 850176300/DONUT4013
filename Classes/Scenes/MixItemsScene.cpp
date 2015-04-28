@@ -64,16 +64,12 @@ void MixItemScene::onEnterTransitionDidFinish(){
     flavorBox->setEnabled(false);
     
     string milk = DataContainer::getInstance()->getChooseMilk();
-    milkBox = CocosHelper::getButton("make/milk/"+milk+".png", "make/milk/"+milk+".png");
+    milkBox = Sprite::create("make/milk/"+milk+".png");
     milkBox->setAnchorPoint(Vec2(0.5, 0));
     milkBox->setName(milk);
     milkBox->setPosition(STVisibleRect::getGlvisibleSize().width+500, tableMaxy-80);
     milkBox->setTag(kMilkTag);
     addChild(milkBox, 2);
-    milkBox->setScale(0.9f);
-    milkBox->setZoomOnTouchDown(false);
-    milkBox->addTargetWithActionForControlEvents(this, cccontrol_selector(MixItemScene::onselectTheItem) , cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
-    milkBox->setEnabled(false);
     
     Sprite* bowl1 = Sprite::create("make/bowl_1.png");
     Sprite* bowl2 = Sprite::create("make/bowl.png");
@@ -205,26 +201,33 @@ void MixItemScene::showflovar(float) {
         flavorBox->runAction(Sequence::create(RotateBy::create(0.3, -45), MoveBy::create(0.5, Vec2(-500, 0)), CallFunc::create([=]{
             milkBox->setLocalZOrder(10);
             milkBox->runAction(Sequence::create(EaseElasticIn::create(MoveTo::create(0.8, Vec2(STVisibleRect::getCenterOfScene().x, milkBox->getPositionY())), 0.5), CallFunc::create(std::bind(&MixItemScene::cutMilk, this)), NULL));
-        }),NULL));
+        }),RemoveSelf::create(),NULL));
     }
 }
 
 void MixItemScene::cutMilk(){
-    lineTip = Layout::create();
-    lineTip->setBackGroundImage("ui/make/tips_line.png");
+    milkBox->setAnchorPoint(Vec2(0.5, 0.5));
+    milkBox->setPosition(milkBox->getPosition()+Vec2(0, milkBox->getContentSize().height/2.0));
+    lineTip = Button::create("ui/make/tips_line.png");
     lineTip->setPosition(Vec2(milkBox->getBoundingBox().getMinX()+50, milkBox->getBoundingBox().getMaxY()-50));
     addChild(lineTip, 10);
-    
+    lineTip->setEnabled(true);
     lineTip->addTouchEventListener(CC_CALLBACK_2(MixItemScene::ontouchLine, this));
+    
+    lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
+    
+
 }
 
 void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype) {
     Vec2 begin;
     Vec2 move;
-    Layout* tip = dynamic_cast<Layout*>(pRef);
+    Button* tip = dynamic_cast<Button*>(pRef);
     if (rtype == Widget::TouchEventType::BEGAN) {
         begin = tip->getTouchBeganPosition();
         moveDistance = 0;
+        lineTip->stopAllActions();
+        lineTip->setScale(1.0);
     }else if (rtype == Widget::TouchEventType::MOVED) {
         move = tip->getTouchMovePosition();
         float distance = move.distance(begin);
@@ -232,9 +235,89 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
             moveDistance = distance;
         }
     }else if (rtype == Widget::TouchEventType::ENDED){
+        milkBox->runAction(GameLayerBase::getJellyAction());
         if (moveDistance > 100) {
             cutCount -= 1;
+            if (cutCount > 0) {
+                lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
+            }else {
+                lineTip->runAction(EaseElasticInOut::create(FadeOut::create(0.5), 0.2));
+                milkBox->runAction(Sequence::create(DelayTime::create(1.0), CallFunc::create([=]{
+                    milkBox->setTexture("make/milk/"+milkBox->getName()+"_1.png");
+                }), DelayTime::create(0.5f), Spawn::create(MoveBy::create(0.3, Vec2(280, 100)), RotateBy::create(0.3, -45), NULL),DelayTime::create(0.2), CallFunc::create([=]{
+                    _pourMilk = ParticleSystemQuad::create("make/milk/pour.plist");
+                    _pourMilk->setPosition(milkBox->getPosition()+Vec2(-151.5, 24.5));
+                    Director::getInstance()->getTextureCache()->addImage("make/pour milk/pour milk_"+milkBox->getName()+".png");
+                    _pourMilk->setTexture(Director::getInstance()->getTextureCache()->getTextureForKey("make/pour milk/pour milk_"+milkBox->getName()+".png"));
+                    this->addChild(_pourMilk, 10);
+                    this->schedule(schedule_selector(MixItemScene::showmilk), 0.5);
+                }), NULL));
+            }
+        }else{
+           lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
         }
+        
+        
+    }else if (rtype == Widget::TouchEventType::CANCELED){
+        milkBox->runAction(GameLayerBase::getJellyAction());
+        if (moveDistance > 100) {
+            cutCount -= 1;
+            if (cutCount > 0) {
+                lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
+            }else {
+                lineTip->runAction(Sequence::create(EaseSineInOut::create(FadeOut::create(0.5)), RemoveSelf::create(), NULL));
+                milkBox->runAction(Sequence::create(DelayTime::create(1.0), CallFunc::create([=]{
+                    milkBox->setTexture("make/milk/"+milkBox->getName()+"_1.png");
+                }), DelayTime::create(0.5f), Spawn::create(MoveBy::create(0.3, Vec2(280, 100)), RotateBy::create(0.3, -45), NULL),DelayTime::create(0.2), CallFunc::create([=]{
+                    _pourMilk = ParticleSystemQuad::create("make/milk/pour.plist");
+                    _pourMilk->setPosition(milkBox->getPosition()+Vec2(-151.5, 24.5));
+                    Director::getInstance()->getTextureCache()->addImage("make/pour milk/pour milk_"+milkBox->getName()+".png");
+                    _pourMilk->setTexture(Director::getInstance()->getTextureCache()->getTextureForKey("make/pour milk/pour milk_"+milkBox->getName()+".png"));
+                    this->addChild(_pourMilk, 10);
+                    this->schedule(schedule_selector(MixItemScene::showmilk), 0.5);
+                }), NULL));
+            }
+        }else{
+            lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
+        }
+    }
+    
+}
+
+void MixItemScene::showmilk(float) {
+    int opacity = milkinBowl->getOpacity();
+    opacity += 10;
+    if (opacity > 255) {
+        opacity = 255;
+    }
+    milkinBowl->setOpacity(opacity);
+    if (opacity >= 255) {
+        milkBox->runAction(Sequence::create(RotateBy::create(0.2, 45), EaseElasticOut::create(MoveBy::create(0.3, Vec2(1000, 0)), 0.2), RemoveSelf::create(),NULL));
+        unschedule(schedule_selector(MixItemScene::showmilk));
+        _pourMilk->setDuration(0.1);
+        _pourMilk->setAutoRemoveOnFinish(true);
+        spoon = Sprite::create("make/spoon.png");
+        spoon->setAnchorPoint(Vec2(0.5, 0));
+        spoon->setRotation(-45);
+        this->addChild(spoon, 11);
+        
+        auto listener = EventListenerTouchOneByOne::create();
+        listener->setSwallowTouches(true);
+        
+        listener->onTouchBegan = [=](Touch *touch, Event *event){
+            return CocosHelper::isPointInNode(spoon, touch->getLocation());
+        };
+        listener->onTouchMoved = [=](Touch *touch, Event *event){
+            
+        };
+        listener->onTouchEnded = [=](Touch *touch, Event *event){
+            
+        };
+        listener->onTouchCancelled = [=](Touch *touch, Event *event){
+            
+        };
+        _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, spoon);
+
     }
     
 }
