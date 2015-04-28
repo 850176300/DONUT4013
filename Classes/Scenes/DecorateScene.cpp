@@ -62,21 +62,51 @@ bool DecorateScene::init(){
 }
 
 void DecorateScene::addScrollView(){
-    typeScrollView = cocos2d::extension::ScrollView::create(Size(STVisibleRect::getGlvisibleSize().width, 124));
+    typeScrollView = ui::ScrollView::create();
     
+    typeScrollView->setContentSize(Size(STVisibleRect::getGlvisibleSize().width, 124));
     vector<string> types = DataContainer::getInstance()->getAllDecorateType();
     vector<string>::iterator it;
-    
+    float startx = 20;
     for (it = types.begin(); it != types.end(); ++it) {
-        Button* 
+        Button* pBtn = Button::create("ui/decorate/main_d.png", "ui/decorate/main_s.png");
+        Sprite* type = Sprite::create("ui/decorate/"+*it+".png");
+        type->setPosition(Vec2(pBtn->getContentSize().width/2.0, pBtn->getContentSize().height/2.0));
+        pBtn->setPosition(Vec2(startx + pBtn->getContentSize().width/2.0, 62));
+        pBtn->addChild(type);
+        pBtn->addTouchEventListener(CC_CALLBACK_2(DecorateScene::ontypeItemClicked, this));
+        startx += pBtn->getContentSize().width + 15;
+        pBtn->setName(*it);
+        typeScrollView->addChild(pBtn);
     }
+    typeScrollView->setInnerContainerSize(Size(startx, 124));
+    typeScrollView->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
+    typeScrollView->setPosition(Vec2(STVisibleRect::getOriginalPoint().x+STVisibleRect::getGlvisibleSize().width, STVisibleRect::getOriginalPoint().y+GameLayerBase::getBannerSize()));
+    addChild(typeScrollView, 10);
+    
+//    typeScrollView->getInnerContainer()->setPosition(Vec2(STVisibleRect::getGlvisibleSize().width - startx, 0));
+//    typeScrollView->getInnerContainer()->setPosition(Vec2(1000, 0));
+    typeScrollView->scrollToRight(0.8, true);
+    
 }
 
 void DecorateScene::onEnterTransitionDidFinish(){
     GameLayerBase::onEnterTransitionDidFinish();
-    
+    if (typeScrollView->getPosition().x > STVisibleRect::getOriginalPoint().x) {
+        typeScrollView->runAction(EaseSineInOut::create(MoveBy::create(1.0, Vec2(-STVisibleRect::getGlvisibleSize().width, 0))));
+        this->runAction(Sequence::create(DelayTime::create(1.0), CallFunc::create([=]{
+            typeScrollView->scrollToLeft(1.5, true);
+        }), NULL));
+    }
 }
 
-
+void DecorateScene::ontypeItemClicked(cocos2d::Ref *pRef, Widget::TouchEventType toucht){
+    if (toucht == Widget::TouchEventType::ENDED) {
+        if (itemScrollView == nullptr) {
+            itemScrollView = ui::ScrollView::create();
+            itemScrollView->setContentSize()
+        }
+    }
+}
 
 

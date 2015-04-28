@@ -11,9 +11,11 @@
 
 #include <iostream>
 #include "GameLayerBase.h"
-
+#include "ui/CocosGUI.h"
 using namespace std;
-USING_NS_CC_EXT;
+using namespace cocos2d::ui;
+
+
 class DecorateScene : public GameLayerBase{
 public:
     static Scene* scene();
@@ -24,9 +26,10 @@ public:
 protected:
     virtual void onEnterTransitionDidFinish();
     void addScrollView();
-    
+    void ontypeItemClicked(Ref* pRef,Widget::TouchEventType toucht);
 private:
-    cocos2d::extension::ScrollView* typeScrollView = nullptr;
+    ui::ScrollView* typeScrollView = nullptr;
+    ui::ScrollView* itemScrollView = nullptr;
 };
 
 #endif /* defined(__DONUT4013__DecorateScene__) */
