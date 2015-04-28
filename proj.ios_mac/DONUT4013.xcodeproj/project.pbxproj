@@ -138,6 +138,8 @@
 		0127F4401ADF941400A6DC53 /* libCocosDenshion-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0127F43B1ADF941400A6DC53 /* libCocosDenshion-ios.a */; };
 		0127F4461ADF944800A6DC53 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 0127F4431ADF944800A6DC53 /* sqlite3.c */; };
 		0127F44A1ADF94BF00A6DC53 /* HomeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0127F4481ADF94BF00A6DC53 /* HomeScene.cpp */; };
+		013001EB1AEF913D00D9D0CB /* DecorateScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 013001E91AEF913D00D9D0CB /* DecorateScene.cpp */; };
+		013003181AEFA3B200D9D0CB /* decorate in Resources */ = {isa = PBXBuildFile; fileRef = 013003171AEFA3B200D9D0CB /* decorate */; };
 		016ABEAC1ADFA66900E21C31 /* home in Resources */ = {isa = PBXBuildFile; fileRef = 016ABEAB1ADFA66900E21C31 /* home */; };
 		016ABEB61ADFA73F00E21C31 /* ui in Resources */ = {isa = PBXBuildFile; fileRef = 016ABEB51ADFA73F00E21C31 /* ui */; };
 		016ABEBA1ADFC99F00E21C31 /* animals in Resources */ = {isa = PBXBuildFile; fileRef = 016ABEB91ADFC99F00E21C31 /* animals */; };
@@ -662,6 +664,9 @@
 		0127F4481ADF94BF00A6DC53 /* HomeScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HomeScene.cpp; sourceTree = "<group>"; };
 		0127F4491ADF94BF00A6DC53 /* HomeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeScene.h; sourceTree = "<group>"; };
 		0127F44C1ADF961100A6DC53 /* SceneHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneHead.h; sourceTree = "<group>"; };
+		013001E91AEF913D00D9D0CB /* DecorateScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DecorateScene.cpp; sourceTree = "<group>"; };
+		013001EA1AEF913D00D9D0CB /* DecorateScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecorateScene.h; sourceTree = "<group>"; };
+		013003171AEFA3B200D9D0CB /* decorate */ = {isa = PBXFileReference; lastKnownFileType = folder; path = decorate; sourceTree = "<group>"; };
 		016ABEAB1ADFA66900E21C31 /* home */ = {isa = PBXFileReference; lastKnownFileType = folder; path = home; sourceTree = "<group>"; };
 		016ABEB51ADFA73F00E21C31 /* ui */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ui; sourceTree = "<group>"; };
 		016ABEB91ADFC99F00E21C31 /* animals */ = {isa = PBXFileReference; lastKnownFileType = folder; path = animals; sourceTree = "<group>"; };
@@ -1741,6 +1746,8 @@
 				01F687161AE62BF100E64577 /* ChooseMilk.h */,
 				01A905CB1AE8C944007160B6 /* MixItemsScene.cpp */,
 				01A905CC1AE8C944007160B6 /* MixItemsScene.h */,
+				013001E91AEF913D00D9D0CB /* DecorateScene.cpp */,
+				013001EA1AEF913D00D9D0CB /* DecorateScene.h */,
 			);
 			name = Scenes;
 			path = ../Classes/Scenes;
@@ -1906,6 +1913,7 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				013003171AEFA3B200D9D0CB /* decorate */,
 				0123E6F71AE0ED0A00F844A4 /* make */,
 				016ABEB91ADFC99F00E21C31 /* animals */,
 				016ABEB51ADFA73F00E21C31 /* ui */,
@@ -2077,6 +2085,7 @@
 				016ABEBA1ADFC99F00E21C31 /* animals in Resources */,
 				0127F3F01ADF8BD900A6DC53 /* LICENSE.txt in Resources */,
 				0127F4101ADF8BDA00A6DC53 /* close_donut-digital@2x.png in Resources */,
+				013003181AEFA3B200D9D0CB /* decorate in Resources */,
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
 				0127F40F1ADF8BDA00A6DC53 /* close_donut-digital.png in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
@@ -2154,6 +2163,7 @@
 				0127F3ED1ADF8BD900A6DC53 /* CJSONDeserializer.m in Sources */,
 				0127F2961ADF6B6A00A6DC53 /* internalJSONNode.cpp in Sources */,
 				0127F3FC1ADF8BDA00A6DC53 /* GDataXMLNode.m in Sources */,
+				013001EB1AEF913D00D9D0CB /* DecorateScene.cpp in Sources */,
 				0127F4051ADF8BDA00A6DC53 /* IAPurchase.m in Sources */,
 				0127F2941ADF6B6A00A6DC53 /* DatabaseHelper.cpp in Sources */,
 				0127F44A1ADF94BF00A6DC53 /* HomeScene.cpp in Sources */,

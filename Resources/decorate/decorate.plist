@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bg</key>
+	<dict>
+		<key>IndexC</key>
+		<string>1</string>
+		<key>FreeC</key>
+		<string>13</string>
+		<key>TotalC</key>
+		<string>20</string>
+	</dict>
+	<key>breakfast food</key>
+	<dict>
+		<key>IndexC</key>
+		<string>1</string>
+		<key>TotalC</key>
+		<string>20</string>
+		<key>FreeC</key>
+		<string>13</string>
+	</dict>
+	<key>candy</key>
+	<dict>
+		<key>IndexC</key>
+		<string>1</string>
+		<key>TotalC</key>
+		<string>20</string>
+		<key>FreeC</key>
+		<string>13</string>
+	</dict>
+	<key>cereal box</key>
+	<dict>
+		<key>IndexC</key>
+		<string>1</string>
+		<key>TotalC</key>
+		<string>20</string>
+		<key>FreeC</key>
+		<string>13</string>
+	</dict>
+	<key>chocolate</key>
+	<dict>
+		<key>IndexC</key>
+		<string>1</string>
+		<key>TotalC</key>
+		<string>20</string>
+		<key>FreeC</key>
+		<string>13</string>
+	</dict>
+	<key>mascot sticker</key>
+	<dict>
+		<key>IndexC</key>
+		<string>1</string>
+		<key>TotalC</key>
+		<string>20</string>
+		<key>FreeC</key>
+		<string>13</string>
+	</dict>
+	<key>spoon</key>
+	<dict>
+		<key>IndexC</key>
+		<string>1</string>
+		<key>TotalC</key>
+		<string>20</string>
+		<key>FreeC</key>
+		<string>13</string>
+	</dict>
+</dict>
+</plist>

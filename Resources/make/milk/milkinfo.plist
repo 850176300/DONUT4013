@@ -3,22 +3,103 @@
 <plist version="1.0">
 <dict>
 	<key>apple</key>
-	<dict/>
+	<dict>
+		<key>usethis</key>
+		<true/>
+		<key>H</key>
+		<string>11</string>
+		<key>S</key>
+		<string>41</string>
+		<key>V</key>
+		<string>0</string>
+	</dict>
 	<key>banana</key>
-	<dict/>
+	<dict>
+		<key>usethis</key>
+		<true/>
+		<key>H</key>
+		<string>34</string>
+		<key>S</key>
+		<string>4</string>
+		<key>V</key>
+		<string>0</string>
+	</dict>
 	<key>blueberry</key>
-	<dict/>
+	<dict>
+		<key>usethis</key>
+		<true/>
+		<key>H</key>
+		<string>24</string>
+		<key>S</key>
+		<string>180</string>
+		<key>V</key>
+		<string>0</string>
+	</dict>
 	<key>cherry</key>
-	<dict/>
+	<dict>
+		<key>usethis</key>
+		<true/>
+		<key>H</key>
+		<string>33</string>
+		<key>S</key>
+		<string>-37</string>
+		<key>V</key>
+		<string>0</string>
+	</dict>
 	<key>chocolate</key>
-	<dict/>
+	<dict>
+		<key>usethis</key>
+		<true/>
+		<key>H</key>
+		<string>-32</string>
+		<key>S</key>
+		<string>-10</string>
+		<key>V</key>
+		<string>0</string>
+	</dict>
 	<key>lowfate</key>
-	<dict/>
+	<dict>
+		<key>usethis</key>
+		<false/>
+		<key>H</key>
+		<string>11</string>
+		<key>S</key>
+		<string>41</string>
+		<key>V</key>
+		<string>0</string>
+	</dict>
 	<key>milk</key>
-	<dict/>
+	<dict>
+		<key>usethis</key>
+		<false/>
+		<key>H</key>
+		<string>11</string>
+		<key>S</key>
+		<string>41</string>
+		<key>V</key>
+		<string>0</string>
+	</dict>
 	<key>soy</key>
-	<dict/>
+	<dict>
+		<key>usethis</key>
+		<false/>
+		<key>H</key>
+		<string>11</string>
+		<key>S</key>
+		<string>41</string>
+		<key>V</key>
+		<string>0</string>
+	</dict>
 	<key>strawberry</key>
-	<dict/>
+	<dict>
+		<key>usethis</key>
+		<true/>
+		<key>H</key>
+		<string>24</string>
+		<key>S</key>
+		<string>-58</string>
+		<key>V</key>
+		<string>0</string>
+	</dict>
 </dict>
 </plist>

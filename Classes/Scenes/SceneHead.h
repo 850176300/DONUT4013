@@ -16,5 +16,6 @@
 #include "MixItemsScene.h"
 #include "CCImageColorSpace.h"
 #include "CocosHelper.h"
+#include "DecorateScene.h"
 
 #endif /* defined(__DONUT4013__SceneHead__) */

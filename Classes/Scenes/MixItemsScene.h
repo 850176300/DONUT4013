@@ -15,11 +15,12 @@
 class MixItemScene : public GameLayerBase{
     enum MixItemTags{
         kFlavorTag = 111,
-        kMilkTag, 
+        kMilkTag,
+        kSpoonTip,
     };
 public:
     MixItemScene(){};
-    ~MixItemScene(){CC_SAFE_RELEASE(flavorTexture); CC_SAFE_RELEASE(maskRender);};
+    ~MixItemScene(){CC_SAFE_RELEASE(flavorTexture); CC_SAFE_RELEASE(maskRender); CC_SAFE_DELETE(explorTexture);};
     static Scene* scene();
     
     virtual bool init();
@@ -35,6 +36,8 @@ protected:
     void showflovar(float);
     void showmilk(float);
     void cutMilk();
+    void striDone();
+    void addExploreImage(float);
     void ontouchLine(Ref* pRef,Widget::TouchEventType rtype);
 private:
     float upH = -335 + 40;
@@ -53,6 +56,11 @@ private:
     int cutCount = 3;
     Node* currentItem = nullptr;
     Sprite* spoon = nullptr;
+    bool striFinished = false;
+    bool striFailed = false;
+    Texture2D* explorTexture = nullptr;
+    int superSpeed = 0;
+    int normalSpeed = 0;
     
 };
 

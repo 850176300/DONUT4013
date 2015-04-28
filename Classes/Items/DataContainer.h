@@ -30,12 +30,22 @@ public:
         int pcount;
     }FlavorInfor;
     
+    typedef struct DecorateInfor{
+        string type;
+        int freeCount;
+        int totalCount;
+        int startIndex;
+    }DecorateInfor;
+    
     typedef struct MilkInfor{
         string name;
+        Vec3 hsv;
+        bool isHSVuse;
     }MilkInfor;
     
     typedef std::map<string, FlavorInfor> flavorMap;
     typedef std::map<string, MilkInfor> milkMap;
+    typedef std::map<string, DecorateInfor> decorateMap;
 public:
     DataContainer();
     
@@ -44,17 +54,25 @@ public:
     int getAnimalAnimationCount(string animal);
     flavorMap getFlavorData();
     FlavorInfor getTheFlavorByName(string name);
+    
     milkMap getallMilkData();
     MilkInfor getTheMilkByName(string name);
+    
+    decorateMap getallDecorateData();
+    DecorateInfor getDecorateAtName(string name);
+    
+    vector<string> getAllDecorateType();
 protected:
     void initanimalAnimation();
     void initFlavorData();
     void initmilkData();
-    
+    void initDecorate();
 private:
     animation_type theType;
     flavorMap flavorData;
     milkMap milkData;
+    decorateMap decorateData;
+    vector<string> decorateTypes;
 };
 
 

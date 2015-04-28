@@ -41,6 +41,22 @@ bool MixItemScene::init(){
         addChild(table, 1);
         
         tableMaxy = table->getBoundingBox().getMaxY();
+        Image* pImage = new Image();
+        pImage->initWithImageFile("make/splatter.png");
+        string milk = DataContainer::getInstance()->getChooseMilk();
+        string flavor = DataContainer::getInstance()->getChooseFlavor();
+        
+        DataContainer::MilkInfor _milkinfor = DataContainer::getInstance()->getTheMilkByName(milk);
+        DataContainer::FlavorInfor _flaovrinfo = DataContainer::getInstance()->getTheFlavorByName(flavor);
+        
+        explorTexture = new Texture2D();
+        
+        if (_milkinfor.isHSVuse == false) {
+            explorTexture->initWithImage(CCImageColorSpace::imageWithHSB(pImage, _flaovrinfo.hsv.x, _flaovrinfo.hsv.y, _flaovrinfo.hsv.z));
+        }else {
+            explorTexture->initWithImage(CCImageColorSpace::imageWithHSB(pImage, _milkinfor.hsv.x, _milkinfor.hsv.y, _milkinfor.hsv.z));
+        }
+        pImage->autorelease();
         return true;
     }
     return false;
@@ -97,6 +113,7 @@ void MixItemScene::onEnterTransitionDidFinish(){
        
         flavorinBowl = Sprite::createWithTexture(flavorTexture);
         flavorinBowl->setPosition(bowl1->getPosition());
+        flavorinBowl->setName(flavorBox->getName());
         addChild(flavorinBowl, 5);
         flavorinBowl->setVisible(false);
         
@@ -200,7 +217,7 @@ void MixItemScene::showflovar(float) {
         unschedule(schedule_selector(MixItemScene::showflovar));
         flavorBox->runAction(Sequence::create(RotateBy::create(0.3, -45), MoveBy::create(0.5, Vec2(-500, 0)), CallFunc::create([=]{
             milkBox->setLocalZOrder(10);
-            milkBox->runAction(Sequence::create(EaseElasticIn::create(MoveTo::create(0.8, Vec2(STVisibleRect::getCenterOfScene().x, milkBox->getPositionY())), 0.5), CallFunc::create(std::bind(&MixItemScene::cutMilk, this)), NULL));
+            milkBox->runAction(Sequence::create(EaseElasticIn::create(MoveTo::create(1.1, Vec2(STVisibleRect::getCenterOfScene().x, milkBox->getPositionY())), 0.9), CallFunc::create(std::bind(&MixItemScene::cutMilk, this)), NULL));
         }),RemoveSelf::create(),NULL));
     }
 }
@@ -241,7 +258,7 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
             if (cutCount > 0) {
                 lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
             }else {
-                lineTip->runAction(EaseElasticInOut::create(FadeOut::create(0.5), 0.2));
+                lineTip->runAction(Sequence::create(FadeOut::create(0.5), RemoveSelf::create(), NULL));
                 milkBox->runAction(Sequence::create(DelayTime::create(1.0), CallFunc::create([=]{
                     milkBox->setTexture("make/milk/"+milkBox->getName()+"_1.png");
                 }), DelayTime::create(0.5f), Spawn::create(MoveBy::create(0.3, Vec2(280, 100)), RotateBy::create(0.3, -45), NULL),DelayTime::create(0.2), CallFunc::create([=]{
@@ -263,7 +280,7 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
         if (moveDistance > 100) {
             cutCount -= 1;
             if (cutCount > 0) {
-                lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
+                lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0),NULL)));
             }else {
                 lineTip->runAction(Sequence::create(EaseSineInOut::create(FadeOut::create(0.5)), RemoveSelf::create(), NULL));
                 milkBox->runAction(Sequence::create(DelayTime::create(1.0), CallFunc::create([=]{
@@ -292,26 +309,98 @@ void MixItemScene::showmilk(float) {
     }
     milkinBowl->setOpacity(opacity);
     if (opacity >= 255) {
-        milkBox->runAction(Sequence::create(RotateBy::create(0.2, 45), EaseElasticOut::create(MoveBy::create(0.3, Vec2(1000, 0)), 0.2), RemoveSelf::create(),NULL));
         unschedule(schedule_selector(MixItemScene::showmilk));
+        milkBox->runAction(Sequence::create(RotateBy::create(0.2, 45), EaseElasticOut::create(MoveBy::create(0.3, Vec2(1000, 0)), 0.2), RemoveSelf::create(),NULL));
+        
         _pourMilk->setDuration(0.1);
         _pourMilk->setAutoRemoveOnFinish(true);
         spoon = Sprite::create("make/spoon.png");
         spoon->setAnchorPoint(Vec2(0.5, 0));
-        spoon->setRotation(-45);
+        spoon->setPosition(Vec2(STVisibleRect::getCenterOfScene().x + 1000, milkinBowl->getPositionY()));
         this->addChild(spoon, 11);
+        spoon->runAction(Sequence::create(DelayTime::create(0.5f),EaseElasticOut::create(MoveBy::create(1.2, Vec2(-1000, 0)), .7f), CallFunc::create([=]{
+            Sprite* tip = Sprite::create("ui/make/tips_stir.png");
+            tip->setPosition(spoon->getBoundingBox().getMidX(), spoon->getBoundingBox().getMidY());
+            tip->setTag(kSpoonTip);
+            this->addChild(tip, 11);
+        }), NULL));
         
         auto listener = EventListenerTouchOneByOne::create();
         listener->setSwallowTouches(true);
         
         listener->onTouchBegan = [=](Touch *touch, Event *event){
+            if (striFailed == true) {
+                return false;
+            }
             return CocosHelper::isPointInNode(spoon, touch->getLocation());
         };
         listener->onTouchMoved = [=](Touch *touch, Event *event){
-            
+            if (striFailed == true) {
+                return ;
+            }
+            if (this->getChildByTag(kSpoonTip)) {
+                this->removeChildByTag(kSpoonTip);
+            }
+            Vec2 afterPP = Vec2(spoon->getPositionX(), spoon->getBoundingBox().getMidY()) + touch->getDelta();
+            if (STVisibleRect::getMovableRect().containsPoint(afterPP)) {
+                Vec2 angleVec1 = flavorinBowl->getPosition() - spoon->getPosition();
+                spoon->setPosition(spoon->getPosition() + touch->getDelta());
+                Vec2 anglevec2 = flavorinBowl->getPosition() - spoon->getPosition();
+                float angle = angleVec1.getAngle(anglevec2);
+                
+                
+                if (striFinished == false && striFailed == false) {
+                    log("the stri angle is %.2f", angle*180.0/M_PI);
+                    if (fabs(angle*180.0/M_PI) > 50) {
+                        superSpeed += 1;
+                        normalSpeed = 0;
+                    }else {
+                        normalSpeed += 1;
+                        if (normalSpeed > 6) {
+                            superSpeed = 0;
+                        }
+                    }
+                    if (superSpeed > 8) {
+                        log("stri failed!!!!!!");
+                        superSpeed = 0;
+                        normalSpeed = 0;
+                        striFailed = true;
+                        milkinBowl->runAction(Sequence::create(FadeIn::create(0.3f), DelayTime::create(7.5f), CallFunc::create([=]{
+                            striFailed = false;
+                        }), NULL));
+                        this->schedule(schedule_selector(MixItemScene::addExploreImage), 1.0, 5, 0.5f);
+                        return ;
+                    }
+                }
+                if (milkinBowl == nullptr) {
+                    return ;
+                }
+                Rect donutRect = Rect(flavorinBowl->getPosition().x - 460/2.0, flavorinBowl->getPosition().y - 248/2.0, 460, 248);
+                if (donutRect.containsPoint(spoon->getPosition())) {
+                    int opacity = milkinBowl->getOpacity();
+                    opacity -= 2;
+                    if (opacity <= 0) {
+                        opacity = 0;
+                    }
+                    milkinBowl->setOpacity(opacity);
+                    if (opacity == 0) {
+                        milkinBowl->removeFromParent();
+                        milkinBowl = nullptr;
+                        striFinished = true;
+                        string file = "make/cereals_stir/"+flavorinBowl->getName()+"_1.png";
+                        log("change file texture is %s", file.c_str());
+                        flavorinBowl->setTexture(file);
+                        
+                    }
+                }
+            }
         };
         listener->onTouchEnded = [=](Touch *touch, Event *event){
-            
+            if (striFinished == true) {
+                this->striDone();
+                _eventDispatcher->removeEventListenersForTarget(spoon);
+                spoon->runAction(Sequence::create(EaseSineInOut::create(MoveBy::create(0.8, Vec2(1000, 0))), RemoveSelf::create(), NULL));
+            }
         };
         listener->onTouchCancelled = [=](Touch *touch, Event *event){
             
@@ -321,5 +410,55 @@ void MixItemScene::showmilk(float) {
     }
     
 }
+
+void MixItemScene::striDone(){
+    
+    
+    DataContainer::FlavorInfor infor = DataContainer::getInstance()->getTheFlavorByName(flavorinBowl->getName());
+    if (infor.pcount == 1) {
+        ParticleSystemQuad* _particle = ParticleSystemQuad::create("make/pour_cereal/flowerparticle.plist");
+        Director::getInstance()->getTextureCache()->addImage("make/pour_cereal/pour_"+flavorinBowl->getName()+".png");
+        _particle->setTexture(Director::getInstance()->getTextureCache()->getTextureForKey("make/pour_cereal/pour_"+flavorinBowl->getName()+".png"));
+        _particle->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y - 200);
+        addChild(_particle, 10);
+        _particle->setAutoRemoveOnFinish(true);
+    }
+    for (int i = 0; i < infor.pcount; ++i) {
+        ParticleSystemQuad* _particle = ParticleSystemQuad::create("make/pour_cereal/flowerparticle.plist");
+        Director::getInstance()->getTextureCache()->addImage("make/pour_cereal/pour_"+flavorinBowl->getName()+convertIntToString(i+1)+".png");
+        _particle->setTexture(Director::getInstance()->getTextureCache()->getTextureForKey("make/pour_cereal/pour_"+flavorinBowl->getName()+convertIntToString(i+1)+".png"));
+        _particle->setTotalParticles(120/infor.pcount);
+        _particle->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y - 200);
+        addChild(_particle, 10);
+        _particle->setAutoRemoveOnFinish(true);
+    }
+    
+    DataContainer::FlavorInfor _info = DataContainer::getInstance()->getTheFlavorByName(flavorinBowl->getName());
+    
+    int max = DataContainer::getInstance()->getAnimalAnimationCount(_info.type);
+    Animation* panimation = createAnimation("animals/animation/"+_info.type+"/"+_info.type, 0, max);
+    panimation->setLoops(-1);
+    panimation->setDelayPerUnit(0.2);
+    Sprite* animal = Sprite::create("animals/animation/"+_info.type+"/"+_info.type+convertIntToString(0)+".png");
+    animal->setAnchorPoint(Vec2(0.5, 0));
+    animal->setPosition(STVisibleRect::getPointOfSceneRightBottom() + Vec2(300, 20));
+    addChild(animal, 12);
+    
+    animal->runAction(Sequence::create(DelayTime::create(1.0f),EaseSineInOut::create(JumpBy::create(0.8, Vec2(-600, 0), 500, 1)), Animate::create(panimation),NULL));
+    
+}
+
+void MixItemScene::addExploreImage(float) {
+
+    Sprite* explor = Sprite::createWithTexture(explorTexture);
+    float x = arc4random() % ((int)STVisibleRect::getGlvisibleSize().width - 300) + 150;
+    float y = arc4random() % ((int)STVisibleRect::getGlvisibleSize().height - 300) + 150;
+    explor->setPosition(x, y);
+    explor->setScale(0);
+    this->addChild(explor, 12);
+    explor->runAction(Sequence::create(ScaleTo::create(0.1, 1.1), ScaleTo::create(0.05, 1.0), DelayTime::create(1.5f), EaseSineInOut::create(FadeOut::create(1.0f)), RemoveSelf::create(),NULL));
+}
+
+
 
 
