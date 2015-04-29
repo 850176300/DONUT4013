@@ -35,6 +35,8 @@ public:
         int freeCount;
         int totalCount;
         int startIndex;
+        bool canScale;
+        bool canRotate;
     }DecorateInfor;
     
     typedef struct MilkInfor{
@@ -42,6 +44,24 @@ public:
         Vec3 hsv;
         bool isHSVuse;
     }MilkInfor;
+    
+    typedef struct EatThings{
+        string name;
+        int tag;
+        Vec2 pos;
+        float scale;
+        float rotate;
+        int localZorder;
+    }EatThings;
+    
+    typedef struct DecorateItems{
+        string bgName;
+        string breakfastName;
+        string spoonName;
+        string cerealName;
+        string mascotName;
+        vector<EatThings> alleatThings;
+    }DecorateItems;
     
     typedef std::map<string, FlavorInfor> flavorMap;
     typedef std::map<string, MilkInfor> milkMap;
@@ -62,6 +82,7 @@ public:
     DecorateInfor getDecorateAtName(string name);
     
     vector<string> getAllDecorateType();
+    void clearDecorateItems();
 protected:
     void initanimalAnimation();
     void initFlavorData();
@@ -73,6 +94,8 @@ private:
     milkMap milkData;
     decorateMap decorateData;
     vector<string> decorateTypes;
+    DecorateItems shareDecorateItems;
+    
 };
 
 

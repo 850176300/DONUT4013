@@ -143,6 +143,7 @@
 		016ABEAC1ADFA66900E21C31 /* home in Resources */ = {isa = PBXBuildFile; fileRef = 016ABEAB1ADFA66900E21C31 /* home */; };
 		016ABEB61ADFA73F00E21C31 /* ui in Resources */ = {isa = PBXBuildFile; fileRef = 016ABEB51ADFA73F00E21C31 /* ui */; };
 		016ABEBA1ADFC99F00E21C31 /* animals in Resources */ = {isa = PBXBuildFile; fileRef = 016ABEB91ADFC99F00E21C31 /* animals */; };
+		018CDD2F1AF0F4E800BF42DC /* TransformTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 018CDD2D1AF0F4E800BF42DC /* TransformTool.cpp */; };
 		01A905CD1AE8C944007160B6 /* MixItemsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01A905CB1AE8C944007160B6 /* MixItemsScene.cpp */; };
 		01F687051AE60CB400E64577 /* SwallowTouchLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01F687031AE60CB400E64577 /* SwallowTouchLayout.cpp */; };
 		01F687141AE626DE00E64577 /* DataContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01F687121AE626DE00E64577 /* DataContainer.cpp */; };
@@ -670,6 +671,8 @@
 		016ABEAB1ADFA66900E21C31 /* home */ = {isa = PBXFileReference; lastKnownFileType = folder; path = home; sourceTree = "<group>"; };
 		016ABEB51ADFA73F00E21C31 /* ui */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ui; sourceTree = "<group>"; };
 		016ABEB91ADFC99F00E21C31 /* animals */ = {isa = PBXFileReference; lastKnownFileType = folder; path = animals; sourceTree = "<group>"; };
+		018CDD2D1AF0F4E800BF42DC /* TransformTool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TransformTool.cpp; sourceTree = "<group>"; };
+		018CDD2E1AF0F4E800BF42DC /* TransformTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformTool.h; sourceTree = "<group>"; };
 		01A905CB1AE8C944007160B6 /* MixItemsScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MixItemsScene.cpp; sourceTree = "<group>"; };
 		01A905CC1AE8C944007160B6 /* MixItemsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MixItemsScene.h; sourceTree = "<group>"; };
 		01F687031AE60CB400E64577 /* SwallowTouchLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SwallowTouchLayout.cpp; sourceTree = "<group>"; };
@@ -806,6 +809,8 @@
 				01F687041AE60CB400E64577 /* SwallowTouchLayout.h */,
 				01F687121AE626DE00E64577 /* DataContainer.cpp */,
 				01F687131AE626DE00E64577 /* DataContainer.h */,
+				018CDD2D1AF0F4E800BF42DC /* TransformTool.cpp */,
+				018CDD2E1AF0F4E800BF42DC /* TransformTool.h */,
 			);
 			name = Items;
 			path = ../Classes/Items;
@@ -2139,6 +2144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01A905CD1AE8C944007160B6 /* MixItemsScene.cpp in Sources */,
+				018CDD2F1AF0F4E800BF42DC /* TransformTool.cpp in Sources */,
 				0127F2A61ADF6B6A00A6DC53 /* BaseAdColorLayer.cpp in Sources */,
 				01F687171AE62BF100E64577 /* ChooseMilk.cpp in Sources */,
 				0127F3F11ADF8BD900A6DC53 /* README.markdown in Sources */,

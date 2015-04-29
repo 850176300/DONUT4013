@@ -4,6 +4,10 @@
 <dict>
 	<key>bg</key>
 	<dict>
+		<key>CanRotate</key>
+		<false/>
+		<key>CanScale</key>
+		<false/>
 		<key>IndexC</key>
 		<string>1</string>
 		<key>FreeC</key>
@@ -13,6 +17,10 @@
 	</dict>
 	<key>breakfast food</key>
 	<dict>
+		<key>CanRotate</key>
+		<false/>
+		<key>CanScale</key>
+		<false/>
 		<key>IndexC</key>
 		<string>1</string>
 		<key>TotalC</key>
@@ -22,6 +30,10 @@
 	</dict>
 	<key>candy</key>
 	<dict>
+		<key>CanRotate</key>
+		<true/>
+		<key>CanScale</key>
+		<true/>
 		<key>IndexC</key>
 		<string>1</string>
 		<key>TotalC</key>
@@ -31,6 +43,10 @@
 	</dict>
 	<key>cereal box</key>
 	<dict>
+		<key>CanRotate</key>
+		<false/>
+		<key>CanScale</key>
+		<false/>
 		<key>IndexC</key>
 		<string>1</string>
 		<key>TotalC</key>
@@ -40,6 +56,10 @@
 	</dict>
 	<key>chocolate</key>
 	<dict>
+		<key>CanRotate</key>
+		<true/>
+		<key>CanScale</key>
+		<true/>
 		<key>IndexC</key>
 		<string>1</string>
 		<key>TotalC</key>
@@ -49,6 +69,10 @@
 	</dict>
 	<key>mascot sticker</key>
 	<dict>
+		<key>CanRotate</key>
+		<true/>
+		<key>CanScale</key>
+		<true/>
 		<key>IndexC</key>
 		<string>1</string>
 		<key>TotalC</key>
@@ -64,6 +88,10 @@
 		<string>20</string>
 		<key>FreeC</key>
 		<string>13</string>
+		<key>CanScale</key>
+		<false/>
+		<key>CanRotate</key>
+		<false/>
 	</dict>
 </dict>
 </plist>

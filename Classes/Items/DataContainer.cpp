@@ -89,6 +89,8 @@ void DataContainer::initDecorate(){
         _theInfor.startIndex = atoi(((__String*)item->objectForKey("IndexC"))->getCString());
         _theInfor.totalCount = atoi(((__String*)item->objectForKey("TotalC"))->getCString());
         _theInfor.freeCount = atoi(((__String*)item->objectForKey("FreeC"))->getCString());
+        _theInfor.canRotate = item->valueForKey("CanRotate")->boolValue();
+        _theInfor.canScale = item->valueForKey("CanScale")->boolValue();
         decorateData[type->getCString()] = _theInfor;
         decorateTypes.push_back(type->getCString());
     }
