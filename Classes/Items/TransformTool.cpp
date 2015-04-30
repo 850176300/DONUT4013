@@ -33,7 +33,12 @@ TransformTool* TransformTool::createWithFile(const string &file){
 
 
 bool TransformTool::initWithFile(const string &filename) {
-    if (Sprite::initWithFile(filename)) {
+    if (Layer::init()) {
+        
+        decorateItem = Sprite::create(filename);
+        setContentSize(decorateItem->getContentSize());
+        decorateItem->setPosition(getContentSize().width/2.0, getContentSize().height/2.0);
+        addChild(decorateItem, 0);
         
         frameSprite = Scale9Sprite::create("ui/decorate/image_wireframe.png");
         frameSprite->setScale(getContentSize().width/frameWidth, getContentSize().height/frameHeight);
@@ -50,7 +55,9 @@ bool TransformTool::initWithFile(const string &filename) {
         oparateBtn->addTouchEventListener(CC_CALLBACK_2(TransformTool::onOparateBtnTouched, this));
         addChild(oparateBtn, 2);
         
-        hiddenTools(0);
+        frameSprite->setOpacity(0);
+        closeBtn->setOpacity(0);
+        oparateBtn->setOpacity(0);
         
         auto listener = EventListenerTouchOneByOne::create();
         listener->setSwallowTouches(true);
@@ -60,20 +67,48 @@ bool TransformTool::initWithFile(const string &filename) {
         listener->onTouchEnded = CC_CALLBACK_2(TransformTool::onTouchEnded, this);
         listener->onTouchCancelled = CC_CALLBACK_2(TransformTool::onTouchCancelled, this);
         
-        _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+        _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, decorateItem);
+        ignoreAnchorPointForPosition(false);
+        setAnchorPoint(Vec2(0.5, 0.5f));
         
+        distance = oparateBtn->getPosition().distance(frameSprite->getPosition());
         return true;
     }
     return false;
 }
 
 void TransformTool::onCloseBtnClicked(cocos2d::Ref *pRef, Control::EventType type) {
-    needShowTool = false;
-    showTools();
+    stopAllActions();
+    removeFromParent();
 }
 
 void TransformTool::onOparateBtnTouched(cocos2d::Ref *pRef, Widget::TouchEventType type) {
+    Vec2 beginPos;
+    Widget* pWidget = dynamic_cast<Widget*>(pRef);
     
+    switch (type) {
+        case Widget::TouchEventType::BEGAN:
+        {
+            beginPos = pWidget->getTouchBeganPosition() - frameSprite->getPosition();
+        }
+            break;
+        case Widget::TouchEventType::MOVED:
+        {
+            Vec2 movePos = pWidget->getTouchMovePosition() - frameSprite->getPosition();
+            float angleDelta = beginPos.getAngle(movePos);
+            beginPos = movePos;
+            log("the angle Delta is %.2f", angleDelta);
+        }
+            break;
+        case Widget::TouchEventType::ENDED:
+        case Widget::TouchEventType::CANCELED:
+        {
+            
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 bool TransformTool::onTouchBegan(Touch *touch, Event *unused_event){

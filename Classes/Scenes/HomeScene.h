@@ -31,6 +31,7 @@ public:
 protected:
     void addBowlThings();//添加首页的三个元素
     void createCereal();
+    void addAllButtons();
 private:
     int currentIndex = 0;
     Vec2 tableOriginal;

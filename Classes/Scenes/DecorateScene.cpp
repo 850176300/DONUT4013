@@ -7,7 +7,7 @@
 //
 
 #include "SceneHead.h"
-#include "TransformTool.h"
+
 
 Scene* DecorateScene::scene(){
     Scene* pScene = Scene::create();
@@ -37,24 +37,35 @@ bool DecorateScene::init(){
         bg2Image->autorelease();
         ptexture->autorelease();
         
+        cannotEatLayer = Layer::create();
+        cannotEatLayer->setContentSize(STVisibleRect::getGlvisibleSize());
+        cannotEatLayer->setPosition(STVisibleRect::getOriginalPoint());
+        addChild(cannotEatLayer, 1);
+        
+        canEatLayer = Layer::create();
+        canEatLayer->setContentSize(STVisibleRect::getGlvisibleSize());
+        canEatLayer->setPosition(STVisibleRect::getOriginalPoint());
+        addChild(canEatLayer, 8);
+        
         Sprite* table = Sprite::create("make/bg_make_table_table.png");
         table->setAnchorPoint(Vec2(0.5, 0));
         table->setPosition(Vec2(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y+GameLayerBase::getBannerSize()));
-        addChild(table, 1);
+        cannotEatLayer->addChild(table, 1);
         
         tableMaxy = table->getBoundingBox().getMaxY();
         Sprite* bowl1 = Sprite::create("make/bowl_1.png");
         Sprite* bowl2 = Sprite::create("make/bowl.png");
         bowl1->setPosition(STVisibleRect::getCenterOfScene().x, tableMaxy - 180);
         bowl2->setPosition(bowl1->getPosition());
-        addChild(bowl1, 6);
-        addChild(bowl2, 3);
+        this->addChild(bowl1, 6);
+        this->addChild(bowl2, 3);
         
         string flavor = DataContainer::getInstance()->getChooseFlavor();
-        Sprite* flavorinBowl = Sprite::create("make/cereals_stir/"+flavor+"_1.png");
+        flavorinBowl = Sprite::create("make/cereals_stir/"+flavor+"_1.png");
         flavorinBowl->setPosition(bowl1->getPosition());
         flavorinBowl->setName(flavor);
         addChild(flavorinBowl, 5);
+        
         addFixedThings();
         addScrollView();
        
@@ -74,20 +85,24 @@ void DecorateScene::addFixedThings(){
     cerealBox = Sprite::create("decorate/cereal box/cereal box1.png");
     plate = Sprite::create("decorate/breakfast food/plate.png");
     breakFast = Sprite::create("decorate/breakfast food/breakfast food1.png");
-    spoon = Sprite::create("decorate/spoon/spoon1.png");
-    mascot = Sprite::create("decorate/mascot sticker/mascot sticker1.png");
+    spoon = FillMaterialModel::create("decorate/spoon/spoon1.png");
+    mascot = FillMaterialModel::create("decorate/mascot sticker/mascot sticker1.png");
+    spoon->removeCloseBtn();
+    mascot->removeCloseBtn();
     mascot->setPosition(Vec2(195, 169));
     plate->setScale(0.8);
     breakFast->setScale(0.8f);
     
     cerealBox->setAnchorPoint(Vec2(0.5, 0));
     cerealBox->setPosition(Vec2(STVisibleRect::getOriginalPoint().x + 140 - 500, tableMaxy - 100));
-    addChild(cerealBox, 2);
+    cannotEatLayer->addChild(cerealBox, 2);
+    
     cerealBox->addChild(mascot);
     cerealBox->setScale(0.7);
+    mascot->setScale(1/0.7f);
     
     plate->setPosition(Vec2(STVisibleRect::getPointOfSceneRightBottom().x - 130, tableMaxy-20));
-    addChild(plate, 2);
+    cannotEatLayer->addChild(plate, 2);
     
     breakFast->setPosition(plate->getPosition());
     addChild(breakFast, 2);
@@ -98,7 +113,17 @@ void DecorateScene::addFixedThings(){
     addChild(spoon, 10);
     
     cerealBox->runAction(EaseElasticInOut::create(MoveBy::create(0.8, Vec2(500, 0)), 0.5));
-    cerealBox->runAction(Sequence::create(DelayTime::create(0.5f), RotateBy::create(0.1, 15), DelayTime::create(0.2f), RotateBy::create(0.2, -15),NULL));
+    cerealBox->runAction(Sequence::create(DelayTime::create(0.5f), RotateBy::create(0.1, 15), DelayTime::create(0.2f), RotateBy::create(0.2, -15),CallFunc::create([=]{
+        FillMaterialModel* temp = FillMaterialModel::create("decorate/mascot sticker/mascot sticker1.png");
+        temp->setPosition(cerealBox->convertToWorldSpace(mascot->getPosition()));
+        temp->removeCloseBtn();
+        cannotEatLayer->addChild(temp, 2);
+        mascot->removeFromParent();
+        mascot = nullptr;
+        mascot = temp;
+        CC_SAFE_RETAIN(mascot);
+        
+    }),NULL));
     plate->runAction(Sequence::create(EaseExponentialIn::create(MoveBy::create(0.8, Vec2(-600, 0))), DelayTime::create(0.1f), CallFunc::create([=]{
         breakFast->runAction(Sequence::create(ScaleTo::create(0.2, 0.8*1.1), ScaleTo::create(0.1, 0.8f), NULL));
     }), NULL));
@@ -231,15 +256,18 @@ void DecorateScene::onItemsThingClicked(cocos2d::Ref *pRef, Widget::TouchEventTy
             breakFast->setTexture(filePath);
             allItems.breakfastName = filePath;
         }else if (decorateType == "mascot sticker"){
-            mascot->setTexture(filePath);
+            mascot->changeItemTexture(filePath);
             allItems.mascotName = filePath;
         }else if (decorateType == "spoon") {
-            spoon->setTexture(filePath);
+            spoon->changeItemTexture(filePath);
             allItems.spoonName = filePath;
+        }else if (decorateType == "cereal box"){
+            cerealBox->setTexture(filePath);
+            allItems.cerealName = filePath;
         }else {
-            TransformTool* ptool = TransformTool::createWithFile(filePath);
+            FillMaterialModel* ptool = FillMaterialModel::create(filePath);
             ptool->setPosition(STVisibleRect::getCenterOfScene().x, tableMaxy-100);
-            addChild(ptool, 12);
+            canEatLayer->addChild(ptool, 12);
         }
     }
 }

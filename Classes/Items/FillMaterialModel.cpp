@@ -17,17 +17,18 @@ _listener(nullptr),
 _eventType(EventType::NONE),
 _orignalRotate(0),
 _isTipsFrameShow(true),
-_enable(true)
+_enable(true),
+isShotScreen(false)
 {
-    
+    NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(FillMaterialModel::onReciveNotify), kShotScreenEvent, nullptr);
 }
 
 FillMaterialModel::~FillMaterialModel()
 {
-    
+    NotificationCenter::getInstance()->removeObserver(this, kShotScreenEvent);
 }
 
-FillMaterialModel* FillMaterialModel::create(const char* ImageName)
+FillMaterialModel* FillMaterialModel::create(const string& ImageName)
 {
     auto pRet = new FillMaterialModel();
     if(pRet->init(ImageName))
@@ -43,9 +44,9 @@ FillMaterialModel* FillMaterialModel::create(const char* ImageName)
     }
 }
 
-bool FillMaterialModel::init(const char* ImageName)
+bool FillMaterialModel::init(const string& ImageName)
 {
-    if ( !Sprite::initWithFile("controlTip_bg.png"))
+    if ( !Sprite::initWithFile("ui/decorate/controlTip_bg.png"))
     {
         return false;
     }
@@ -60,8 +61,9 @@ bool FillMaterialModel::init(const char* ImageName)
     _listener->onTouchCancelled = CC_CALLBACK_2(FillMaterialModel::onTouchCancelled, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_listener, this);
     
-    _close = CocosHelper::getButton("controlTip_close.png",std::bind(&FillMaterialModel::deleteSelf, this,std::placeholders::_1));
-    _magnify = Sprite::create("controlTip_magnify.png");
+    _close = CocosHelper::getButton("ui/decorate/controlTip_close.png","ui/decorate/controlTip_close.png");
+    _close->addTargetWithActionForControlEvents(this, cccontrol_selector(FillMaterialModel::deleteSelf), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
+    _magnify = Sprite::create("ui/decorate/controlTip_magnify.png");
     _item = Sprite::create(ImageName);
     
     _close->setPosition(0, 254);
@@ -75,20 +77,30 @@ bool FillMaterialModel::init(const char* ImageName)
     return true;
 }
 
-void FillMaterialModel::deleteSelf(cocos2d::Ref *sender)
+void FillMaterialModel::removeCloseBtn(){
+    _close->setOpacity(0);
+    _close->setEnabled(false);
+}
+
+void FillMaterialModel::changeItemTexture(const string &filename){
+    _resourceName = filename;
+    _item->setTexture(filename);
+}
+
+void FillMaterialModel::deleteSelf(cocos2d::Ref *sender, Control::EventType type)
 {
     this->removeFromParent();
 }
 
+
 void FillMaterialModel::onEnter()
 {
+    scheduleOnce(schedule_selector(FillMaterialModel::updateTipsFrameStatus), 1.5f);
     Sprite::onEnter();
-    this->scheduleOnce(schedule_selector(FillMaterialModel::updateTipsFrameStatus), 3);
 }
 void FillMaterialModel::onExit()
 {
-    if(this->isScheduled(schedule_selector(FillMaterialModel::updateTipsFrameStatus)))
-        this->unschedule(schedule_selector(FillMaterialModel::updateTipsFrameStatus));
+    isShotScreen = true;
     Sprite::onExit();
 }
 
@@ -97,20 +109,24 @@ bool FillMaterialModel::onTouchBegan(Touch *touch, Event *unused_event)
     if(!_enable)
         return false;
     Point po = this->convertToNodeSpace(touch->getLocation());
-    Rect rec = Rect(-27, -27, this->getContentSize().width + 54, this->getContentSize().height+ 54);
+    Rect rec = Rect::ZERO;
+    if (_isTipsFrameShow == true) {
+        rec = Rect(-27, -27, this->getContentSize().width + 54, this->getContentSize().height+ 54);
+    }else {
+        rec = _item->getBoundingBox();
+    }
+    
     if(!rec.containsPoint(po))
         return false;
-    if(!_isTipsFrameShow)
+    unschedule(schedule_selector(FillMaterialModel::updateTipsFrameStatus));
+    _isTipsFrameShow = !_isTipsFrameShow;
+    if(_isTipsFrameShow)
     {
         _close->setVisible(true);
         _magnify->setVisible(true);
-        this->setSpriteFrame(Sprite::create("controlTip_bg.png")->getSpriteFrame());
+        this->setSpriteFrame(Sprite::create("ui/decorate/controlTip_bg.png")->getSpriteFrame());
         _isTipsFrameShow = true;
     }
-    //停止隐藏提示控件的动作
-    if(this->isScheduled(schedule_selector(FillMaterialModel::updateTipsFrameStatus)))
-       this->unschedule(schedule_selector(FillMaterialModel::updateTipsFrameStatus));
-    
     this->getParent()->reorderChild(this, this->getLocalZOrder() + 50);
     
     if(!_magnify->getBoundingBox().containsPoint(po))
@@ -120,19 +136,12 @@ bool FillMaterialModel::onTouchBegan(Touch *touch, Event *unused_event)
 }
 void FillMaterialModel::onTouchMoved(Touch *touch, Event *unused_event)
 {
+    _isTipsFrameShow = true;
     Point po = touch->getLocation();
 
     if (_eventType == NONE)
     {
-        float theRadians = (this->convertToNodeSpace(po) -  this->convertToNodeSpace(touch->getStartLocation())).getAngle();
-        float theAngle = CC_RADIANS_TO_DEGREES(theRadians);
-        
-        if (-65 < theAngle  && theAngle < -25)
-            _eventType = SCALE;
-        else if(115 < theAngle && theAngle < 155)
-            _eventType = SCALE;
-        else
-            _eventType = ROTATE;
+        _eventType = SCALE;
     }
     
     
@@ -141,16 +150,30 @@ void FillMaterialModel::onTouchMoved(Touch *touch, Event *unused_event)
             break;
         case SCALE:
         {
+            
+            
             float distance = po.distance(this->getPosition());
             float orignalLengh = sqrt(127*127*2);
             float m_Scale = distance/orignalLengh;
             this->setScale(m_Scale);
             
-            if(m_Scale < 0.5)
+            if(m_Scale < 0.5){
+                m_Scale = 0.5f;
                 this->setScale(0.5);
-            if(m_Scale>1.5)
+                this->setPosition(this->getPosition()+touch->getDelta());
+            }else if(m_Scale >= 1.5){
+                m_Scale = 1.5f;
                 this->setScale(1.5);
-            
+                this->setPosition(this->getPosition()+touch->getDelta());
+            }else {
+                Vec2 temp1 = touch->getStartLocation() - this->getPosition();
+                Vec2 temp2 = po - this->getPosition();
+                float degree = temp1.getAngle(temp2);
+                float theAngle = CC_RADIANS_TO_DEGREES(degree);
+                this->setRotation(_orignalRotate-theAngle);
+            }
+            _close->setScale(1/m_Scale);
+            _magnify->setScale(1/m_Scale);
         }
             break;
         case ROTATE:
@@ -170,9 +193,13 @@ void FillMaterialModel::onTouchMoved(Touch *touch, Event *unused_event)
 }
 void FillMaterialModel::onTouchEnded(Touch *touch, Event *unused_event)
 {
+    if (_isTipsFrameShow == false) {
+        updateTipsFrameStatus(0);
+    }else {
+        scheduleOnce(schedule_selector(FillMaterialModel::updateTipsFrameStatus), 1.5f);
+    }
     _eventType = NONE;
     this->getParent()->reorderChild(this, this->getLocalZOrder() - 50);
-    this->scheduleOnce(schedule_selector(FillMaterialModel::updateTipsFrameStatus), 3);
 }
 void FillMaterialModel::onTouchCancelled(Touch *touch, Event *unused_event)
 {
@@ -183,6 +210,17 @@ void FillMaterialModel::updateTipsFrameStatus(float)
 {
     _close->setVisible(false);
     _magnify->setVisible(false);
-    this->setSpriteFrame(Sprite::create("controlTip_bg_Clear.png")->getSpriteFrame());
+    this->setSpriteFrame(Sprite::create("ui/decorate/controlTip_bg_Clear.png")->getSpriteFrame());
     _isTipsFrameShow = false;
+}
+
+void FillMaterialModel::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4 &parentTransform, uint32_t parentFlags){
+    if (isShotScreen == true) {
+        updateTipsFrameStatus(0);
+    }
+    Sprite::visit(renderer, parentTransform, parentFlags);
+}
+
+void FillMaterialModel::onReciveNotify(cocos2d::Ref *pRef) {
+    isShotScreen = true;
 }

@@ -7,6 +7,7 @@
 //
 
 #include "SceneHead.h"
+#include "MoregameBtn.h"
 
 
 Scene* HomeScene::scene(){
@@ -48,18 +49,6 @@ bool HomeScene::init(){
 
 void HomeScene::addBowlThings(){
     
-    log("the orignal x = %.2f, the y = %.2f", STVisibleRect::getOriginalPoint().x, STVisibleRect::getOriginalPoint().y);
-    
-    log("the orignal width = %.2f, the height = %.2f", STVisibleRect::getGlvisibleSize().width, STVisibleRect::getGlvisibleSize().height);
-    
-    log("the orignal windows width = %.2f, the height = %.2f", Director::getInstance()->getWinSize().width, Director::getInstance()->getWinSize().height);
-    
-    log("the orignal offset width = %.2f, the height = %.2f", STVisibleRect::getDesignOffset().x, STVisibleRect::getDesignOffset().y);
-    
-    log("the direction scale is %.2f, y = %.2f", Director::getInstance()->getOpenGLView()->getScaleX(), Director::getInstance()->getOpenGLView()->getScaleY());
-    
-    
-    
     Sprite* bowl = Sprite::create("home/bowl.png");
     bowl->setPosition(tableOriginal + Vec2(242-1100, 456.5));
     addChild(bowl, 2);
@@ -81,7 +70,7 @@ void HomeScene::addBowlThings(){
         logo->runAction(EaseElasticInOut::create(MoveBy::create(1.2, Vec2(0, -1100)), 0.3));
     }), CallFunc::create([=]{
         this->createCereal();
-    }),NULL));
+    }), DelayTime::create(2.0f),CallFunc::create(std::bind(&HomeScene::addAllButtons, this)),NULL));
 }
 
 void HomeScene::createCereal(){
@@ -113,3 +102,42 @@ void HomeScene::createCereal(){
     animal->runAction(Sequence::create(DelayTime::create(1.0f),EaseSineInOut::create(JumpBy::create(0.8, Vec2(-500, 0), 500, 1)), Animate::create(panimation), DelayTime::create(8.0f), CallFunc::create(std::bind(&HomeScene::createCereal, this)),EaseElasticInOut::create(JumpBy::create(0.8, Vec2(-500, 0), 500, 1), 0.3), RemoveSelf::create(),NULL));
 }
 
+void HomeScene::addAllButtons(){
+    MoregameBtn* pBtn = MoregameBtn::create();
+    pBtn->addtoParentLayer(this);
+    
+    ControlButton* favoritebtn = CocosHelper::getButton("ui/home/home_btn_fav.png", "ui/home/home_btn_fav.png");
+    ControlButton* shopbtn = CocosHelper::getButton("ui/home/home_btn_shop.png", "ui/home/home_btn_shop.png");
+    ControlButton* startbtn = CocosHelper::getButton("ui/home/home_btn_play.png", "ui/home/home_btn_play.png");
+    float startx = 0;
+    shopbtn->setPosition(STVisibleRect::getPointOfSceneRightBottom() + Vec2(-20-shopbtn->getContentSize().width/2.0, 15 + shopbtn->getContentSize().height/2.0));
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+    startx = STVisibleRect::getPointOfSceneRightBottom()
+    shopbtn->setVisible(false);
+#else
+    startx = shopbtn->getPositionX() - shopbtn->getContentSize().width/2.0;
+#endif
+    favoritebtn->setPosition(startx - 15 - favoritebtn->getContentSize().width/2.0, STVisibleRect::getOriginalPoint().y+15+favoritebtn->getContentSize().height/2.0);
+    favoritebtn->setPositionX(favoritebtn->getPositionX() + 800);
+    shopbtn->setPositionX(shopbtn->getPositionX() + 800);
+    
+    addChild(favoritebtn, 10);
+    addChild(shopbtn, 10);
+    
+    startbtn->setPosition(STVisibleRect::getCenterOfScene()+Vec2(-STVisibleRect::getGlvisibleSize().width, 0));
+    addChild(startbtn, 10);
+    
+    if (shopbtn->isVisible() == true) {
+        favoritebtn->runAction(Sequence::create(Spawn::create(Repeat::create(RotateBy::create(0.5, 360), 3), EaseElasticIn::create(MoveBy::create(1.5, Vec2(-800, 0)), 1.2), NULL), CallFunc::create([=]{
+            startbtn->runAction(EaseElasticIn::create(MoveBy::create(0.5f, Vec2(STVisibleRect::getGlvisibleSize().width, 0)), 0.3));
+            pBtn->startLoading();
+        }),NULL));
+        shopbtn->runAction(Sequence::create(DelayTime::create(0.2f), Spawn::create(Repeat::create(RotateBy::create(0.5, 360), 3), EaseElasticIn::create(MoveBy::create(1.5, Vec2(-800, 0)), 1.2), NULL), NULL));
+    }else {
+        favoritebtn->runAction(Sequence::create(Spawn::create(Repeat::create(RotateBy::create(0.5, 360), 3), EaseElasticIn::create(MoveBy::create(1.5, Vec2(-800, 0)), 1.2), NULL), CallFunc::create([=]{
+            startbtn->runAction(EaseElasticIn::create(MoveBy::create(0.5f, Vec2(STVisibleRect::getGlvisibleSize().width, 0)), 0.3));
+            pBtn->startLoading();
+        }),NULL));
+    }
+    
+}

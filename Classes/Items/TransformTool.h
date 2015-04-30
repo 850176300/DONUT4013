@@ -18,7 +18,7 @@ USING_NS_CC;
 USING_NS_CC_EXT;
 using namespace cocos2d::ui;
 
-class TransformTool : public Sprite{
+class TransformTool : public Layer{
 public:
     static TransformTool* createWithFile(const string& file);
     
@@ -41,11 +41,13 @@ protected:
     void moveToolsWithDelta(Vec2 delta);
 private:
     bool needShowTool = false;
+    Sprite* decorateItem = nullptr;
     ControlButton* closeBtn = nullptr;//关闭按钮
     Button* oparateBtn = nullptr;//操作按钮
     Scale9Sprite* frameSprite = nullptr;//缩放边框图片
     const float frameWidth = 348.0;
     const float frameHeight = 528.0;
+    float distance = 0;
 };
 
 #endif /* defined(__DONUT4013__TransformTool__) */

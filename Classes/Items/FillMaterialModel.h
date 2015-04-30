@@ -15,6 +15,10 @@
 USING_NS_CC;
 USING_NS_CC_EXT;
 
+#define kShotScreenEvent "ShotScreenEvent"
+
+using namespace std;
+
 typedef enum {
     NONE,
     MOVE,
@@ -27,25 +31,18 @@ class FillMaterialModel : public Sprite
 public:
     FillMaterialModel();
     ~FillMaterialModel();
-    static FillMaterialModel* create(const char* ImageName);
-    virtual bool init(const char* ImageName);
-    inline const char* getResourceName()
-    {
-        return _resourceName.c_str();
-    }
-    inline void setEnable(bool isEnable)
-    {
-        _enable = isEnable;
-    }
-    inline void hiddenTipsFrame()
-    {
-        _close->setVisible(false);
-        _magnify->setVisible(false);
-        this->setSpriteFrame(Sprite::create("controlTip_bg_Clear.png")->getSpriteFrame());
-        _isTipsFrameShow = false;
-    }
+    static FillMaterialModel* create(const std::string& ImageName);
+    
+    virtual bool init(const string& ImageName);
+    
+    void removeCloseBtn();
+    void changeItemTexture(const string& filename);
+    
+    CC_SYNTHESIZE_READONLY(string, _resourceName, ResourceName);
+    CC_SYNTHESIZE(bool, _enable, Enable);
+    CC_SYNTHESIZE(bool, isShotScreen, ShotScreen);
 private:
-    void deleteSelf(Ref *sender);
+    void deleteSelf(Ref *sender, Control::EventType type);
     
     virtual bool onTouchBegan(Touch *touch, Event *unused_event);
     virtual void onTouchMoved(Touch *touch, Event *unused_event);
@@ -55,6 +52,9 @@ private:
     virtual void onExit();
     
     virtual void updateTipsFrameStatus(float);
+    
+    virtual void visit(Renderer* renderer, const Mat4 &parentTransform, uint32_t parentFlags);
+    void onReciveNotify(Ref* pRef);
 private:
     ControlButton *_close;
     Sprite *_magnify;
@@ -63,8 +63,6 @@ private:
     EventType _eventType;
     float _orignalRotate;
     bool _isTipsFrameShow;
-    std::string _resourceName;
-    bool _enable;
 };
 
 #endif /* defined(__COOK016_TacoMaker__FillMaterialModel__) */
