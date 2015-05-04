@@ -209,10 +209,28 @@ void MixItemScene::cutMilk(){
     addChild(lineTip, 10);
     lineTip->setEnabled(true);
     lineTip->addTouchEventListener(CC_CALLBACK_2(MixItemScene::ontouchLine, this));
+
+    gestures = Sprite::create("make/gestures.png");
+    gestures->setPosition(Vec2(lineTip->getBoundingBox().getMinX()+15, lineTip->getBoundingBox().getMaxY()+15) + Vec2(-gestures->getContentSize().width/2.0, -gestures->getContentSize().height/2.0));
+    addChild(gestures, 11);
     
-    lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
+    this->schedule(schedule_selector(MixItemScene::replayHandTip), 5.0, -1, 1.0);
+    
+//    lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
     
 
+}
+
+void MixItemScene::replayHandTip(float) {
+    gestures->runAction(Sequence::create(EaseSineInOut::create(MoveBy::create(1.0, Vec2(150, -tan(CC_DEGREES_TO_RADIANS(46.9))*150))), DelayTime::create(0.5), EaseSineInOut::create(MoveBy::create(0.5, Vec2(-150, tan(CC_DEGREES_TO_RADIANS(46.9))*150))),NULL));
+}
+
+void MixItemScene::startHandTip(){
+    gestures->stopAllActions();
+    gestures->setPosition(Vec2(lineTip->getBoundingBox().getMinX()+15, lineTip->getBoundingBox().getMaxY()+15) + Vec2(-gestures->getContentSize().width/2.0, -gestures->getContentSize().height/2.0));
+    gestures->setVisible(true);
+    gestures->runAction(Sequence::create(EaseSineInOut::create(MoveBy::create(1.0, Vec2(150, -tan(CC_DEGREES_TO_RADIANS(46.9))*150))), DelayTime::create(0.5), EaseSineInOut::create(MoveBy::create(0.5, Vec2(-150, tan(CC_DEGREES_TO_RADIANS(46.9))*150))),NULL));
+    schedule(schedule_selector(MixItemScene::replayHandTip), 5.0);
 }
 
 void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype) {
@@ -222,8 +240,8 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
     if (rtype == Widget::TouchEventType::BEGAN) {
         begin = tip->getTouchBeganPosition();
         moveDistance = 0;
-        lineTip->stopAllActions();
-        lineTip->setScale(1.0);
+        gestures->setVisible(false);
+        unschedule(schedule_selector(MixItemScene::replayHandTip));
     }else if (rtype == Widget::TouchEventType::MOVED) {
         move = tip->getTouchMovePosition();
         float distance = move.distance(begin);
@@ -231,12 +249,23 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
             moveDistance = distance;
         }
     }else if (rtype == Widget::TouchEventType::ENDED){
-        milkBox->runAction(GameLayerBase::getJellyAction());
+        Rect rect;
+        rect.origin = tip->convertToWorldSpace(Vec2(0, 0)) + Vec2(-150, -150);
+        rect.size = tip->getContentSize().operator+(Size(150, 150));
+        if (!rect.containsPoint(tip->getTouchEndPosition())) {
+            
+            startHandTip();
+            return;
+        }
         if (moveDistance > 100) {
+            milkBox->runAction(GameLayerBase::getJellyAction());
             cutCount -= 1;
             if (cutCount > 0) {
-                lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
+                
+                startHandTip();
             }else {
+                removeChild(gestures);
+                gestures = nullptr;
                 lineTip->runAction(Sequence::create(FadeOut::create(0.5), RemoveSelf::create(), NULL));
                 milkBox->runAction(Sequence::create(DelayTime::create(1.0), CallFunc::create([=]{
                     milkBox->setTexture("make/milk/"+milkBox->getName()+"_1.png");
@@ -250,17 +279,30 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
                 }), NULL));
             }
         }else{
-           lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
+            
+            startHandTip();
         }
         
         
     }else if (rtype == Widget::TouchEventType::CANCELED){
-        milkBox->runAction(GameLayerBase::getJellyAction());
+        Rect rect;
+        rect.origin = tip->convertToWorldSpace(Vec2(0, 0)) + Vec2(-150, -150);
+        rect.size = tip->getContentSize().operator+(Size(150, 150));
+        if (!rect.containsPoint(tip->getTouchEndPosition())) {
+            
+            startHandTip();
+            return;
+        }
+        
         if (moveDistance > 100) {
+            milkBox->runAction(GameLayerBase::getJellyAction());
             cutCount -= 1;
             if (cutCount > 0) {
-                lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0),NULL)));
+                
+                startHandTip();
             }else {
+                removeChild(gestures);
+                gestures = nullptr;
                 lineTip->runAction(Sequence::create(EaseSineInOut::create(FadeOut::create(0.5)), RemoveSelf::create(), NULL));
                 milkBox->runAction(Sequence::create(DelayTime::create(1.0), CallFunc::create([=]{
                     milkBox->setTexture("make/milk/"+milkBox->getName()+"_1.png");
@@ -274,7 +316,8 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
                 }), NULL));
             }
         }else{
-            lineTip->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(0.3, 0.8), ScaleTo::create(0.3, 1.0), NULL)));
+            
+            startHandTip();
         }
     }
     

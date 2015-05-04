@@ -41,6 +41,8 @@ protected:
     void striDone();
     void addExploreImage(float);
     void ontouchLine(Ref* pRef,Widget::TouchEventType rtype);
+    void replayHandTip(float);
+    void startHandTip();
 private:
     float upH = -335 + 40;
     ControlButton* flavorBox = nullptr;
@@ -61,6 +63,7 @@ private:
     bool striFinished = false;
     bool striFailed = false;
     Texture2D* explorTexture = nullptr;
+    Sprite* gestures = nullptr;
     int superSpeed = 0;
     int normalSpeed = 0;
     
