@@ -22,6 +22,8 @@ public:
     
     CREATE_FUNC(ChooseMilk);
 protected:
+    virtual void nextClickEvent();
+    virtual void preClickEvent();
     void addScrollView();
     void onScrollItemClick(Ref* pref, Widget::TouchEventType type);
     virtual void onEnterTransitionDidFinish();

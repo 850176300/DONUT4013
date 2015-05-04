@@ -62,7 +62,6 @@ bool GameLayerBase::initWithBgFileName(const char *apFileName, bool showAds /*= 
         isShowAds = showAds;
         if (showAds) {
             log("show the banner %s", __FUNCTION__);
-            showHomeButton();
         }else {
             log("donnot need show banner %s", __FUNCTION__);
         }
@@ -163,20 +162,32 @@ void GameLayerBase::homeClickEvent(){
 //    SceneManager::getInstance()->gotoMainScene();
 }
 
+void GameLayerBase::showPreviousBtn(float dt){
+    if (preBtn != nullptr) {
+        return;
+    }
+    preBtn = CocosHelper::getButton("ui/publish/btn_back.png", "ui/publish/btn_back.png");
+    //    homeBtn->setAnchorPoint(Vec2(1.0, 1.0));
+    preBtn->setPosition(STVisibleRect::getPointOfSceneLeftUp() + Vec2(20+preBtn->getContentSize().width/2.0, -preBtn->getContentSize().height/2.0 - 15) + Vec2(-800, 0));
+    preBtn->addTargetWithActionForControlEvents(this, cccontrol_selector(GameLayerBase::onPreButtonClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
+    preBtn->setZoomOnTouchDown(false);
+    addChild(preBtn, kHomeBtn);
+    
+    preBtn->runAction(Sequence::create(DelayTime::create(dt), EaseElasticInOut::create(MoveBy::create(2.0, Vec2(800, 0)), 1.7), NULL));
+}
 
-void GameLayerBase::showNextButton(){
+void GameLayerBase::showNextButton(float dt){
     if (nextBtn != nullptr) {
         return;
     }
     nextBtn = CocosHelper::getButton("ui/publish/next.png", "ui/publish/next.png");
     //    homeBtn->setAnchorPoint(Vec2(1.0, 1.0));
-    nextBtn->setPosition(STVisibleRect::getPointOfSceneRightBottom() + Vec2(-15-nextBtn->getContentSize().width/2.0, 15+nextBtn->getContentSize().height/2.0));
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-    nextBtn->setPositionY(nextBtn->getPositionY()+GameLayerBase::getBannerSize());
-#endif
+    nextBtn->setPosition(STVisibleRect::getPointOfSceneRightUp() + Vec2(-20-nextBtn->getContentSize().width/2.0, -nextBtn->getContentSize().height/2.0 - 15) + Vec2(800, 0));
     nextBtn->addTargetWithActionForControlEvents(this, cccontrol_selector(GameLayerBase::onNextButtonClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
     nextBtn->setZoomOnTouchDown(false);
     addChild(nextBtn, kHomeBtn);
+    
+    nextBtn->runAction(Sequence::create(DelayTime::create(dt), EaseElasticInOut::create(MoveBy::create(2.0, Vec2(-800, 0)), 1.7), NULL));
 }
 
 void GameLayerBase::onNextButtonClicked(cocos2d::Ref *pRef, Control::EventType type) {
@@ -191,6 +202,24 @@ void GameLayerBase::onNextButtonClicked(cocos2d::Ref *pRef, Control::EventType t
     }
     pNode->setEnabled(false);
     pNode->runAction(Sequence::create((Sequence*)getJellyAction(),CallFunc::create(std::bind(&GameLayerBase::nextClickEvent, this)), NULL));
+}
+
+void GameLayerBase::onPreButtonClicked(cocos2d::Ref *pRef, Control::EventType type) {
+    if (canbeClicked == false) {
+        return;
+    }
+    canbeClicked = true;
+    //    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    ControlButton* pNode = dynamic_cast<ControlButton*>(pRef);
+    if (pNode->getNumberOfRunningActions() != 0) {
+        return;
+    }
+    pNode->setEnabled(false);
+    pNode->runAction(Sequence::create((Sequence*)getJellyAction(),CallFunc::create(std::bind(&GameLayerBase::preClickEvent, this)), NULL));
+}
+
+void GameLayerBase::preClickEvent(){
+    
 }
 
 void GameLayerBase::nextClickEvent(){

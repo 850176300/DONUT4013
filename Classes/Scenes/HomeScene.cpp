@@ -22,7 +22,7 @@ Scene* HomeScene::scene(){
 
 
 bool HomeScene::init(){
-    if (GameLayerBase::initWithBgFileName("home/start_bg0.jpg")) {
+    if (GameLayerBase::initWithBgFileName("home/start_bg0.jpg", false)) {
         Sprite* table = Sprite::create("home/table0.png");
         table->setAnchorPoint(Vec2(0.5, 0));
         table->setPosition(Vec2(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y + 60));
@@ -30,7 +30,7 @@ bool HomeScene::init(){
         Animation* tableAnimtion = createAnimation("home/table", 0, 3);
         tableAnimtion->setLoops(1);
         tableAnimtion->setDelayPerUnit(0.8f);
-        table->runAction(Sequence::create(DelayTime::create(1.0f), Animate::create(tableAnimtion), NULL));
+        
         
         tableOriginal = table->getBoundingBox().origin;
         
@@ -40,7 +40,7 @@ bool HomeScene::init(){
         m_pBg->runAction(Sequence::create(DelayTime::create(1.0), EaseSineInOut::create(Animate::create(pAnimation)), CallFunc::create([=]{
             this->addBowlThings();
         }),NULL));
-        
+        table->runAction(Sequence::create(DelayTime::create(1.0f), EaseSineInOut::create(Animate::create(tableAnimtion)), NULL));
 
         return true;
     }
@@ -48,6 +48,8 @@ bool HomeScene::init(){
 }
 
 void HomeScene::addBowlThings(){
+    vector<string> types = {"bees","bird","squirrel","rabbit"};
+    currentIndex = arc4random() % 4 + 1;
     
     Sprite* bowl = Sprite::create("home/bowl.png");
     bowl->setPosition(tableOriginal + Vec2(242-1100, 456.5));
@@ -62,34 +64,27 @@ void HomeScene::addBowlThings(){
     logo->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getPointOfSceneLeftUp().y + 900);
     addChild(logo, 2);
     
+
     
+    cereal = Sprite::create("home/cereal"+convertIntToString(currentIndex)+".png");
+    cereal->setPosition(tableOriginal + Vec2(385.5+1000, 565));
+    cereal->setTag(currentIndex);
+    addChild(cereal, 1);
+   
     
     cupcake->runAction(Sequence::create(EaseCircleActionInOut::create(MoveBy::create(0.8, Vec2(0, -1000))), DelayTime::create(0.8), CallFunc::create([=]{
         bowl->runAction(EaseExponentialInOut::create(MoveBy::create(0.8, Vec2(1100, 0))));
     }),DelayTime::create(0.8),CallFunc::create([=]{
+        cereal->runAction(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(-1000, 0)), 0.8));
+    }), DelayTime::create(1.2f),CallFunc::create([=]{
         logo->runAction(EaseElasticInOut::create(MoveBy::create(1.2, Vec2(0, -1100)), 0.3));
-    }), CallFunc::create([=]{
-        this->createCereal();
-    }), DelayTime::create(2.0f),CallFunc::create(std::bind(&HomeScene::addAllButtons, this)),NULL));
+    }), DelayTime::create(1.0f), CallFunc::create([=]{
+        this->createCereal(types);
+    }),DelayTime::create(2.0f),CallFunc::create(std::bind(&HomeScene::addAllButtons, this)),NULL));
 }
 
-void HomeScene::createCereal(){
-    vector<string> types = {"bees","bird","squirrel","rabbit"};
-    currentIndex = arc4random() % 4 + 1;
-    
-    if (cereal == nullptr) {
-        cereal = Sprite::create("home/cereal"+convertIntToString(currentIndex)+".png");
-        cereal->setPosition(tableOriginal + Vec2(385.5+1000, 565));
-        cereal->setTag(currentIndex);
-        addChild(cereal, 1);
-        cereal->runAction(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(-1000, 0)), 0.8));
-    }else {
-        cereal->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(0.8, Vec2(-1000, 0)), 0.3),CallFunc::create([=]{
-            cereal->setTexture("home/cereal"+convertIntToString(currentIndex)+".png");
-            cereal->setPosition(tableOriginal + Vec2(385.5+1000, 565));
-            cereal->runAction(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(-1000, 0)), 0.8));
-        }),NULL));
-    }
+void HomeScene::createCereal(vector<string> types){
+
     int max = DataContainer::getInstance()->getAnimalAnimationCount(types.at(currentIndex - 1));
     Animation* panimation = createAnimation("animals/animation/"+types.at(currentIndex-1)+"/"+types.at(currentIndex-1), 0, max);
     panimation->setLoops(-1);
@@ -99,7 +94,7 @@ void HomeScene::createCereal(){
     animal->setPosition(STVisibleRect::getPointOfSceneRightBottom() + Vec2(300, 20));
     addChild(animal, 3);
     
-    animal->runAction(Sequence::create(DelayTime::create(1.0f),EaseSineInOut::create(JumpBy::create(0.8, Vec2(-500, 0), 500, 1)), Animate::create(panimation), DelayTime::create(8.0f), CallFunc::create(std::bind(&HomeScene::createCereal, this)),EaseElasticInOut::create(JumpBy::create(0.8, Vec2(-500, 0), 500, 1), 0.3), RemoveSelf::create(),NULL));
+    animal->runAction(Sequence::create(DelayTime::create(1.5f),EaseSineInOut::create(JumpBy::create(0.8, Vec2(-500, 0), 500, 1)), Animate::create(panimation),NULL));
 }
 
 void HomeScene::addAllButtons(){
@@ -127,17 +122,60 @@ void HomeScene::addAllButtons(){
     startbtn->setPosition(STVisibleRect::getCenterOfScene()+Vec2(-STVisibleRect::getGlvisibleSize().width, 0));
     addChild(startbtn, 10);
     
+    shopbtn->setTag(kShopBtnTag);
+    startbtn->setTag(kStartBtnTag);
+    favoritebtn->setTag(kFavBtnTag);
+    shopbtn->setZoomOnTouchDown(false);
+    favoritebtn->setZoomOnTouchDown(false);
+    startbtn->setZoomOnTouchDown(false);
+    shopbtn->addTargetWithActionForControlEvents(this, cccontrol_selector(HomeScene::onBtnClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
+    favoritebtn->addTargetWithActionForControlEvents(this, cccontrol_selector(HomeScene::onBtnClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
+    startbtn->addTargetWithActionForControlEvents(this, cccontrol_selector(HomeScene::onBtnClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
+    
     if (shopbtn->isVisible() == true) {
-        favoritebtn->runAction(Sequence::create(Spawn::create(Repeat::create(RotateBy::create(0.5, 360), 3), EaseElasticIn::create(MoveBy::create(1.5, Vec2(-800, 0)), 1.2), NULL), CallFunc::create([=]{
+        favoritebtn->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(2.5, Vec2(-800, 0)), 2.0), CallFunc::create([=]{
             startbtn->runAction(EaseElasticIn::create(MoveBy::create(0.5f, Vec2(STVisibleRect::getGlvisibleSize().width, 0)), 0.3));
             pBtn->startLoading();
         }),NULL));
-        shopbtn->runAction(Sequence::create(DelayTime::create(0.2f), Spawn::create(Repeat::create(RotateBy::create(0.5, 360), 3), EaseElasticIn::create(MoveBy::create(1.5, Vec2(-800, 0)), 1.2), NULL), NULL));
+        shopbtn->runAction(Sequence::create(DelayTime::create(0.6f),  EaseElasticIn::create(MoveBy::create(2.5, Vec2(-800, 0)), 1.8), NULL));
     }else {
-        favoritebtn->runAction(Sequence::create(Spawn::create(Repeat::create(RotateBy::create(0.5, 360), 3), EaseElasticIn::create(MoveBy::create(1.5, Vec2(-800, 0)), 1.2), NULL), CallFunc::create([=]{
+        favoritebtn->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(2.5, Vec2(-800, 0)), 2.0), CallFunc::create([=]{
             startbtn->runAction(EaseElasticIn::create(MoveBy::create(0.5f, Vec2(STVisibleRect::getGlvisibleSize().width, 0)), 0.3));
             pBtn->startLoading();
         }),NULL));
     }
     
+}
+
+void HomeScene::onBtnClicked(cocos2d::Ref *pRef, Control::EventType type) {
+    static bool canClick = true;
+    if (canClick == true) {
+        canClick = false;
+    }else {
+        return;
+    }
+
+    Node* pNode = dynamic_cast<Node*>(pRef);
+    pNode->runAction(Sequence::create((Sequence*)GameLayerBase::getJellyAction(), CallFunc::create([=]{
+        switch (pNode->getTag()) {
+            case kStartBtnTag:
+                this->scheduleOnce(schedule_selector(HomeScene::changeScene), 0.5f);
+                
+                break;
+            case kShopBtnTag:
+                canClick = true;
+                break;
+            case kFavBtnTag:
+                canClick = true;
+                break;
+            default:
+                break;
+        }
+    }), NULL));
+}
+
+void HomeScene::changeScene(float) {
+//    replaceTheScene<ChooseFlavor>();
+    Scene* pScene = ChooseFlavor::scene();
+    Director::getInstance()->replaceScene(pScene);
 }

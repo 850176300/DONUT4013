@@ -28,6 +28,8 @@ public:
     CREATE_FUNC(MixItemScene);
     
 protected:
+    virtual void nextClickEvent();
+    virtual void preClickEvent();
     virtual void onEnterTransitionDidFinish();
     void onselectTheItem(Ref* pRef, Control::EventType type);
     void performTip(float);

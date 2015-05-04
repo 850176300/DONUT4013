@@ -24,18 +24,9 @@ bool DecorateScene::init(){
         allItems.bgName = "make/bg_make_table_cover.png";
         
         DataContainer::FlavorInfor info = DataContainer::getInstance()->getTheFlavorByName(DataContainer::getInstance()->getChooseFlavor());
-        
-        Image* bg2Image = new Image();
-        bg2Image->initWithImageFile("make/bg_make_table.png");
-        
-        Texture2D* ptexture = new Texture2D();
-        ptexture->initWithImage(CCImageColorSpace::imageWithHSB(bg2Image, info.hsv.x, info.hsv.y, info.hsv.z));
-        Sprite* bg2 = Sprite::createWithTexture(ptexture);
+        Sprite* bg2 = Sprite::create("make/bg/tablebg_"+info.name+".png");
         bg2->setPosition(STVisibleRect::getCenterOfScene() + Vec2(0, 120));
         addChild(bg2, -1);
-        
-        bg2Image->autorelease();
-        ptexture->autorelease();
         
         cannotEatLayer = Layer::create();
         cannotEatLayer->setContentSize(STVisibleRect::getGlvisibleSize());
@@ -69,7 +60,8 @@ bool DecorateScene::init(){
         addFixedThings();
         addScrollView();
        
-        
+        showNextButton(2.0f);
+        showPreviousBtn(2.0f);
         return true;
     }
     
@@ -270,4 +262,15 @@ void DecorateScene::onItemsThingClicked(cocos2d::Ref *pRef, Widget::TouchEventTy
             canEatLayer->addChild(ptool, 12);
         }
     }
+}
+
+void DecorateScene::nextClickEvent(){
+    GameLayerBase::nextClickEvent();
+//    replaceTheScene<<#typename T#>>()
+}
+
+void DecorateScene::preClickEvent(){
+    GameLayerBase::preClickEvent();
+    replaceTheScene<MixItemScene>();
+    
 }

@@ -16,7 +16,11 @@ using namespace std;
 USING_NS_CC;
 
 class HomeScene: public GameLayerBase{
-    
+    enum ControlBtnTag{
+        kStartBtnTag = 11,
+        kFavBtnTag,
+        kShopBtnTag,
+    };
     
 public:
     static Scene* scene();
@@ -30,8 +34,10 @@ public:
     
 protected:
     void addBowlThings();//添加首页的三个元素
-    void createCereal();
+    void createCereal(vector<string> types);
     void addAllButtons();
+    void onBtnClicked(Ref* pRef, Control::EventType type);
+    void changeScene(float);
 private:
     int currentIndex = 0;
     Vec2 tableOriginal;

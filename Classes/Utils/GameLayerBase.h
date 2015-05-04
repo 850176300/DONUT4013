@@ -53,10 +53,12 @@ public:
     void setADVisible(bool visible);
     Action* getJellyAction();
     void showHomeButton();
-    void showNextButton();
+    void showNextButton(float dt);
+    void showPreviousBtn(float dt);
     
     virtual void homeClickEvent();
     virtual void nextClickEvent();
+    virtual void preClickEvent();
     
     virtual void onPause();
     virtual void onResume();
@@ -76,13 +78,15 @@ protected:
     void removeunuseCache(float);
     void onHomeButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
     void onNextButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
+    void onPreButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
     void onPauseGame(Ref *ref);
     void onResumeGame(Ref* ref);
     
 public:
-    ControlButton* homeBtn;
-    ControlButton* nextBtn;
-    Sprite* m_pBg;
+    ControlButton* homeBtn = nullptr;
+    ControlButton* nextBtn = nullptr;
+    ControlButton* preBtn = nullptr;
+    Sprite* m_pBg = nullptr;
     bool canbeClicked = true;
     bool isShowAds;
 

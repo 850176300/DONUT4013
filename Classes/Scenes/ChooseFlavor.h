@@ -22,8 +22,8 @@ class ChooseFlavor : public GameLayerBase{
 public:
     static Scene* scene();
     
-    ChooseFlavor(){ hsvBackground = new Image(); };
-    ~ChooseFlavor(){ CC_SAFE_DELETE(hsvBackground); };
+    ChooseFlavor(){  };
+    ~ChooseFlavor(){  };
     
     virtual bool init();
     
@@ -35,12 +35,14 @@ protected:
     void onScrollItemClick(Ref* pRef,Widget::TouchEventType type);
     void changeBackGround(float);
     void animalAction(Node* pNode, Layout* pLayout);
+    virtual void nextClickEvent();
+    virtual void preClickEvent();
 private:
     ScrollPage* flavorScrollview = nullptr;
     int count = 0;//统计flavor个数
     int ItemSpace = 384.0;
     float ItemScale = 0.7;
-    Image* hsvBackground = nullptr;
+//    Image* hsvBackground = nullptr;
     Sprite* bg2 = nullptr;
     int currentIndex = 0;
     DataContainer::flavorMap flavorData;

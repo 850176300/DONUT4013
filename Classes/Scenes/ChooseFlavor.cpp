@@ -22,22 +22,15 @@ Scene* ChooseFlavor::scene(){
 
 bool ChooseFlavor::init(){
     if (GameLayerBase::initWithBgFileName("make/bg_make_cover.png")) {
-        
-        hsvBackground->initWithImageFile("make/bg_make.png");
-        
+
         flavorData = DataContainer::getInstance()->getFlavorData();
         DataContainer::flavorMap::iterator it = flavorData.begin();
-        Vec3 hsv = flavorData[it->first].hsv;
-        Image* pImage = CCImageColorSpace::imageWithHSB(hsvBackground, hsv.x, hsv.y, hsv.z);
-        
-        Texture2D* pTexture = new Texture2D();
-        pTexture->initWithImage(pImage);
-        bg2 = Sprite::createWithTexture(pTexture);
+        bg2 = Sprite::create("make/bg/bg_"+it->first+".png");
         bg2->setPosition(STVisibleRect::getCenterOfScene() + Vec2(0, 120));
         addChild(bg2, -1);
-        pTexture->autorelease();
-        
+
         addScrollView();
+        showPreviousBtn(3.0);
         return true;
     }
     return false;
@@ -156,7 +149,7 @@ void ChooseFlavor::onScrollItemClick(cocos2d::Ref *pRef, Widget::TouchEventType 
         maskLayout->setBackGroundImage("ui/mask.png");
         maskLayout->setTouchEnabled(true);
         maskLayout->setBackGroundImageOpacity(0);
-        this->addChild(maskLayout, kPrompt);
+        this->addChild(maskLayout, kHomeBtn - 11);
         
         Sprite* pSprite = Sprite::create("make/flavor/"+pNode->getName()+".png");
         pSprite->setPosition(STVisibleRect::getCenterOfScene());
@@ -172,7 +165,6 @@ void ChooseFlavor::onScrollItemClick(cocos2d::Ref *pRef, Widget::TouchEventType 
 
 void ChooseFlavor::animalAction(cocos2d::Node *pNode, cocos2d::ui::Layout *pLayout){
     string type = flavorData[pNode->getName()].type;
-    
     pLayout->setBackGroundImageOpacity(150);
     DataContainer::getInstance()->setChooseFlavor(pNode->getName());
     
@@ -183,25 +175,20 @@ void ChooseFlavor::animalAction(cocos2d::Node *pNode, cocos2d::ui::Layout *pLayo
     Sprite* animal = Sprite::create("animals/animation/"+type+"/"+type+convertIntToString(0)+".png");
     animal->setAnchorPoint(Vec2(0.5, 0));
     animal->setPosition(STVisibleRect::getPointOfSceneRightBottom() + Vec2(300, 20));
-    addChild(animal, kPrompt + 1);
+    addChild(animal, kHomeBtn - 10);
     
-    animal->runAction(Sequence::create(EaseSineInOut::create(JumpTo::create(0.8, Vec2(STVisibleRect::getCenterOfScene().x, 20), 500, 1)), Animate::create(panimation), DelayTime::create(3.0f),CallFunc::create([=]{
-        replaceTheScene<ChooseMilk>();
-    }),NULL));
+    animal->runAction(Sequence::create(EaseSineInOut::create(JumpTo::create(0.8, Vec2(STVisibleRect::getCenterOfScene().x, 20), 500, 1)), Animate::create(panimation),NULL));
+    showNextButton(1.5f);
 }
 
 void ChooseFlavor::changeBackGround(float) {
-    Vec3 hsv = flavorData[flavorScrollview->getChildByTag(currentIndex)->getName()].hsv;
-    log("the hsv is %f, %f, %f", hsv.x, hsv.y, hsv.z);
-    Image* pImage = CCImageColorSpace::imageWithHSB(hsvBackground, hsv.x, hsv.y, hsv.z);
-    Texture2D* pTexture = new Texture2D();
-    pTexture->initWithImage(pImage);
-    bg2->setTexture(pTexture);
-    pTexture->autorelease();
+    string name = flavorData[flavorScrollview->getChildByTag(currentIndex)->getName()].name;
+    bg2->setTexture("make/bg/bg_"+name+".png");
 }
 
 void ChooseFlavor::onEnterTransitionDidFinish(){
     GameLayerBase::onEnterTransitionDidFinish();
+
     flavorScrollview->scrollToPercentHorizontal(100, 1.5, true);
     
     flavorScrollview->stopAllActions();
@@ -212,4 +199,14 @@ void ChooseFlavor::onEnterTransitionDidFinish(){
         title->runAction(EaseElasticInOut::create(MoveBy::create(0.9, Vec2(0, -300)), 0.5));
     }), NULL));
     
+}
+
+void ChooseFlavor::nextClickEvent(){
+    GameLayerBase::nextClickEvent();
+    replaceTheScene<ChooseMilk>();
+}
+
+void ChooseFlavor::preClickEvent(){
+    GameLayerBase::preClickEvent();
+    replaceTheScene<HomeScene>();
 }

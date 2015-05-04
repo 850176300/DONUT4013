@@ -27,6 +27,8 @@ public:
     
     CREATE_FUNC(DecorateScene);
 protected:
+    virtual void nextClickEvent();
+    virtual void preClickEvent();
     virtual void onEnterTransitionDidFinish();
     void addScrollView();
     void ontypeItemClicked(Ref* pRef,Widget::TouchEventType toucht);

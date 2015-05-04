@@ -24,19 +24,12 @@ bool ChooseMilk::init(){
     if (GameLayerBase::initWithBgFileName("make/bg_make_table_cover.png")) {
         DataContainer::FlavorInfor info = DataContainer::getInstance()->getTheFlavorByName(DataContainer::getInstance()->getChooseFlavor());
         
-        Image* bg2Image = new Image();
-        bg2Image->initWithImageFile("make/bg_make_table.png");
-        
-        Texture2D* ptexture = new Texture2D();
-        ptexture->initWithImage(CCImageColorSpace::imageWithHSB(bg2Image, info.hsv.x, info.hsv.y, info.hsv.z));
-        Sprite* bg2 = Sprite::createWithTexture(ptexture);
+        Sprite* bg2 = Sprite::create("make/bg/tablebg_"+info.name+".png");
         bg2->setPosition(STVisibleRect::getCenterOfScene() + Vec2(0, 120));
         addChild(bg2, -1);
         
-        bg2Image->autorelease();
-        ptexture->autorelease();
-        
         addScrollView();
+        showPreviousBtn(3.0f);
         return true;
     }
     return false;
@@ -167,5 +160,17 @@ void ChooseMilk::onScrollItemClick(cocos2d::Ref *pref, Widget::TouchEventType ty
         this->addChild(pSprite);
         pNode->setVisible(false);
         milkScrollview->runAction(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(-1000, 0)), 0.3));
+        pSprite->runAction(RepeatForever::create(EaseSineInOut::create(JumpBy::create(0.8, Vec2(0, 0), 150, 1))));
+        showNextButton(1.0f);
     }
+}
+
+void ChooseMilk::nextClickEvent(){
+    GameLayerBase::nextClickEvent();
+    replaceTheScene<MixItemScene>();
+}
+
+void ChooseMilk::preClickEvent(){
+    GameLayerBase::preClickEvent();
+    replaceTheScene<ChooseFlavor>();
 }

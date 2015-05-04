@@ -86,7 +86,7 @@ void MoregameBtn::onLoadmoregameIconSucceed(cocos2d::Ref *pRef) {
     moregameBtn->setCallback(CC_CALLBACK_1(MoregameBtn::moregameClicked, this));
     moregameBtn->setAnchorPoint(Point(1.0, 1.0));
     moregameBtn->setPosition(Point(container->getContentSize().width, container->getContentSize().height));
-    moregameBtn->setPosition(moregameBtn->getPosition() + Point(-25, -45));
+    moregameBtn->setPosition(moregameBtn->getPosition() + Point(-27, -42));
 
     Menu* menu = Menu::create(moregameBtn, NULL);
     menu->setAnchorPoint(Point(0, 0));

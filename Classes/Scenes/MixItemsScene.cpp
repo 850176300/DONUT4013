@@ -23,17 +23,9 @@ bool MixItemScene::init(){
     if (GameLayerBase::initWithBgFileName("make/bg_make_table_cover.png")) {
         DataContainer::FlavorInfor info = DataContainer::getInstance()->getTheFlavorByName(DataContainer::getInstance()->getChooseFlavor());
         
-        Image* bg2Image = new Image();
-        bg2Image->initWithImageFile("make/bg_make_table.png");
-        
-        Texture2D* ptexture = new Texture2D();
-        ptexture->initWithImage(CCImageColorSpace::imageWithHSB(bg2Image, info.hsv.x, info.hsv.y, info.hsv.z));
-        Sprite* bg2 = Sprite::createWithTexture(ptexture);
+        Sprite* bg2 = Sprite::create("make/bg/tablebg_"+info.name+".png");
         bg2->setPosition(STVisibleRect::getCenterOfScene() + Vec2(0, 120));
         addChild(bg2, -1);
-        
-        bg2Image->autorelease();
-        ptexture->autorelease();
         
         Sprite* table = Sprite::create("make/bg_make_table_table.png");
         table->setAnchorPoint(Vec2(0.5, 0));
@@ -41,22 +33,8 @@ bool MixItemScene::init(){
         addChild(table, 1);
         
         tableMaxy = table->getBoundingBox().getMaxY();
-        Image* pImage = new Image();
-        pImage->initWithImageFile("make/splatter.png");
-        string milk = DataContainer::getInstance()->getChooseMilk();
-        string flavor = DataContainer::getInstance()->getChooseFlavor();
-        
-        DataContainer::MilkInfor _milkinfor = DataContainer::getInstance()->getTheMilkByName(milk);
-        DataContainer::FlavorInfor _flaovrinfo = DataContainer::getInstance()->getTheFlavorByName(flavor);
-        
-        explorTexture = new Texture2D();
-        
-        if (_milkinfor.isHSVuse == false) {
-            explorTexture->initWithImage(CCImageColorSpace::imageWithHSB(pImage, _flaovrinfo.hsv.x, _flaovrinfo.hsv.y, _flaovrinfo.hsv.z));
-        }else {
-            explorTexture->initWithImage(CCImageColorSpace::imageWithHSB(pImage, _milkinfor.hsv.x, _milkinfor.hsv.y, _milkinfor.hsv.z));
-        }
-        pImage->autorelease();
+
+        showPreviousBtn(2.0f);
         return true;
     }
     return false;
@@ -107,8 +85,7 @@ void MixItemScene::onEnterTransitionDidFinish(){
         this->schedule(schedule_selector(MixItemScene::performTip), 5.0, -1, 4.0);
         flavorBox->setEnabled(true);
         
-        Director::getInstance()->getTextureCache()->addImage("make/cereals_stir/"+flavor+".png");
-        flavorTexture = Director::getInstance()->getTextureCache()->getTextureForKey("make/cereals_stir/"+flavor+".png");
+        flavorTexture = Director::getInstance()->getTextureCache()->addImage("make/cereals_stir/"+flavor+".png");
         flavorTexture->retain();
        
         flavorinBowl = Sprite::createWithTexture(flavorTexture);
@@ -155,25 +132,27 @@ void MixItemScene::pourFlavor(){
     maskRender->retain();
     maskRender->setPosition(0, 0);
     const float rotate = 45;
-    flavorBox->runAction(Sequence::create(Spawn::create(MoveBy::create(0.5, Vec2(-460, 100)), RotateBy::create(0.5, rotate),NULL), CallFunc::create([=]{
+    flavorBox->runAction(Sequence::create(Spawn::create(MoveBy::create(0.5, Vec2(-460, 100)),CallFunc::create(std::bind(&Node::setLocalZOrder, flavorBox, 10)), RotateBy::create(0.5, rotate),NULL), CallFunc::create([=]{
         DataContainer::FlavorInfor infor = DataContainer::getInstance()->getTheFlavorByName(flavorBox->getName());
         if (infor.pcount == 1) {
             ParticleSystemQuad* _particle = ParticleSystemQuad::create("make/flavor/pourflavor.plist");
-            Director::getInstance()->getTextureCache()->addImage("make/pour_cereal/pour_"+flavorBox->getName()+".png");
-            _particle->setTexture(Director::getInstance()->getTextureCache()->getTextureForKey("make/pour_cereal/pour_"+flavorBox->getName()+".png"));
-            _particle->setPosition(flavorBox->getPosition() + Vec2(346,147.6));
-            addChild(_particle, 10);
+            Texture2D* ptexture = Director::getInstance()->getTextureCache()->addImage("make/pour_cereal/pour_"+flavorBox->getName()+".png");
+            _particle->setTexture(ptexture);
+            _particle->setPosition(flavorBox->getPosition() + Vec2(337,163.6));
+            addChild(_particle, 9);
             _particle->setAutoRemoveOnFinish(true);
+        }else {
+            for (int i = 0; i < infor.pcount; ++i) {
+                ParticleSystemQuad* _particle = ParticleSystemQuad::create("make/flavor/pourflavor.plist");
+                Texture2D* ptexture = Director::getInstance()->getTextureCache()->addImage("make/pour_cereal/pour_"+flavorBox->getName()+convertIntToString(i+1)+".png");
+                _particle->setTexture(ptexture);
+                _particle->setTotalParticles(60/infor.pcount);
+                _particle->setPosition(flavorBox->getPosition() + Vec2(337,163.6));
+                addChild(_particle, 9);
+                _particle->setAutoRemoveOnFinish(true);
+            }
         }
-        for (int i = 0; i < infor.pcount; ++i) {
-            ParticleSystemQuad* _particle = ParticleSystemQuad::create("make/flavor/pourflavor.plist");
-            Director::getInstance()->getTextureCache()->addImage("make/pour_cereal/pour_"+flavorBox->getName()+convertIntToString(i+1)+".png");
-            _particle->setTexture(Director::getInstance()->getTextureCache()->getTextureForKey("make/pour_cereal/pour_"+flavorBox->getName()+convertIntToString(i+1)+".png"));
-            _particle->setTotalParticles(60/infor.pcount);
-            _particle->setPosition(flavorBox->getPosition() + Vec2(346,147.6));
-            addChild(_particle, 10);
-            _particle->setAutoRemoveOnFinish(true);
-        }
+        
         this->schedule(schedule_selector(MixItemScene::showflovar), 0.5);
     }),nullptr));
 
@@ -264,8 +243,8 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
                 }), DelayTime::create(0.5f), Spawn::create(MoveBy::create(0.3, Vec2(280, 100)), RotateBy::create(0.3, -45), NULL),DelayTime::create(0.2), CallFunc::create([=]{
                     _pourMilk = ParticleSystemQuad::create("make/milk/pour.plist");
                     _pourMilk->setPosition(milkBox->getPosition()+Vec2(-151.5, 24.5));
-                    Director::getInstance()->getTextureCache()->addImage("make/pour milk/pour milk_"+milkBox->getName()+".png");
-                    _pourMilk->setTexture(Director::getInstance()->getTextureCache()->getTextureForKey("make/pour milk/pour milk_"+milkBox->getName()+".png"));
+                    Texture2D* ptexture = Director::getInstance()->getTextureCache()->addImage("make/pour milk/pour milk_"+milkBox->getName()+".png");
+                    _pourMilk->setTexture(ptexture);
                     this->addChild(_pourMilk, 10);
                     this->schedule(schedule_selector(MixItemScene::showmilk), 0.5);
                 }), NULL));
@@ -288,8 +267,8 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
                 }), DelayTime::create(0.5f), Spawn::create(MoveBy::create(0.3, Vec2(280, 100)), RotateBy::create(0.3, -45), NULL),DelayTime::create(0.2), CallFunc::create([=]{
                     _pourMilk = ParticleSystemQuad::create("make/milk/pour.plist");
                     _pourMilk->setPosition(milkBox->getPosition()+Vec2(-151.5, 24.5));
-                    Director::getInstance()->getTextureCache()->addImage("make/pour milk/pour milk_"+milkBox->getName()+".png");
-                    _pourMilk->setTexture(Director::getInstance()->getTextureCache()->getTextureForKey("make/pour milk/pour milk_"+milkBox->getName()+".png"));
+                    Texture2D* ptexture = Director::getInstance()->getTextureCache()->addImage("make/pour milk/pour milk_"+milkBox->getName()+".png");
+                    _pourMilk->setTexture(ptexture);
                     this->addChild(_pourMilk, 10);
                     this->schedule(schedule_selector(MixItemScene::showmilk), 0.5);
                 }), NULL));
@@ -319,10 +298,15 @@ void MixItemScene::showmilk(float) {
         spoon->setPosition(Vec2(STVisibleRect::getCenterOfScene().x + 1000, milkinBowl->getPositionY()));
         this->addChild(spoon, 11);
         spoon->runAction(Sequence::create(DelayTime::create(0.5f),EaseElasticOut::create(MoveBy::create(1.2, Vec2(-1000, 0)), .7f), CallFunc::create([=]{
-            Sprite* tip = Sprite::create("ui/make/tips_stir.png");
+            Sprite* tip = Sprite::create("make/tips1.png");
             tip->setPosition(spoon->getBoundingBox().getMidX(), spoon->getBoundingBox().getMidY());
             tip->setTag(kSpoonTip);
+            
+            Animation* pAnimation = createAnimation("make/tips", 1, 4);
+            pAnimation->setLoops(-1);
+            pAnimation->setDelayPerUnit(0.5);
             this->addChild(tip, 11);
+            tip->runAction(Animate::create(pAnimation));
         }), NULL));
         
         auto listener = EventListenerTouchOneByOne::create();
@@ -378,7 +362,7 @@ void MixItemScene::showmilk(float) {
                 Rect donutRect = Rect(flavorinBowl->getPosition().x - 460/2.0, flavorinBowl->getPosition().y - 248/2.0, 460, 248);
                 if (donutRect.containsPoint(spoon->getPosition())) {
                     int opacity = milkinBowl->getOpacity();
-                    opacity -= 2;
+                    opacity -= 1.0;
                     if (opacity <= 0) {
                         opacity = 0;
                     }
@@ -403,7 +387,11 @@ void MixItemScene::showmilk(float) {
             }
         };
         listener->onTouchCancelled = [=](Touch *touch, Event *event){
-            
+            if (striFinished == true) {
+                this->striDone();
+                _eventDispatcher->removeEventListenersForTarget(spoon);
+                spoon->runAction(Sequence::create(EaseSineInOut::create(MoveBy::create(0.8, Vec2(1000, 0))), RemoveSelf::create(), NULL));
+            }
         };
         _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, spoon);
 
@@ -417,21 +405,23 @@ void MixItemScene::striDone(){
     DataContainer::FlavorInfor infor = DataContainer::getInstance()->getTheFlavorByName(flavorinBowl->getName());
     if (infor.pcount == 1) {
         ParticleSystemQuad* _particle = ParticleSystemQuad::create("make/pour_cereal/flowerparticle.plist");
-        Director::getInstance()->getTextureCache()->addImage("make/pour_cereal/pour_"+flavorinBowl->getName()+".png");
-        _particle->setTexture(Director::getInstance()->getTextureCache()->getTextureForKey("make/pour_cereal/pour_"+flavorinBowl->getName()+".png"));
-        _particle->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y - 200);
+        Texture2D* ptexture = Director::getInstance()->getTextureCache()->addImage("make/pour_cereal/pour_"+flavorinBowl->getName()+".png");
+        _particle->setTexture(ptexture);
+        _particle->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y - 50);
         addChild(_particle, 10);
         _particle->setAutoRemoveOnFinish(true);
+    }else {
+        for (int i = 0; i < infor.pcount; ++i) {
+            ParticleSystemQuad* _particle = ParticleSystemQuad::create("make/pour_cereal/flowerparticle.plist");
+            Texture2D* ptexture = Director::getInstance()->getTextureCache()->addImage("make/pour_cereal/pour_"+flavorinBowl->getName()+convertIntToString(i+1)+".png");
+            _particle->setTexture(ptexture);
+            _particle->setTotalParticles(120/infor.pcount);
+            _particle->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y - 50);
+            addChild(_particle, 10);
+            _particle->setAutoRemoveOnFinish(true);
+        }
     }
-    for (int i = 0; i < infor.pcount; ++i) {
-        ParticleSystemQuad* _particle = ParticleSystemQuad::create("make/pour_cereal/flowerparticle.plist");
-        Director::getInstance()->getTextureCache()->addImage("make/pour_cereal/pour_"+flavorinBowl->getName()+convertIntToString(i+1)+".png");
-        _particle->setTexture(Director::getInstance()->getTextureCache()->getTextureForKey("make/pour_cereal/pour_"+flavorinBowl->getName()+convertIntToString(i+1)+".png"));
-        _particle->setTotalParticles(120/infor.pcount);
-        _particle->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y - 200);
-        addChild(_particle, 10);
-        _particle->setAutoRemoveOnFinish(true);
-    }
+    showNextButton(2.0f);
     
     DataContainer::FlavorInfor _info = DataContainer::getInstance()->getTheFlavorByName(flavorinBowl->getName());
     
@@ -449,7 +439,24 @@ void MixItemScene::striDone(){
 }
 
 void MixItemScene::addExploreImage(float) {
-
+    if (explorTexture == nullptr) {
+        Image* pImage = new Image();
+        pImage->initWithImageFile("make/splatter.png");
+        string milk = DataContainer::getInstance()->getChooseMilk();
+        string flavor = DataContainer::getInstance()->getChooseFlavor();
+        
+        DataContainer::MilkInfor _milkinfor = DataContainer::getInstance()->getTheMilkByName(milk);
+        DataContainer::FlavorInfor _flaovrinfo = DataContainer::getInstance()->getTheFlavorByName(flavor);
+        
+        explorTexture = new Texture2D();
+        
+        if (_milkinfor.isHSVuse == false) {
+            explorTexture->initWithImage(CCImageColorSpace::imageWithHSB(pImage, _flaovrinfo.hsv.x, _flaovrinfo.hsv.y, _flaovrinfo.hsv.z));
+        }else {
+            explorTexture->initWithImage(CCImageColorSpace::imageWithHSB(pImage, _milkinfor.hsv.x, _milkinfor.hsv.y, _milkinfor.hsv.z));
+        }
+        pImage->autorelease();
+    }
     Sprite* explor = Sprite::createWithTexture(explorTexture);
     float x = arc4random() % ((int)STVisibleRect::getGlvisibleSize().width - 300) + 150;
     float y = arc4random() % ((int)STVisibleRect::getGlvisibleSize().height - 300) + 150;
@@ -459,6 +466,14 @@ void MixItemScene::addExploreImage(float) {
     explor->runAction(Sequence::create(ScaleTo::create(0.1, 1.1), ScaleTo::create(0.05, 1.0), DelayTime::create(1.5f), EaseSineInOut::create(FadeOut::create(1.0f)), RemoveSelf::create(),NULL));
 }
 
+void MixItemScene::nextClickEvent(){
+    GameLayerBase::nextClickEvent();
+    replaceTheScene<DecorateScene>();
+}
 
+void MixItemScene::preClickEvent(){
+    GameLayerBase::preClickEvent();
+    replaceTheScene<ChooseMilk>();
+}
 
 

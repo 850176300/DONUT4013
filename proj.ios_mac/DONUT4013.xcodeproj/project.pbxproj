@@ -2289,7 +2289,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Dev Sniper (2REU7BLC56)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Dev SKA (3J92VZT269)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2328,7 +2328,7 @@
 					"-force_load",
 					"$(SRCROOT)/ios/Depends/3rdLib/MoPubSDK/MoPubSDK/libMopubSDK-3.2.0.a",
 				);
-				PROVISIONING_PROFILE = "bf8d3243-e1ba-48c8-bb33-bf2c79eeb494";
+				PROVISIONING_PROFILE = "3A953483-4C58-4167-984D-18BBE5100886";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -2341,7 +2341,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Dev Sniper (2REU7BLC56)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Dev SKA (3J92VZT269)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2378,7 +2378,7 @@
 					"-force_load",
 					"$(SRCROOT)/ios/Depends/3rdLib/MoPubSDK/MoPubSDK/libMopubSDK-3.2.0.a",
 				);
-				PROVISIONING_PROFILE = "bf8d3243-e1ba-48c8-bb33-bf2c79eeb494";
+				PROVISIONING_PROFILE = "3A953483-4C58-4167-984D-18BBE5100886";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
