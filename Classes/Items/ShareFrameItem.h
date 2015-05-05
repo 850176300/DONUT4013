@@ -16,9 +16,17 @@ using namespace std;
 USING_NS_CC;
 
 class ShareFrameItem : public SwallowTouchLayout{
+    enum ButtonsTags{
+        kCloseTags = 11,
+        kDeleteTags,
+        kEmailTags,
+        kSaveTag,
+    };
 public:
     static ShareFrameItem* create(Image* pImage);
     virtual bool init(Image* pImage);
+protected:
+    void onButtonsClicked(Ref* pRef, Widget::TouchEventType type);
 private:
     Sprite* frame = nullptr;
 };

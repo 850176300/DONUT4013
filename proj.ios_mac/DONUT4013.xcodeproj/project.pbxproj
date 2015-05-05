@@ -152,6 +152,7 @@
 		0178D2181AF2264800C38376 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0178D2151AF2264800C38376 /* Util.cpp */; };
 		0178D21B1AF226B800C38376 /* ExtensionFunc.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0178D21A1AF226B800C38376 /* ExtensionFunc.mm */; };
 		01A905CD1AE8C944007160B6 /* MixItemsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01A905CB1AE8C944007160B6 /* MixItemsScene.cpp */; };
+		01ACDF081AF91CF800314F02 /* ShopScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01ACDF061AF91CF800314F02 /* ShopScene.cpp */; };
 		01F687051AE60CB400E64577 /* SwallowTouchLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01F687031AE60CB400E64577 /* SwallowTouchLayout.cpp */; };
 		01F687141AE626DE00E64577 /* DataContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01F687121AE626DE00E64577 /* DataContainer.cpp */; };
 		01F687171AE62BF100E64577 /* ChooseMilk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01F687151AE62BF100E64577 /* ChooseMilk.cpp */; };
@@ -696,6 +697,8 @@
 		0178D21A1AF226B800C38376 /* ExtensionFunc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ExtensionFunc.mm; sourceTree = "<group>"; };
 		01A905CB1AE8C944007160B6 /* MixItemsScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MixItemsScene.cpp; sourceTree = "<group>"; };
 		01A905CC1AE8C944007160B6 /* MixItemsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MixItemsScene.h; sourceTree = "<group>"; };
+		01ACDF061AF91CF800314F02 /* ShopScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShopScene.cpp; sourceTree = "<group>"; };
+		01ACDF071AF91CF800314F02 /* ShopScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopScene.h; sourceTree = "<group>"; };
 		01F687031AE60CB400E64577 /* SwallowTouchLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SwallowTouchLayout.cpp; sourceTree = "<group>"; };
 		01F687041AE60CB400E64577 /* SwallowTouchLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwallowTouchLayout.h; sourceTree = "<group>"; };
 		01F687121AE626DE00E64577 /* DataContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataContainer.cpp; sourceTree = "<group>"; };
@@ -1753,6 +1756,8 @@
 				013001EA1AEF913D00D9D0CB /* DecorateScene.h */,
 				0157F7C71AF87B5E00C968C3 /* ShareScene.cpp */,
 				0157F7C81AF87B5E00C968C3 /* ShareScene.h */,
+				01ACDF061AF91CF800314F02 /* ShopScene.cpp */,
+				01ACDF071AF91CF800314F02 /* ShopScene.h */,
 			);
 			name = Scenes;
 			path = ../Classes/Scenes;
@@ -2250,6 +2255,7 @@
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				0157F7D31AF8F29C00C968C3 /* ShareFrameItem.cpp in Sources */,
 				0127F3E01ADF8BD900A6DC53 /* README.md in Sources */,
+				01ACDF081AF91CF800314F02 /* ShopScene.cpp in Sources */,
 				0127F40B1ADF8BDA00A6DC53 /* AboutUsPage.m in Sources */,
 				0157F7CF1AF8E7FB00C968C3 /* FavItem.cpp in Sources */,
 				0127F3FA1ADF8BDA00A6DC53 /* README.md in Sources */,
