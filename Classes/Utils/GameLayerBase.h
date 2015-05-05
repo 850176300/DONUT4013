@@ -52,13 +52,17 @@ public:
     void setShowAds(bool isShow);
     void setADVisible(bool visible);
     Action* getJellyAction();
-    void showHomeButton();
+    void showHomeButton(float dt);
     void showNextButton(float dt);
     void showPreviousBtn(float dt);
+    void showFavoriteBtn(float dt);
+    void showShareBtn(float dt);
     
     virtual void homeClickEvent();
     virtual void nextClickEvent();
     virtual void preClickEvent();
+    virtual void shareClickEvent();
+    virtual void favoriteClickEvent();
     
     virtual void onPause();
     virtual void onResume();
@@ -69,8 +73,8 @@ public:
     void setNextHidden(bool hidden);
     void setHomeHidden(bool hidden);
     void setNextButtonZorder(int zorder);
-    
-    
+    void setNextButtonEnable(bool isEnable = true);
+    void setallButton(bool isVisible);
 protected:
     int pauseCount = 0;
     void showConfirmDialog();
@@ -79,6 +83,8 @@ protected:
     void onHomeButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
     void onNextButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
     void onPreButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
+    void onShareButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
+    void onFavoriteButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
     void onPauseGame(Ref *ref);
     void onResumeGame(Ref* ref);
     
@@ -86,6 +92,8 @@ public:
     ControlButton* homeBtn = nullptr;
     ControlButton* nextBtn = nullptr;
     ControlButton* preBtn = nullptr;
+    ControlButton* favoriteBtn = nullptr;
+    ControlButton* shareBtn = nullptr;
     Sprite* m_pBg = nullptr;
     bool canbeClicked = true;
     bool isShowAds;

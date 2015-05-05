@@ -45,14 +45,13 @@ public:
         bool isHSVuse;
     }MilkInfor;
     
-    typedef struct EatThings{
+    typedef struct ItemThings{
         string name;
-        int tag;
         Vec2 pos;
         float scale;
         float rotate;
         int localZorder;
-    }EatThings;
+    }ItemThings;
     
     typedef struct DecorateItems{
         string bgName;
@@ -60,7 +59,7 @@ public:
         string spoonName;
         string cerealName;
         string mascotName;
-        vector<EatThings> alleatThings;
+        vector<ItemThings> alleatThings;
     }DecorateItems;
     
     typedef std::map<string, FlavorInfor> flavorMap;
@@ -71,6 +70,7 @@ public:
     
     CC_SYNTHESIZE(string, flavor, ChooseFlavor);
     CC_SYNTHESIZE(string, milk, ChooseMilk);
+    CC_SYNTHESIZE(DecorateItems ,shareDecorateItems, AllDecorateItems);
     int getAnimalAnimationCount(string animal);
     flavorMap getFlavorData();
     FlavorInfor getTheFlavorByName(string name);
@@ -94,7 +94,7 @@ private:
     milkMap milkData;
     decorateMap decorateData;
     vector<string> decorateTypes;
-    DecorateItems shareDecorateItems;
+    
     
 };
 

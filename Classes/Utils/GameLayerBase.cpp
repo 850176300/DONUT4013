@@ -101,16 +101,44 @@ void GameLayerBase::removeunuseCache(float) {
      Director::getInstance()->getTextureCache()->removeUnusedTextures();
 }
 
-void GameLayerBase::showHomeButton(){
+void GameLayerBase::showHomeButton(float dt){
     if (homeBtn != nullptr) {
         return;
     }
     homeBtn = CocosHelper::getButton("ui/publish/home.png", "ui/publish/home.png");
-    homeBtn->setPosition(STVisibleRect::getPointOfSceneRightUp() + Vec2(-15-homeBtn->getContentSize().width/2.0, -15-homeBtn->getContentSize().height/2.0));
+    homeBtn->setPosition(STVisibleRect::getPointOfSceneRightUp() + Vec2(-20-homeBtn->getContentSize().width/2.0, -homeBtn->getContentSize().height/2.0 - 15) + Vec2(800, 0));
     homeBtn->addTargetWithActionForControlEvents(this, cccontrol_selector(GameLayerBase::onHomeButtonClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
     homeBtn->setZoomOnTouchDown(false);
     addChild(homeBtn, kHomeBtn);
     
+    homeBtn->runAction(Sequence::create(DelayTime::create(dt), EaseElasticInOut::create(MoveBy::create(2.0, Vec2(-800, 0)), 1.7), NULL));
+    
+}
+
+void GameLayerBase::showShareBtn(float dt) {
+    if (shareBtn != nullptr) {
+        return;
+    }
+    shareBtn = CocosHelper::getButton("ui/publish/btn_share.png", "ui/publish/btn_share.png");
+    shareBtn->setPosition(STVisibleRect::getPointOfSceneRightUp() + Vec2(-20-shareBtn->getContentSize().width/2.0, -shareBtn->getContentSize().height/2.0 - 15 - 94 - 10) + Vec2(800, 0));
+    shareBtn->addTargetWithActionForControlEvents(this, cccontrol_selector(GameLayerBase::onShareButtonClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
+    shareBtn->setZoomOnTouchDown(false);
+    addChild(shareBtn, kHomeBtn);
+    
+    shareBtn->runAction(Sequence::create(DelayTime::create(dt), EaseElasticInOut::create(MoveBy::create(2.0, Vec2(-800, 0)), 1.7), NULL));
+}
+
+void GameLayerBase::showFavoriteBtn(float dt) {
+    if (favoriteBtn != nullptr) {
+        return;
+    }
+    favoriteBtn = CocosHelper::getButton("ui/publish/btn_fav.png", "ui/publish/btn_fav.png");
+    favoriteBtn->setPosition(STVisibleRect::getPointOfSceneRightUp() + Vec2(-20-favoriteBtn->getContentSize().width/2.0, -favoriteBtn->getContentSize().height/2.0 - 15 - 104*2) + Vec2(800, 0));
+    favoriteBtn->addTargetWithActionForControlEvents(this, cccontrol_selector(GameLayerBase::onFavoriteButtonClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
+    favoriteBtn->setZoomOnTouchDown(false);
+    addChild(favoriteBtn, kHomeBtn);
+    
+    favoriteBtn->runAction(Sequence::create(DelayTime::create(dt), EaseElasticInOut::create(MoveBy::create(2.0, Vec2(-800, 0)), 1.7), NULL));
 }
 
 void GameLayerBase::onHomeButtonClicked(cocos2d::Ref *pRef, Control::EventType type) {
@@ -218,6 +246,42 @@ void GameLayerBase::onPreButtonClicked(cocos2d::Ref *pRef, Control::EventType ty
     pNode->runAction(Sequence::create((Sequence*)getJellyAction(),CallFunc::create(std::bind(&GameLayerBase::preClickEvent, this)), NULL));
 }
 
+void GameLayerBase::onShareButtonClicked(cocos2d::Ref *pRef, Control::EventType type) {
+    if (canbeClicked == false) {
+        return;
+    }
+    canbeClicked = true;
+    //    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    ControlButton* pNode = dynamic_cast<ControlButton*>(pRef);
+    if (pNode->getNumberOfRunningActions() != 0) {
+        return;
+    }
+    pNode->setEnabled(false);
+    pNode->runAction(Sequence::create((Sequence*)getJellyAction(),CallFunc::create(std::bind(&GameLayerBase::shareClickEvent, this)), NULL));
+}
+
+void GameLayerBase::onFavoriteButtonClicked(cocos2d::Ref *pRef, Control::EventType type) {
+    if (canbeClicked == false) {
+        return;
+    }
+    canbeClicked = true;
+    //    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    ControlButton* pNode = dynamic_cast<ControlButton*>(pRef);
+    if (pNode->getNumberOfRunningActions() != 0) {
+        return;
+    }
+    pNode->setEnabled(false);
+    pNode->runAction(Sequence::create((Sequence*)getJellyAction(),CallFunc::create(std::bind(&GameLayerBase::favoriteClickEvent, this)), NULL));
+}
+
+void GameLayerBase::favoriteClickEvent(){
+    favoriteBtn->setEnabled(true);
+}
+
+void GameLayerBase::shareClickEvent(){
+    shareBtn->setEnabled(true);
+}
+
 void GameLayerBase::preClickEvent(){
     
 }
@@ -225,6 +289,10 @@ void GameLayerBase::preClickEvent(){
 void GameLayerBase::nextClickEvent(){
     SoundPlayer::getInstance()->playNextClickedEffect();
 //    SceneManager::getInstance()->gotoChooseMap();
+}
+
+void GameLayerBase::setNextButtonEnable(bool isEnable){
+    nextBtn->setEnabled(isEnable);
 }
 
 void GameLayerBase::setADVisible(bool visible) {
@@ -284,6 +352,24 @@ void GameLayerBase::setNextHidden(bool hidden) {
 void GameLayerBase::setHomeHidden(bool hidden) {
     if (homeBtn != nullptr) {
         homeBtn->setVisible(hidden);
+    }
+}
+
+void GameLayerBase::setallButton(bool isVisible) {
+    if (nextBtn != nullptr) {
+        nextBtn->setVisible(isVisible);
+    }
+    if (preBtn != nullptr) {
+        preBtn->setVisible(isVisible);
+    }
+    if (homeBtn != nullptr) {
+        homeBtn->setVisible(isVisible);
+    }
+    if (favoriteBtn != nullptr) {
+        favoriteBtn->setVisible(isVisible);
+    }
+    if (shareBtn != nullptr) {
+        shareBtn->setVisible(isVisible);
     }
 }
 

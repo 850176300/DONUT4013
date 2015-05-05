@@ -2,6 +2,7 @@
 #include "SuperGlobal.h"
 #include "SceneHead.h"
 #include "STVisibleRect.h"
+#include "FavManager.h"
 USING_NS_CC;
 USING_NS_ST;
 
@@ -31,7 +32,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
 
-    replaceTheScene<MixItemScene>();
+    FavManager::getInstance()->loadFavdata();
+    
+    replaceTheScene<DecorateScene>();
 
     return true;
 }
@@ -39,7 +42,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
-
+    FavManager::getInstance()->saveData();
     // if you use SimpleAudioEngine, it must be pause
     // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }

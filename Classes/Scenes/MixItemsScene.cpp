@@ -77,11 +77,11 @@ void MixItemScene::onEnterTransitionDidFinish(){
     tiltSprite = Sprite::create("ui/make/tips_tilt.png");
     tiltSprite->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getGlvisibleSize().height + 800);
     addChild(tiltSprite, 10);
-    bowl1->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(0.8, Vec2(800, 0)), 0.3), NULL));
-    bowl2->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(0.8, Vec2(800, 0)), 0.3), CallFunc::create([=]{
-        flavorBox->runAction(Sequence::create(DelayTime::create(0.3),EaseElasticInOut::create(MoveTo::create(0.5, Vec2(STVisibleRect::getCenterOfScene().x - 175, tableMaxy-80)), 0.3), NULL));
-        milkBox->runAction(Sequence::create(DelayTime::create(1.0), EaseElasticInOut::create(MoveTo::create(0.9, Vec2(STVisibleRect::getCenterOfScene().x+225, tableMaxy - 80)), 0.4), NULL));
-        tiltSprite->runAction(Sequence::create(DelayTime::create(2.2), EaseElasticInOut::create(MoveBy::create(1.2, Vec2(0, -900)), 0.7), NULL));
+    bowl1->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(800, 0)), 0.8), NULL));
+    bowl2->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(800, 0)), 0.8), CallFunc::create([=]{
+        flavorBox->runAction(Sequence::create(DelayTime::create(0.3),EaseElasticInOut::create(MoveTo::create(1.2, Vec2(STVisibleRect::getCenterOfScene().x - 175, tableMaxy-80)), 1.0), NULL));
+        milkBox->runAction(Sequence::create(DelayTime::create(1.5), EaseElasticInOut::create(MoveTo::create(1.2, Vec2(STVisibleRect::getCenterOfScene().x+225, tableMaxy - 80)), 1.0), NULL));
+        tiltSprite->runAction(Sequence::create(DelayTime::create(2.0), EaseElasticInOut::create(MoveBy::create(1.5, Vec2(0, -900)), 1.2), NULL));
         this->schedule(schedule_selector(MixItemScene::performTip), 5.0, -1, 4.0);
         flavorBox->setEnabled(true);
         
@@ -116,11 +116,24 @@ void MixItemScene::onselectTheItem(cocos2d::Ref *pRef, Control::EventType type) 
             pNode->setRotation(0);
             milkBox->runAction(EaseElasticInOut::create(MoveBy::create(0.8, Vec2(1000, 0)), 0.3));
             pNode->setEnabled(false);
-            pNode->runAction(Sequence::create(JumpBy::create(0.5, Vec2(STVisibleRect::getCenterOfScene().x - pNode->getPositionX(), -30), 150, 1),CallFunc::create(std::bind(&ControlButton::setLocalZOrder, pNode, 7)), DelayTime::create(0.5), CallFunc::create(std::bind(&MixItemScene::pourFlavor, this)), NULL));
+            pNode->runAction(Sequence::create(JumpBy::create(0.5, Vec2(STVisibleRect::getCenterOfScene().x - pNode->getPositionX(), -30), 150, 1),CallFunc::create(std::bind(&ControlButton::setLocalZOrder, pNode, 7)),CallFunc::create(std::bind(&MixItemScene::startDeviceTip, this)), NULL));
         }else if (pNode->getTag() == kMilkTag) {
             
         }
     }
+}
+
+void MixItemScene::startDeviceTip(){
+    if (deviceTip == nullptr) {
+        deviceTip = Sprite::create("ui/devicerotate.png");
+        deviceTip->setPosition(currentItem->getBoundingBox().getMidX(), currentItem->getBoundingBox().getMidY());
+        deviceTip->setOpacity(0);
+        this->addChild(deviceTip, 20);
+    }
+    deviceTip->runAction(EaseSineInOut::create(FadeIn::create(0.5)));
+    deviceTip->runAction(RepeatForever::create(Sequence::create(EaseSineInOut::create(RotateBy::create(1.0, -10)), EaseSineInOut::create(RotateBy::create(1.0, 20)),EaseSineInOut::create(RotateBy::create(1.0, -10)), NULL)));
+    this->setAccelerometerEnabled(true);
+    this->setAccelerometerInterval(0.1f);
 }
 
 void MixItemScene::performTip(float) {
@@ -133,6 +146,9 @@ void MixItemScene::pourFlavor(){
     maskRender->setPosition(0, 0);
     const float rotate = 45;
     flavorBox->runAction(Sequence::create(Spawn::create(MoveBy::create(0.5, Vec2(-460, 100)),CallFunc::create(std::bind(&Node::setLocalZOrder, flavorBox, 10)), RotateBy::create(0.5, rotate),NULL), CallFunc::create([=]{
+        flavorBox->setBackgroundSpriteForState(Scale9Sprite::create("make/flavor/"+flavorBox->getName()+"1.png"), cocos2d::extension::Control::State::NORMAL);
+        flavorBox->setBackgroundSpriteForState(Scale9Sprite::create("make/flavor/"+flavorBox->getName()+"1.png"), cocos2d::extension::Control::State::DISABLED);
+    }), CallFunc::create([=]{
         DataContainer::FlavorInfor infor = DataContainer::getInstance()->getTheFlavorByName(flavorBox->getName());
         if (infor.pcount == 1) {
             ParticleSystemQuad* _particle = ParticleSystemQuad::create("make/flavor/pourflavor.plist");
@@ -160,7 +176,14 @@ void MixItemScene::pourFlavor(){
 }
 
 void MixItemScene::pourMilk(){
-    
+    milkBox->runAction(Sequence::create(Spawn::create(MoveBy::create(0.3, Vec2(280, 100)), RotateBy::create(0.3, -45), NULL),DelayTime::create(0.2), CallFunc::create([=]{
+        _pourMilk = ParticleSystemQuad::create("make/milk/pour.plist");
+        _pourMilk->setPosition(milkBox->getPosition()+Vec2(-151.5, 24.5));
+        Texture2D* ptexture = Director::getInstance()->getTextureCache()->addImage("make/pour milk/pour milk_"+milkBox->getName()+".png");
+        _pourMilk->setTexture(ptexture);
+        this->addChild(_pourMilk, 10);
+        this->schedule(schedule_selector(MixItemScene::showmilk), 0.5);
+    }), nullptr));
 }
 
 void MixItemScene::showflovar(float) {
@@ -266,17 +289,11 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
             }else {
                 removeChild(gestures);
                 gestures = nullptr;
-                lineTip->runAction(Sequence::create(FadeOut::create(0.5), RemoveSelf::create(), NULL));
+                lineTip->runAction(Sequence::create(EaseSineInOut::create(FadeOut::create(0.5)), RemoveSelf::create(), NULL));
                 milkBox->runAction(Sequence::create(DelayTime::create(1.0), CallFunc::create([=]{
                     milkBox->setTexture("make/milk/"+milkBox->getName()+"_1.png");
-                }), DelayTime::create(0.5f), Spawn::create(MoveBy::create(0.3, Vec2(280, 100)), RotateBy::create(0.3, -45), NULL),DelayTime::create(0.2), CallFunc::create([=]{
-                    _pourMilk = ParticleSystemQuad::create("make/milk/pour.plist");
-                    _pourMilk->setPosition(milkBox->getPosition()+Vec2(-151.5, 24.5));
-                    Texture2D* ptexture = Director::getInstance()->getTextureCache()->addImage("make/pour milk/pour milk_"+milkBox->getName()+".png");
-                    _pourMilk->setTexture(ptexture);
-                    this->addChild(_pourMilk, 10);
-                    this->schedule(schedule_selector(MixItemScene::showmilk), 0.5);
-                }), NULL));
+                }), DelayTime::create(0.5f), CallFunc::create(std::bind(&MixItemScene::startDeviceTip, this)), NULL));
+                currentItem = milkBox;
             }
         }else{
             
@@ -306,14 +323,8 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
                 lineTip->runAction(Sequence::create(EaseSineInOut::create(FadeOut::create(0.5)), RemoveSelf::create(), NULL));
                 milkBox->runAction(Sequence::create(DelayTime::create(1.0), CallFunc::create([=]{
                     milkBox->setTexture("make/milk/"+milkBox->getName()+"_1.png");
-                }), DelayTime::create(0.5f), Spawn::create(MoveBy::create(0.3, Vec2(280, 100)), RotateBy::create(0.3, -45), NULL),DelayTime::create(0.2), CallFunc::create([=]{
-                    _pourMilk = ParticleSystemQuad::create("make/milk/pour.plist");
-                    _pourMilk->setPosition(milkBox->getPosition()+Vec2(-151.5, 24.5));
-                    Texture2D* ptexture = Director::getInstance()->getTextureCache()->addImage("make/pour milk/pour milk_"+milkBox->getName()+".png");
-                    _pourMilk->setTexture(ptexture);
-                    this->addChild(_pourMilk, 10);
-                    this->schedule(schedule_selector(MixItemScene::showmilk), 0.5);
-                }), NULL));
+                }), DelayTime::create(0.5f), CallFunc::create(std::bind(&MixItemScene::startDeviceTip, this)), NULL));
+                currentItem = milkBox;
             }
         }else{
             
@@ -321,6 +332,36 @@ void MixItemScene::ontouchLine(cocos2d::Ref *pRef, Widget::TouchEventType rtype)
         }
     }
     
+}
+
+void MixItemScene::onAcceleration(cocos2d::Acceleration *acc, cocos2d::Event *unused_event) {
+    if (fabs(acc->x) > 0.5) {
+        if (currentItem == nullptr) {
+            return;
+        }
+        switch (currentItem->getTag()) {
+            case kFlavorTag:
+            {
+                currentItem = nullptr;
+                setAccelerometerEnabled(false);
+                deviceTip->stopAllActions();
+                deviceTip->runAction(Sequence::create(EaseSineInOut::create(FadeOut::create(0.2f)), RotateTo::create(0.0, 0), CallFunc::create(std::bind(&MixItemScene::pourFlavor, this)),NULL));
+                
+            }
+                break;
+            case kMilkTag:
+            {
+                currentItem = nullptr;
+                setAccelerometerEnabled(false);
+                deviceTip->stopAllActions();
+                deviceTip->runAction(Sequence::create(EaseSineInOut::create(FadeOut::create(0.2f)), RotateTo::create(0.0, 0), CallFunc::create(std::bind(&MixItemScene::pourMilk, this)),NULL));
+                
+            }
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void MixItemScene::showmilk(float) {
@@ -347,7 +388,7 @@ void MixItemScene::showmilk(float) {
             
             Animation* pAnimation = createAnimation("make/tips", 1, 4);
             pAnimation->setLoops(-1);
-            pAnimation->setDelayPerUnit(0.5);
+            pAnimation->setDelayPerUnit(0.2);
             this->addChild(tip, 11);
             tip->runAction(Animate::create(pAnimation));
         }), NULL));
@@ -378,7 +419,7 @@ void MixItemScene::showmilk(float) {
                 
                 if (striFinished == false && striFailed == false) {
                     log("the stri angle is %.2f", angle*180.0/M_PI);
-                    if (fabs(angle*180.0/M_PI) > 50) {
+                    if (fabs(angle*180.0/M_PI) > 18) {
                         superSpeed += 1;
                         normalSpeed = 0;
                     }else {
@@ -424,16 +465,17 @@ void MixItemScene::showmilk(float) {
         };
         listener->onTouchEnded = [=](Touch *touch, Event *event){
             if (striFinished == true) {
-                this->striDone();
                 _eventDispatcher->removeEventListenersForTarget(spoon);
                 spoon->runAction(Sequence::create(EaseSineInOut::create(MoveBy::create(0.8, Vec2(1000, 0))), RemoveSelf::create(), NULL));
+                this->striDone();
             }
         };
         listener->onTouchCancelled = [=](Touch *touch, Event *event){
             if (striFinished == true) {
-                this->striDone();
                 _eventDispatcher->removeEventListenersForTarget(spoon);
                 spoon->runAction(Sequence::create(EaseSineInOut::create(MoveBy::create(0.8, Vec2(1000, 0))), RemoveSelf::create(), NULL));
+                this->striDone();
+               
             }
         };
         _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, spoon);
@@ -452,7 +494,7 @@ void MixItemScene::striDone(){
         _particle->setTexture(ptexture);
         _particle->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y - 50);
         addChild(_particle, 10);
-        _particle->setAutoRemoveOnFinish(true);
+//        _particle->setAutoRemoveOnFinish(true);
     }else {
         for (int i = 0; i < infor.pcount; ++i) {
             ParticleSystemQuad* _particle = ParticleSystemQuad::create("make/pour_cereal/flowerparticle.plist");
@@ -461,7 +503,7 @@ void MixItemScene::striDone(){
             _particle->setTotalParticles(120/infor.pcount);
             _particle->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y - 50);
             addChild(_particle, 10);
-            _particle->setAutoRemoveOnFinish(true);
+//            _particle->setAutoRemoveOnFinish(true);
         }
     }
     showNextButton(2.0f);

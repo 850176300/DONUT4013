@@ -49,7 +49,7 @@ public:
     
     float paintPercent();
     float easePercent();
-    
+    long getTotalCount();
     void cleanupEverything();
 };
 

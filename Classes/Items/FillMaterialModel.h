@@ -12,6 +12,7 @@
 #include <iostream>
 #include "cocos2d.h"
 #include "extensions/cocos-ext.h"
+#include "DataContainer.h"
 USING_NS_CC;
 USING_NS_CC_EXT;
 
@@ -41,6 +42,7 @@ public:
     CC_SYNTHESIZE_READONLY(string, _resourceName, ResourceName);
     CC_SYNTHESIZE(bool, _enable, Enable);
     CC_SYNTHESIZE(bool, isShotScreen, ShotScreen);
+    DataContainer::ItemThings getItemThings();
 private:
     void deleteSelf(Ref *sender, Control::EventType type);
     
@@ -63,6 +65,7 @@ private:
     EventType _eventType;
     float _orignalRotate;
     bool _isTipsFrameShow;
+    DataContainer::ItemThings _itemPara;
 };
 
 #endif /* defined(__COOK016_TacoMaker__FillMaterialModel__) */

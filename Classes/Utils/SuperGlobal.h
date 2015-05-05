@@ -16,9 +16,20 @@ using namespace std;
 USING_NS_CC;
 
 template<typename T> void replaceTheScene() {
-    Scene* pScene = T::scene();
+    Scene* targetScene = T::scene();
+    auto pScene=TransitionFade::create(1, targetScene);
     if (Director::getInstance()->getRunningScene()) {
         Director::getInstance()->replaceScene(pScene);
+    }else {
+        Director::getInstance()->runWithScene(pScene);
+    }
+}
+
+template<typename T> void pushTheScene() {
+    Scene* targetScene = T::scene();
+    auto pScene=TransitionFade::create(1, targetScene);
+    if (Director::getInstance()->getRunningScene()) {
+        Director::getInstance()->pushScene(pScene);
     }else {
         Director::getInstance()->runWithScene(pScene);
     }

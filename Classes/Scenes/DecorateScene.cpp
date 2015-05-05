@@ -7,7 +7,7 @@
 //
 
 #include "SceneHead.h"
-
+#include "STFileUtility.h"
 
 Scene* DecorateScene::scene(){
     Scene* pScene = Scene::create();
@@ -69,8 +69,8 @@ bool DecorateScene::init(){
 }
 
 void DecorateScene::addFixedThings(){
-    allItems.cerealName = "decorate/breakfast food/breakfast food1.png";
-    allItems.breakfastName = "decorate/cereal box/cereal box1.png";
+    allItems.cerealName = "decorate/cereal box/cereal box1.png";
+    allItems.breakfastName = "decorate/breakfast food/breakfast food1.png";
     allItems.spoonName = "decorate/spoon/spoon1.png";
     allItems.mascotName = "decorate/mascot sticker/mascot sticker1.png";
     
@@ -150,6 +150,7 @@ void DecorateScene::addScrollView(){
 
 void DecorateScene::onEnterTransitionDidFinish(){
     GameLayerBase::onEnterTransitionDidFinish();
+    NotificationCenter::getInstance()->postNotification(kShotScreenEvent, __String::create("Yes"));
     if (typeScrollView->getPosition().x > STVisibleRect::getOriginalPoint().x) {
         typeScrollView->runAction(EaseSineInOut::create(MoveBy::create(1.0, Vec2(-STVisibleRect::getGlvisibleSize().width, 0))));
         this->runAction(Sequence::create(DelayTime::create(0.8), CallFunc::create([=]{
@@ -266,11 +267,46 @@ void DecorateScene::onItemsThingClicked(cocos2d::Ref *pRef, Widget::TouchEventTy
 
 void DecorateScene::nextClickEvent(){
     GameLayerBase::nextClickEvent();
-//    replaceTheScene<<#typename T#>>()
+    allItems.alleatThings.push_back(spoon->getItemThings());
+    DataContainer::getInstance()->setAllDecorateItems(allItems);
+    saveTheScreenShot();
+    pushTheScene<ShareScene>();
+    GameLayerBase::setNextButtonEnable(true);
 }
 
 void DecorateScene::preClickEvent(){
     GameLayerBase::preClickEvent();
     replaceTheScene<MixItemScene>();
+    
+}
+
+
+void DecorateScene::saveTheScreenShot(){
+    NotificationCenter::getInstance()->postNotification(kShotScreenEvent, __String::create("No"));
+    RenderTexture* saveImageTexture = RenderTexture::create(canEatLayer->getContentSize().width, canEatLayer->getContentSize().height, Texture2D::PixelFormat::RGBA8888);
+    
+    saveImageTexture->begin();
+    canEatLayer->visit();
+    saveImageTexture->end();
+    
+    saveImageTexture->getSprite()->setFlippedY(false);
+    saveImageTexture->getSprite()->getTexture()->setAntiAliasTexParameters();
+    Director::getInstance()->getRenderer()->render();
+    
+    log("the path is %s", (STFileUtility::getStoragePath()+"temp.png").c_str());
+    Image* pImage = saveImageTexture->newImage();
+    pImage->saveToFile(STFileUtility::getStoragePath()+"temp.png", false);
+    pImage->release();
+    
+    saveImageTexture->begin();
+    cannotEatLayer->visit();
+    saveImageTexture->end();
+    
+    saveImageTexture->getSprite()->setFlippedY(false);
+    saveImageTexture->getSprite()->getTexture()->setAntiAliasTexParameters();
+    Director::getInstance()->getRenderer()->render();
+    Image* pImage2 = saveImageTexture->newImage();
+    pImage2->saveToFile(STFileUtility::getStoragePath()+"temp1.png", false);
+    pImage2->release();
     
 }

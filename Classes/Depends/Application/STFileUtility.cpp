@@ -72,7 +72,7 @@ std::string STFileUtility::getStoragePath()
 #endif
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	STSystemFunction* sys = new STSystemFunction();
-	std::string path = sys->getSdCardPath();
+	std::string path = sys->getSdCardPath() + "/";
 	delete sys;
 	return path;
 #endif

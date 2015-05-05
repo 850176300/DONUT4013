@@ -43,6 +43,8 @@ protected:
     void ontouchLine(Ref* pRef,Widget::TouchEventType rtype);
     void replayHandTip(float);
     void startHandTip();
+    virtual void onAcceleration(cocos2d::Acceleration *acc, cocos2d::Event *unused_event);
+    void startDeviceTip();
 private:
     float upH = -335 + 40;
     ControlButton* flavorBox = nullptr;
@@ -64,6 +66,7 @@ private:
     bool striFailed = false;
     Texture2D* explorTexture = nullptr;
     Sprite* gestures = nullptr;
+    Sprite* deviceTip = nullptr;
     int superSpeed = 0;
     int normalSpeed = 0;
     

@@ -18,7 +18,7 @@ _eventType(EventType::NONE),
 _orignalRotate(0),
 _isTipsFrameShow(true),
 _enable(true),
-isShotScreen(false)
+isShotScreen(true)
 {
     NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(FillMaterialModel::onReciveNotify), kShotScreenEvent, nullptr);
 }
@@ -97,7 +97,9 @@ void FillMaterialModel::onEnter()
 {
     scheduleOnce(schedule_selector(FillMaterialModel::updateTipsFrameStatus), 1.5f);
     Sprite::onEnter();
+    isShotScreen = false;
 }
+
 void FillMaterialModel::onExit()
 {
     isShotScreen = true;
@@ -222,5 +224,20 @@ void FillMaterialModel::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4 &
 }
 
 void FillMaterialModel::onReciveNotify(cocos2d::Ref *pRef) {
-    isShotScreen = true;
+    __String* mesg = dynamic_cast<__String*>(pRef);
+    if (mesg->compare("Yes") == 0) {
+        isShotScreen = false;
+    }else if (mesg->compare("No") == 0){
+        isShotScreen = true;
+    }
+    
+}
+
+DataContainer::ItemThings FillMaterialModel::getItemThings(){
+    _itemPara.name = _resourceName;
+    _itemPara.pos = convertToWorldSpace(_item->getPosition());
+    _itemPara.scale = this->getScale();
+    _itemPara.rotate = this->getRotation();
+    _itemPara.localZorder = this->getLocalZOrder();
+    return _itemPara;
 }

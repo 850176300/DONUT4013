@@ -17,5 +17,6 @@
 #include "CCImageColorSpace.h"
 #include "CocosHelper.h"
 #include "DecorateScene.h"
+#include "ShareScene.h"
 
 #endif /* defined(__DONUT4013__SceneHead__) */

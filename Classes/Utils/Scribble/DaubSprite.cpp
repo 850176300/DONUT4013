@@ -135,8 +135,8 @@ void DaubSprite::show(){
 }
 long DaubSprite::calcute(Image *pImage){
     long lCounter = 0;
-    for (long i = 0; i < pImage->getHeight(); ++i) {
-        for (long j = 0; j < pImage->getWidth(); ++j) {
+    for (long i = 0; i < pImage->getHeight(); i = i+2) {
+        for (long j = 0; j < pImage->getWidth(); j = j + 2) {
             unsigned char *lData = pImage->getData();
             long lPixcelIndex = i * pImage->getWidth() + j;
             unsigned char lRed = lData[lPixcelIndex * 4];
@@ -155,6 +155,11 @@ long DaubSprite::calcute(Image *pImage){
     CC_SAFE_RELEASE(pImage);
     return lCounter;
 }
+
+long DaubSprite::getTotalCount(){
+    return this->calcute(this->newImage());
+}
+
 float DaubSprite::paintPercent(){
     return this->calcute(this->newImage()) / (this->_total * 1.0);
 }

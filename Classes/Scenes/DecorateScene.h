@@ -12,7 +12,7 @@
 #include <iostream>
 #include "GameLayerBase.h"
 #include "ui/CocosGUI.h"
-#include "DataContainer.h"
+
 #include "FillMaterialModel.h"
 using namespace std;
 using namespace cocos2d::ui;
@@ -35,6 +35,7 @@ protected:
     void onItemsThingClicked(Ref* pRef, Widget::TouchEventType ttouch);
     void refreshData();
     void addFixedThings();
+    void saveTheScreenShot();
 private:
     Sprite* flavorinBowl = nullptr;
     ui::ScrollView* typeScrollView = nullptr;
