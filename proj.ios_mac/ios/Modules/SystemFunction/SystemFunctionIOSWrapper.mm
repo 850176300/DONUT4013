@@ -77,6 +77,45 @@ static SystemFunctionManager *s_instance=nil;
     [emailBody release];
 }
 
+-(void)sendEmail:(NSString*)subject Content:(NSString*) content FilePath:(NSString*)file
+{
+    NSMutableString *emailBody = [[NSMutableString alloc] initWithString:@"<html><body>"];
+    [emailBody appendString:[NSString stringWithFormat:@"%@%@%@%@%@",
+                             @"<p>Hey!</p>",
+                             @"<p>Fantastic! I just made the delicious Cereal. Download this app, Let's have fun playing together!</p>",
+                             @"<p>I think you will like this also!</p>",
+                             @"<p>Get it NOW!</p>",
+                             @"<p><a href=‘https://itunes.apple.com/app/id694502530’>https://itunes.apple.com/app/id694502530</a></p>"]];
+    
+    //    [emailBody appendString:content];
+    
+    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation([UIImage imageNamed:file])];
+    [emailBody appendString:@"</body></html>"];
+    Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+    if (nil != mailClass) {
+        MFMailComposeViewController* emailDialog = [[MFMailComposeViewController alloc] init];
+        if (nil != emailDialog) {
+            emailDialog.mailComposeDelegate = self;
+            // Set the subject of email
+            [emailDialog addAttachmentData:imageData mimeType:@"image/png" fileName:@"nails"];
+            [emailDialog setSubject:subject];
+            [emailDialog setMessageBody:emailBody isHTML:YES];
+            
+            RootViewController *vc=[AppController sharedAppController].viewController;
+            
+            if ([vc respondsToSelector:@selector(presentViewController:animated:completion:)]) {
+                [vc presentViewController:emailDialog animated:YES completion:NULL];
+            }else
+            {
+                [vc presentModalViewController:emailDialog animated:YES];
+            }
+            
+            [emailDialog release];
+        }
+    }
+    [emailBody release];
+}
+
 /*--------------------------------*/
 #pragma mark ios的邮件代理回调
 

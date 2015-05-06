@@ -27,15 +27,21 @@ USING_NS_CC_EXT;
 
 class AlertViewLayer : public LayerColor, public KeypadDelegate
 {
+
     typedef std::function<void(AlertViewLayer*, int)> ccAlertViewCallBack;
+public:
+    enum AlertButtonCount{
+        SINGLE = 1,
+        DOUBLE,
+    };
 public:
     AlertViewLayer();
     ~AlertViewLayer();
     
-    static AlertViewLayer* createWithTitle(const char* title);
+    static AlertViewLayer* createWithTitle(const char* title, AlertButtonCount pcount = DOUBLE);
     
     virtual bool init();
-    virtual bool initWithTitle(const char* title);
+    virtual bool initWithTitle(const char* title, AlertButtonCount pcount);
     void setAlertViewCallBack(ccAlertViewCallBack _call);
     CREATE_FUNC(AlertViewLayer);
     

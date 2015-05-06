@@ -57,7 +57,7 @@ void STSystemFunction::sendEmailAndAssetPic(std::string subject, std::string mes
 
 void STSystemFunction::sendEmailAndFilePic(std::string subject, std::string message, std::string fileName)
 {
-    
+    [[SystemFunctionManager sharedManager] sendEmail:[NSString stringWithCString:subject.c_str() encoding:NSUTF8StringEncoding] Content:[NSString stringWithCString:message.c_str() encoding:NSUTF8StringEncoding] FilePath:[NSString stringWithCString:fileName.c_str() encoding:NSUTF8StringEncoding]];
 }
 
 std::string STSystemFunction::getSdCardPath()

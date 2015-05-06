@@ -9,6 +9,8 @@
 #include "SceneHead.h"
 #include "STFileUtility.h"
 #include "FavManager.h"
+#include "ShareFrameItem.h"
+#include "AlertViewLayer.h"
 
 Scene* ShareScene::scene(){
     Scene* pScene = Scene::create();
@@ -122,15 +124,19 @@ void ShareScene::preClickEvent(){
 
 void ShareScene::homeClickEvent(){
     GameLayerBase::homeClickEvent();
+    replaceTheScene<HomeScene>();
 }
 
 void ShareScene::shareClickEvent(){
     GameLayerBase::shareClickEvent();
+    shareShotScreen();
 }
 
 void ShareScene::favoriteClickEvent(){
     GameLayerBase::favoriteClickEvent();
     favoriteshotScreen();
+    AlertViewLayer* alertView = AlertViewLayer::createWithTitle("Your image has been added to your favorites.", AlertViewLayer::SINGLE);
+    this->addChild(alertView, kDialog);
 }
 
 void ShareScene::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
@@ -165,7 +171,9 @@ void ShareScene::onEatAgainClicked(cocos2d::Ref *pRef, Control::EventType type) 
 }
 
 void ShareScene::favoriteshotScreen(){
-    RenderTexture* pRender = RenderTexture::create(m_pBg->getContentSize().width, m_pBg->getContentSize().height, Texture2D::PixelFormat::RGBA8888);
+    RenderTexture* pRender = RenderTexture::create(STVisibleRect::getGlvisibleSize().width, STVisibleRect::getGlvisibleSize().height, Texture2D::PixelFormat::RGBA8888);
+    
+    pRender->setPosition(Vec2(-STVisibleRect::getDesignOffset().x, -STVisibleRect::getDesignOffset().y));
     
     GameLayerBase::setallButton(false);
     if (eatAgain != nullptr) {
@@ -173,7 +181,7 @@ void ShareScene::favoriteshotScreen(){
     }
     pBtn->setVisible(false);
     pRender->begin();
-    Director::getInstance()->getRunningScene()->visit();
+    this->visit();
     pRender->end();
     
     pRender->getSprite()->setFlippedX(false);
@@ -182,12 +190,98 @@ void ShareScene::favoriteshotScreen(){
 
     Director::getInstance()->getRenderer()->render();
     
-    Sprite* pSprite = pRender->getSprite();
-    pSprite->setAnchorPoint(Vec2(0, 0));
-    pSprite->setPosition(Vec2(0, 0));
+//    
+//    Sprite* pSprite = pRender->getSprite();
+//    pSprite->setPosition(Vec2(m_pBg->getContentSize().width*0.6 / 2.0, m_pBg->getContentSize().height*0.6/2.0));
+//    
+//    RenderTexture* pRender1 = RenderTexture::create(m_pBg->getContentSize().width*0.6, m_pBg->getContentSize().height*0.6, Texture2D::PixelFormat::RGBA8888);
+//    if (STVisibleRect::getGlvisibleSize().width / STVisibleRect::getGlvisibleSize().height > 768.0/1136.0) {
+//        pSprite->setScale((1136*0.6) / STVisibleRect::getGlvisibleSize().height);
+//    }else {
+//        pSprite->setScale((768*0.6) / STVisibleRect::getGlvisibleSize().width);
+//        
+//    }
+//    pRender1->begin();
+//    pSprite->visit();
+//    pRender1->end();
+//    
+//    pSprite->setScale(1.0);
+//    
+//    pRender1->getSprite()->setFlippedX(false);
+//    pRender1->getSprite()->getTexture()->setAliasTexParameters();
+//    Director::getInstance()->getRenderer()->render();
     
-    RenderTexture* pRender1 = RenderTexture::create(m_pBg->getContentSize().width*0.45, m_pBg->getContentSize().height*0.45, Texture2D::PixelFormat::RGBA8888);
-    pSprite->setScale(0.45);
+    Image* ppImage = pRender->newImage();
+    string favName = FavManager::getInstance()->getfavItemName();
+    ppImage->saveToFile(favName, false);
+    FavManager::getInstance()->addFavItem(favName);
+    ppImage->release();
+    
+    Sprite* favSprite = pRender->getSprite();
+    Sprite* recipe = Sprite::create("ui/share/favorite_recipe.png");
+    
+    favSprite->setPosition(Vec2(124.4 , 189));
+    recipe->setAnchorPoint(Vec2(0, 0));
+    RenderTexture* pTexture3 = RenderTexture::create(276, 437, Texture2D::PixelFormat::RGBA8888);
+    if (STVisibleRect::getGlvisibleSize().width / STVisibleRect::getGlvisibleSize().height > 768.0/1136.0) {
+        favSprite->setScale((1136*0.28) / STVisibleRect::getGlvisibleSize().height);
+    }else {
+        favSprite->setScale((768*0.28) / STVisibleRect::getGlvisibleSize().width);
+
+    }
+    pTexture3->begin();
+    recipe->visit();
+    favSprite->visit();
+    pTexture3->end();
+    
+    pTexture3->getSprite()->setFlippedX(false);
+    pTexture3->getSprite()->getTexture()->setAliasTexParameters();
+    
+    Director::getInstance()->getRenderer()->render();
+    Image* tempIamge = pTexture3->newImage();
+    tempIamge->saveToFile(favName.replace(favName.size() - 4, favName.size()-1, "_icon.png"), false);
+    tempIamge->release();
+    
+    GameLayerBase::setallButton(true);
+    if (eatAgain != nullptr) {
+        eatAgain->setVisible(true);
+    }
+    pBtn->setVisible(true);
+}
+
+void ShareScene::shareShotScreen(){
+    RenderTexture* pRender = RenderTexture::create(STVisibleRect::getGlvisibleSize().width, STVisibleRect::getGlvisibleSize().height, Texture2D::PixelFormat::RGBA8888);
+    
+    pRender->setPosition(Vec2(-STVisibleRect::getDesignOffset().x, -STVisibleRect::getDesignOffset().y));
+    
+    GameLayerBase::setallButton(false);
+    if (eatAgain != nullptr) {
+        eatAgain->setVisible(false);
+    }
+    pBtn->setVisible(false);
+    pRender->begin();
+    this->visit();
+    pRender->end();
+    
+    pRender->getSprite()->setFlippedX(false);
+    pRender->getSprite()->getTexture()->setAntiAliasTexParameters();
+    
+    
+    Director::getInstance()->getRenderer()->render();
+    Image* pImage = pRender->newImage();
+    pImage->saveToFile(STFileUtility::getStoragePath()+"shotscreen.png", false);
+    pImage->release();
+    
+    Sprite* pSprite = pRender->getSprite();
+    pSprite->setPosition(Vec2(m_pBg->getContentSize().width*0.6 / 2.0, m_pBg->getContentSize().height*0.6/2.0));
+    
+    RenderTexture* pRender1 = RenderTexture::create(m_pBg->getContentSize().width*0.6, m_pBg->getContentSize().height*0.6, Texture2D::PixelFormat::RGBA8888);
+    if (STVisibleRect::getGlvisibleSize().width / STVisibleRect::getGlvisibleSize().height > 768.0/1136.0) {
+        pSprite->setScale((1136*0.6) / STVisibleRect::getGlvisibleSize().height);
+    }else {
+        pSprite->setScale((768*0.6) / STVisibleRect::getGlvisibleSize().width);
+        
+    }
     pRender1->begin();
     pSprite->visit();
     pRender1->end();
@@ -198,38 +292,10 @@ void ShareScene::favoriteshotScreen(){
     pRender1->getSprite()->getTexture()->setAliasTexParameters();
     Director::getInstance()->getRenderer()->render();
     
-    Image* pImage = pRender1->newImage();
-    pImage->saveToFile(FavManager::getInstance()->getfavItemName(), false);
-    pImage->release();
-    
-    GameLayerBase::setallButton(true);
-    if (eatAgain != nullptr) {
-        eatAgain->setVisible(true);
-    }
-    pBtn->setVisible(true);
-}
-
-void ShareScene::shareShotScreen(){
-    RenderTexture* pRender = RenderTexture::create(m_pBg->getContentSize().width, m_pBg->getContentSize().height, Texture2D::PixelFormat::RGBA8888);
-    
-    GameLayerBase::setallButton(false);
-    if (eatAgain != nullptr) {
-        eatAgain->setVisible(false);
-    }
-    pBtn->setVisible(false);
-    pRender->begin();
-    Director::getInstance()->getRunningScene()->visit();
-    pRender->end();
-    
-    pRender->getSprite()->setFlippedX(false);
-    pRender->getSprite()->getTexture()->setAntiAliasTexParameters();
-    
-    
-    Director::getInstance()->getRenderer()->render();
-    
-    Image* pImage = pRender->newImage();
-    pImage->saveToFile(STFileUtility::getStoragePath()+"shotscreen.png", false);
-    pImage->release();
+    Image* ppImage = pRender1->newImage();
+    ShareFrameItem* pItem = ShareFrameItem::create(ppImage);
+    addChild(pItem, kPrompt + 10);
+    ppImage->release();
     
     GameLayerBase::setallButton(true);
     if (eatAgain != nullptr) {

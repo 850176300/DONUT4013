@@ -27,6 +27,7 @@ public:
     int getTag();
     
     Image* getImage();
+    string getIconSprite();
     
 };
 #endif /* defined(__BBQParty__FavItem__) */

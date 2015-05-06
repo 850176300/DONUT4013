@@ -30,12 +30,9 @@ int FavItem::getTag(){
 }
 
 Image* FavItem::getImage(){
-//    string rootPath("");
-#if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    string rootPath = STFileUtility::getStoragePath()+ "/"+projDir + "/" + FAVORITE + "/";
-#else
+
     string rootPath = STFileUtility::getStoragePath() + projDir + "/" + FAVORITE + "/";
-#endif
+
     if (!STFileUtility::isFileExist(rootPath+ name)) {
         log("favorite图片没有找到");
         return NULL;
@@ -44,4 +41,20 @@ Image* FavItem::getImage(){
     cImage->initWithImageFile((rootPath+ name).c_str());
     cImage->autorelease();
     return cImage;
+}
+
+
+string FavItem::getIconSprite(){
+    string iconString = name.replace(name.size() - 4, name.size() - 1, "_icon.png");
+    string rootPath = STFileUtility::getStoragePath() + projDir + "/" + FAVORITE + "/";
+    
+    if (!STFileUtility::isFileExist(rootPath + iconString)) {
+        log("favorite icon图片没有找到");
+        return NULL;
+    }
+    Image* cImage = new Image();
+    cImage->initWithImageFile((rootPath+ name).c_str());
+    Director::getInstance()->getTextureCache()->addImage(cImage, iconString);
+    cImage->release();
+    return iconString;
 }

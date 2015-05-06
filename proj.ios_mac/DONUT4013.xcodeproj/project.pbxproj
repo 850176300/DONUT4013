@@ -138,6 +138,11 @@
 		0127F44A1ADF94BF00A6DC53 /* HomeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0127F4481ADF94BF00A6DC53 /* HomeScene.cpp */; };
 		013001EB1AEF913D00D9D0CB /* DecorateScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 013001E91AEF913D00D9D0CB /* DecorateScene.cpp */; };
 		013003181AEFA3B200D9D0CB /* decorate in Resources */ = {isa = PBXBuildFile; fileRef = 013003171AEFA3B200D9D0CB /* decorate */; };
+		013577B91AF9C54E0011D85F /* AlumnAdapterIos.mm in Sources */ = {isa = PBXBuildFile; fileRef = 013577B41AF9C54E0011D85F /* AlumnAdapterIos.mm */; };
+		013577BA1AF9C54E0011D85F /* AlumnImpIos.mm in Sources */ = {isa = PBXBuildFile; fileRef = 013577B61AF9C54E0011D85F /* AlumnImpIos.mm */; };
+		013577BB1AF9C54E0011D85F /* ImageUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 013577B81AF9C54E0011D85F /* ImageUtil.mm */; };
+		013577BD1AF9CDB00011D85F /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 013577BC1AF9CDB00011D85F /* fonts */; };
+		013577C31AF9D4EC0011D85F /* FavorteScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 013577C11AF9D4EC0011D85F /* FavorteScene.cpp */; };
 		0157F7C91AF87B5E00C968C3 /* ShareScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0157F7C71AF87B5E00C968C3 /* ShareScene.cpp */; };
 		0157F7CF1AF8E7FB00C968C3 /* FavItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0157F7CB1AF8E7FB00C968C3 /* FavItem.cpp */; };
 		0157F7D01AF8E7FB00C968C3 /* FavManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0157F7CD1AF8E7FB00C968C3 /* FavManager.cpp */; };
@@ -672,6 +677,14 @@
 		013001E91AEF913D00D9D0CB /* DecorateScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DecorateScene.cpp; sourceTree = "<group>"; };
 		013001EA1AEF913D00D9D0CB /* DecorateScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecorateScene.h; sourceTree = "<group>"; };
 		013003171AEFA3B200D9D0CB /* decorate */ = {isa = PBXFileReference; lastKnownFileType = folder; path = decorate; sourceTree = "<group>"; };
+		013577B41AF9C54E0011D85F /* AlumnAdapterIos.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlumnAdapterIos.mm; sourceTree = "<group>"; };
+		013577B51AF9C54E0011D85F /* AlumnImpIos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlumnImpIos.h; sourceTree = "<group>"; };
+		013577B61AF9C54E0011D85F /* AlumnImpIos.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlumnImpIos.mm; sourceTree = "<group>"; };
+		013577B71AF9C54E0011D85F /* ImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUtil.h; sourceTree = "<group>"; };
+		013577B81AF9C54E0011D85F /* ImageUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtil.mm; sourceTree = "<group>"; };
+		013577BC1AF9CDB00011D85F /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		013577C11AF9D4EC0011D85F /* FavorteScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FavorteScene.cpp; sourceTree = "<group>"; };
+		013577C21AF9D4EC0011D85F /* FavorteScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavorteScene.h; sourceTree = "<group>"; };
 		0157F7C71AF87B5E00C968C3 /* ShareScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShareScene.cpp; sourceTree = "<group>"; };
 		0157F7C81AF87B5E00C968C3 /* ShareScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareScene.h; sourceTree = "<group>"; };
 		0157F7CB1AF8E7FB00C968C3 /* FavItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FavItem.cpp; sourceTree = "<group>"; };
@@ -1082,14 +1095,13 @@
 		0127F2B71ADF6BBE00A6DC53 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				013577B31AF9C54E0011D85F /* alumn */,
 				0178D21A1AF226B800C38376 /* ExtensionFunc.mm */,
 				0127F2B81ADF6BBE00A6DC53 /* Ads */,
 				0127F2BE1ADF6BBE00A6DC53 /* AnalyticX */,
 				0127F2C31ADF6BBE00A6DC53 /* Facebook */,
 				0127F2C51ADF6BBE00A6DC53 /* IAP */,
 				0127F2C91ADF6BBE00A6DC53 /* moregame */,
-				0127F2CC1ADF6BBE00A6DC53 /* ParentGate */,
-				0127F2CD1ADF6BBE00A6DC53 /* Sound */,
 				0127F2CE1ADF6BBE00A6DC53 /* SystemFunction */,
 			);
 			name = Modules;
@@ -1144,20 +1156,6 @@
 				0127F2CB1ADF6BBE00A6DC53 /* MoreGameURL.mm */,
 			);
 			path = moregame;
-			sourceTree = "<group>";
-		};
-		0127F2CC1ADF6BBE00A6DC53 /* ParentGate */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ParentGate;
-			sourceTree = "<group>";
-		};
-		0127F2CD1ADF6BBE00A6DC53 /* Sound */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Sound;
 			sourceTree = "<group>";
 		};
 		0127F2CE1ADF6BBE00A6DC53 /* SystemFunction */ = {
@@ -1758,9 +1756,23 @@
 				0157F7C81AF87B5E00C968C3 /* ShareScene.h */,
 				01ACDF061AF91CF800314F02 /* ShopScene.cpp */,
 				01ACDF071AF91CF800314F02 /* ShopScene.h */,
+				013577C11AF9D4EC0011D85F /* FavorteScene.cpp */,
+				013577C21AF9D4EC0011D85F /* FavorteScene.h */,
 			);
 			name = Scenes;
 			path = ../Classes/Scenes;
+			sourceTree = "<group>";
+		};
+		013577B31AF9C54E0011D85F /* alumn */ = {
+			isa = PBXGroup;
+			children = (
+				013577B41AF9C54E0011D85F /* AlumnAdapterIos.mm */,
+				013577B51AF9C54E0011D85F /* AlumnImpIos.h */,
+				013577B61AF9C54E0011D85F /* AlumnImpIos.mm */,
+				013577B71AF9C54E0011D85F /* ImageUtil.h */,
+				013577B81AF9C54E0011D85F /* ImageUtil.mm */,
+			);
+			path = alumn;
 			sourceTree = "<group>";
 		};
 		0178D2121AF2264800C38376 /* Application */ = {
@@ -1934,6 +1946,7 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				013577BC1AF9CDB00011D85F /* fonts */,
 				013003171AEFA3B200D9D0CB /* decorate */,
 				0123E6F71AE0ED0A00F844A4 /* make */,
 				016ABEB91ADFC99F00E21C31 /* animals */,
@@ -2130,6 +2143,7 @@
 				0127F4031ADF8BDA00A6DC53 /* navigationbarBg.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
 				0127F3F21ADF8BD900A6DC53 /* MPAdBrowserController.xib in Resources */,
+				013577BD1AF9CDB00011D85F /* fonts in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				016ABEB61ADFA73F00E21C31 /* ui in Resources */,
 				0127F4131ADF8BDA00A6DC53 /* top-bg_donut-digital.png in Resources */,
@@ -2162,6 +2176,7 @@
 				01A905CD1AE8C944007160B6 /* MixItemsScene.cpp in Sources */,
 				0178D2111AF2259200C38376 /* MoreGameLoader.cpp in Sources */,
 				0127F2A61ADF6B6A00A6DC53 /* BaseAdColorLayer.cpp in Sources */,
+				013577BB1AF9C54E0011D85F /* ImageUtil.mm in Sources */,
 				01F687171AE62BF100E64577 /* ChooseMilk.cpp in Sources */,
 				0127F3F11ADF8BD900A6DC53 /* README.markdown in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
@@ -2187,6 +2202,7 @@
 				0157F7D01AF8E7FB00C968C3 /* FavManager.cpp in Sources */,
 				0127F3ED1ADF8BD900A6DC53 /* CJSONDeserializer.m in Sources */,
 				0127F2961ADF6B6A00A6DC53 /* internalJSONNode.cpp in Sources */,
+				013577BA1AF9C54E0011D85F /* AlumnImpIos.mm in Sources */,
 				0127F3FC1ADF8BDA00A6DC53 /* GDataXMLNode.m in Sources */,
 				013001EB1AEF913D00D9D0CB /* DecorateScene.cpp in Sources */,
 				0127F4051ADF8BDA00A6DC53 /* IAPurchase.m in Sources */,
@@ -2197,11 +2213,13 @@
 				0127F2951ADF6B6A00A6DC53 /* AdsImpl.cpp in Sources */,
 				0127F2D71ADF6BBE00A6DC53 /* AnalyticX.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				013577C31AF9D4EC0011D85F /* FavorteScene.cpp in Sources */,
 				0127F2AE1ADF6B6A00A6DC53 /* MoveItem.cpp in Sources */,
 				0127F2AB1ADF6B6A00A6DC53 /* EllipseLinear.cpp in Sources */,
 				0127F3F91ADF8BDA00A6DC53 /* OpenUDID.m in Sources */,
 				0127F2DD1ADF6BBE00A6DC53 /* ImageSave.mm in Sources */,
 				0127F2A41ADF6B6A00A6DC53 /* AlertViewLayer.cpp in Sources */,
+				013577B91AF9C54E0011D85F /* AlumnAdapterIos.mm in Sources */,
 				0127F2D51ADF6BBE00A6DC53 /* DeviceHelper.m in Sources */,
 				0123E70E1AE0FC9F00F844A4 /* PageItem.cpp in Sources */,
 				0127F2DC1ADF6BBE00A6DC53 /* MoreGameURL.mm in Sources */,

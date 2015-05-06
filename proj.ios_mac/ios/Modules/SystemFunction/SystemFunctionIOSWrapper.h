@@ -24,7 +24,7 @@
  *  @param content email subject.
  */
 -(void)sendEmail:(NSString*)subject Content:(NSString*) content;
-
+-(void)sendEmail:(NSString*)subject Content:(NSString*) content FilePath:(NSString*)file;
 -(void)popAlertDialog:(NSString *)message;
 
 -(void)showMorePage;

@@ -187,7 +187,6 @@ void GameLayerBase::homeClickEvent(){
         STAds ads;
         ads.requestInterstitialAds(true);
 //    }
-//    SceneManager::getInstance()->gotoMainScene();
 }
 
 void GameLayerBase::showPreviousBtn(float dt){

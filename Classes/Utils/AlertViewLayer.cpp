@@ -25,10 +25,10 @@ AlertViewLayer::~AlertViewLayer()
     
 }
 
-AlertViewLayer* AlertViewLayer::createWithTitle(const char* title)
+AlertViewLayer* AlertViewLayer::createWithTitle(const char* title, AlertButtonCount pcount)
 {
     auto pRet = new AlertViewLayer();
-    if(pRet->initWithTitle(title))
+    if(pRet->initWithTitle(title, pcount))
     {
         pRet->autorelease();
         return pRet;
@@ -43,9 +43,9 @@ AlertViewLayer* AlertViewLayer::createWithTitle(const char* title)
 
 bool AlertViewLayer::init()
 {
-    return initWithTitle(NULL);
+    return initWithTitle(NULL, DOUBLE);
 }
-bool AlertViewLayer::initWithTitle(const char* title)
+bool AlertViewLayer::initWithTitle(const char* title, AlertButtonCount pcount)
 {
     if (!LayerColor::initWithColor(Color4B(0, 0, 0, 255/2)))
     {
@@ -60,31 +60,32 @@ bool AlertViewLayer::initWithTitle(const char* title)
     
     
     _title = title;
-    
-    _banner = Sprite::create("ui/tanchuang_1.png");
-    _Yes =  CocosHelper::getButton("ui/yes.png", "ui/yes.png");
-    _No = CocosHelper::getButton("ui/no.png", "ui/no.png");
+
+    _banner = Sprite::create("ui/popup/popup_box.png");
+    _Yes =  CocosHelper::getButton("ui/popup/popup_btn_yes.png", "ui/popup/popup_btn_yes.png");
+    _No = CocosHelper::getButton("ui/popup/popup_btn_no.png", "ui/popup/popup_btn_no.png");
     _Yes->addTargetWithActionForControlEvents(this, cccontrol_selector(AlertViewLayer::buttonClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
     _No->addTargetWithActionForControlEvents(this, cccontrol_selector(AlertViewLayer::buttonClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
     _Yes->setTag(kButtonYes);
     _No->setTag(kButtonNo);
     
     _banner->setPosition(STVisibleRect::getCenterOfScene());
-    _Yes->setPosition(155, 80);
-    _No->setPosition(415, 80);
+    _Yes->setPosition(116.5, 75);
+    _No->setPosition(335.5, 75);
     
     _banner->addChild(_Yes);
     _banner->addChild(_No);
     
     
-    TTFConfig config2 = TTFConfig("fonts/Comic Sans MS Bold.ttf", 40, GlyphCollection::DYNAMIC);
+    TTFConfig config2 = TTFConfig("fonts/POETSENONE-REGULAR.OTF", 40, GlyphCollection::DYNAMIC);
     
     Label *label = Label::createWithTTF(config2, title);
     
     // label->setContentSize(Size(300,100));
     label->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
-    label->setDimensions(500, 240);
-    label->setPosition(280,200);
+    label->setDimensions(400, 240);
+    label->setPosition(450/2.0,200);
+    label->setTextColor(Color4B(0, 0, 0, 200));
     _banner->addChild(label);
     
     this->addChild(_banner);
@@ -93,6 +94,11 @@ bool AlertViewLayer::initWithTitle(const char* title)
     
     _Yes->setEnabled(false);
     _No->setEnabled(false);
+    if (pcount == SINGLE) {
+        _No->removeFromParent();
+        _No = nullptr;
+        _Yes->setPositionX(450/2.0);
+    }
     _banner->runAction(Sequence::create(EaseBackOut::create(ScaleTo::create(.3f, 1)),CallFunc::create([&](){
         if (_No) {
             _No->setEnabled(true);
