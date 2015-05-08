@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0
+END
+GADInAppPurchaseDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADInAppPurchaseDelegate.h
+END
+GADAdSize.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADAdSize.h
+END
+GADBannerView.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADBannerView.h
+END
+GADInAppPurchase.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADInAppPurchase.h
+END
+GADRequestError.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADRequestError.h
+END
+GADAdNetworkExtras.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADAdNetworkExtras.h
+END
+GADInterstitialDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADInterstitialDelegate.h
+END
+GADModules.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADModules.h
+END
+GADRequest.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADRequest.h
+END
+GADAdMobExtras.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADAdMobExtras.h
+END
+README.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/README.txt
+END
+GADBannerViewDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADBannerViewDelegate.h
+END
+GADInterstitial.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/GADInterstitial.h
+END
+libGoogleAdMobAds.a
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/common/!svn/ver/3167/frameworks/AdmobSDK/tags/v6.12.0/libGoogleAdMobAds.a
+END

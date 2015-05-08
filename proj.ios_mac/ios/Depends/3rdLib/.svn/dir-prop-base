@@ -1,0 +1,10 @@
+K 13
+svn:externals
+V 386
+AdmobSDK   http://svn.stm.com/svn/common/frameworks/AdmobSDK/tags/v6.12.0
+Chartboost http://svn.stm.com/svn/common/frameworks/Chartboost/tag/v5.0.3
+MoPubSDK   http://svn.stm.com/svn/common/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix
+FlurrySDK  http://svn.stm.com/svn/common/frameworks/FlurrySDK/tags/v6.2.0
+OpenUDID   http://svn.stm.com/svn/common/frameworks/OpenUDID/tags/1.0.0
+
+END

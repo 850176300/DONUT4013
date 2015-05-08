@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/Externals/TouchJSON/JSON
+END
+CJSONScanner.m
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/Externals/TouchJSON/JSON/CJSONScanner.m
+END
+CJSONSerializer.m
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/Externals/TouchJSON/JSON/CJSONSerializer.m
+END
+JSONRepresentation.h
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/Externals/TouchJSON/JSON/JSONRepresentation.h
+END
+CJSONDeserializer.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/Externals/TouchJSON/JSON/CJSONDeserializer.h
+END
+CJSONDeserializer.m
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/Externals/TouchJSON/JSON/CJSONDeserializer.m
+END
+CJSONScanner.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/Externals/TouchJSON/JSON/CJSONScanner.h
+END
+CJSONSerializer.h
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/Externals/TouchJSON/JSON/CJSONSerializer.h
+END

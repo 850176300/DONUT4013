@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/common/!svn/ver/3197/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK
+END
+MPConstants.h
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/MPConstants.h
+END
+MPBannerCustomEventDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/MPBannerCustomEventDelegate.h
+END
+MoPub-Bridging-Header.h
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/MoPub-Bridging-Header.h
+END
+MPAdView.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/MPAdView.h
+END
+MPBannerCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/MPBannerCustomEvent.h
+END
+MPInterstitialCustomEventDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/MPInterstitialCustomEventDelegate.h
+END
+MPInterstitialAdController.h
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/MPInterstitialAdController.h
+END
+libMopubSDK-3.2.0.a
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/common/!svn/ver/3197/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/libMopubSDK-3.2.0.a
+END
+MPAdConversionTracker.h
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/MPAdConversionTracker.h
+END
+MPInterstitialCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/MPInterstitialCustomEvent.h
+END

@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common
+END
+MPAdBrowserController.h
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPAdBrowserController.h
+END
+MPAdConfiguration.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPAdConfiguration.h
+END
+MPAdServerCommunicator.h
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPAdServerCommunicator.h
+END
+MPLastResortDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPLastResortDelegate.h
+END
+MPKeywordProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPKeywordProvider.h
+END
+MPProgressOverlayView.h
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPProgressOverlayView.h
+END
+MPLastResortDelegate+EventKit.h
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPLastResortDelegate+EventKit.h
+END
+MPURLResolver.h
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPURLResolver.h
+END
+MPAdServerURLBuilder.h
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPAdServerURLBuilder.h
+END
+MPAdBrowserController.xib
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPAdBrowserController.xib
+END
+MPFacebookKeywordProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPFacebookKeywordProvider.h
+END
+MPAdDestinationDisplayAgent.h
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Common/MPAdDestinationDisplayAgent.h
+END

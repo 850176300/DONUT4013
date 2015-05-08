@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Banners
+END
+MPBannerAdManagerDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Banners/MPBannerAdManagerDelegate.h
+END
+MPBaseBannerAdapter.h
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Banners/MPBaseBannerAdapter.h
+END
+MPBannerCustomEventAdapter.h
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Banners/MPBannerCustomEventAdapter.h
+END
+MPBannerAdManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Banners/MPBannerAdManager.h
+END
+MPLegacyBannerCustomEventAdapter.h
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Banners/MPLegacyBannerCustomEventAdapter.h
+END
+MPPrivateBannerCustomEventDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Banners/MPPrivateBannerCustomEventDelegate.h
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/common/!svn/ver/3302/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/AdNetworkSupport/GoogleAdMob
+END
+MPGoogleAdMobInterstitialCustomEvent.m
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/common/!svn/ver/3302/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/AdNetworkSupport/GoogleAdMob/MPGoogleAdMobInterstitialCustomEvent.m
+END
+MPGoogleAdMobBannerCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/AdNetworkSupport/GoogleAdMob/MPGoogleAdMobBannerCustomEvent.h
+END
+MPGoogleAdMobBannerCustomEvent.m
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/AdNetworkSupport/GoogleAdMob/MPGoogleAdMobBannerCustomEvent.m
+END
+MPGoogleAdMobInterstitialCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/AdNetworkSupport/GoogleAdMob/MPGoogleAdMobInterstitialCustomEvent.h
+END

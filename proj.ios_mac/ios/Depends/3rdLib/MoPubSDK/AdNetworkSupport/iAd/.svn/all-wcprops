@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/AdNetworkSupport/iAd
+END
+MPiAdBannerCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/AdNetworkSupport/iAd/MPiAdBannerCustomEvent.h
+END
+MPiAdBannerCustomEvent.m
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/AdNetworkSupport/iAd/MPiAdBannerCustomEvent.m
+END
+MPiAdInterstitialCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/AdNetworkSupport/iAd/MPiAdInterstitialCustomEvent.h
+END
+MPiAdInterstitialCustomEvent.m
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/common/!svn/ver/3170/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/AdNetworkSupport/iAd/MPiAdInterstitialCustomEvent.m
+END
