@@ -32,9 +32,9 @@ class FillMaterialModel : public Sprite
 public:
     FillMaterialModel();
     ~FillMaterialModel();
-    static FillMaterialModel* create(const std::string& ImageName);
+    static FillMaterialModel* create(const std::string& ImageName, bool small = false);
     
-    virtual bool init(const string& ImageName);
+    virtual bool init(const string& ImageName, bool small);
     
     void removeCloseBtn();
     void changeItemTexture(const string& filename);
@@ -42,6 +42,7 @@ public:
     CC_SYNTHESIZE_READONLY(string, _resourceName, ResourceName);
     CC_SYNTHESIZE(bool, _enable, Enable);
     CC_SYNTHESIZE(bool, isShotScreen, ShotScreen);
+    CC_SYNTHESIZE(bool, hidden, IsHidden);
     DataContainer::ItemThings getItemThings();
 private:
     void deleteSelf(Ref *sender, Control::EventType type);
@@ -66,6 +67,9 @@ private:
     float _orignalRotate;
     bool _isTipsFrameShow;
     DataContainer::ItemThings _itemPara;
+    int ItemSpace = 254;
+    string linefile;
+    string transportfile;
 };
 
 #endif /* defined(__COOK016_TacoMaker__FillMaterialModel__) */

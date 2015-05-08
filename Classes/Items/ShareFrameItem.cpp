@@ -28,6 +28,7 @@ ShareFrameItem* ShareFrameItem::create(cocos2d::Image *pImage, bool withDelete) 
 
 bool ShareFrameItem::init(cocos2d::Image *pImage, bool withDelete) {
     if (Layout::init()) {
+        float scaleSize = 0.6;
         SwallowTouchLayout* pLayout = SwallowTouchLayout::create();
         pLayout->setBackGroundImage("ui/mask.png");
         pLayout->setBackGroundImageOpacity(200);
@@ -49,12 +50,30 @@ bool ShareFrameItem::init(cocos2d::Image *pImage, bool withDelete) {
         ptexture->initWithImage(pImage);
         
         Sprite* spriteinFrame = Sprite::createWithTexture(ptexture);
-        spriteinFrame->setAnchorPoint(Vec2(0.5, 0.5));
-        spriteinFrame->setScale(0.8f);
-        spriteinFrame->setPosition(Vec2(frame->getContentSize().width/2.0, frame->getContentSize().height/2.0 + 35));
-        frame->addChild(spriteinFrame);
+        spriteinFrame->setPosition(Vec2(768*scaleSize*0.5, 1136*scaleSize*0.5));
+        RenderTexture* tempTexture = RenderTexture::create(768*scaleSize, 1136*scaleSize, Texture2D::PixelFormat::RGBA8888);
+        if (STVisibleRect::getGlvisibleSize().width / STVisibleRect::getGlvisibleSize().height > 768.0/1136.0) {
+            spriteinFrame->setScale((1136*scaleSize) / STVisibleRect::getGlvisibleSize().height);
+        }else {
+            spriteinFrame->setScale((768*scaleSize) / STVisibleRect::getGlvisibleSize().width);
+        }
+        tempTexture->begin();
+        spriteinFrame->visit();
+        tempTexture->end();
+        
+        tempTexture->getSprite()->setFlippedX(false);
+        tempTexture->getSprite()->getTexture()->setAliasTexParameters();
+        Director::getInstance()->getRenderer()->render();
+        
+        Sprite* renderSprite = tempTexture->getSprite();
+        renderSprite->setAnchorPoint(Vec2(0.5, 0.5));
+        renderSprite->setScale(0.8f);
+        renderSprite->setPosition(Vec2(frame->getContentSize().width/2.0, frame->getContentSize().height/2.0 + 35));
+        frame->addChild(renderSprite);
 
         frame->setScale(0);
+        
+        ptexture->release();
         
         Sprite* clip = Sprite::create("ui/share/icon_clip.png");
         clip->setPosition(Vec2(399, 682));
@@ -108,6 +127,10 @@ void ShareFrameItem::onEnterTransitionDidFinish(){
     frame->runAction(EaseExponentialInOut::create(ScaleTo::create(1.0, 1.0)));
 }
 
+void ShareFrameItem::setDeleteFavCallback(deleteFavItem callback) {
+    _callback = callback;
+}
+
 void ShareFrameItem::onButtonsClicked(cocos2d::Ref *pRef, Widget::TouchEventType type) {
     if (type == Widget::TouchEventType::ENDED) {
         Node* pNode = dynamic_cast<Node* >(pRef);
@@ -121,11 +144,18 @@ void ShareFrameItem::onButtonsClicked(cocos2d::Ref *pRef, Widget::TouchEventType
                 break;
             case kDeleteTags:
             {
+                frame->runAction(Sequence::create(EaseElasticInOut::create(ScaleTo::create(0.5, 0), 0.2), CallFunc::create([=]{
+                    if (_callback) {
+                        _callback();
+                    }
+                    this->removeFromParent();
+                }),NULL));
                 
             }
                 break;
             case kEmailTags:
             {
+                shareImage->saveToFile(STFileUtility::getStoragePath()+"shotscreen.png", false);
                 STSystemFunction st;
                 st.sendEmailAndFilePic("Cereal Maker", "Fantastic. I just made the delicious Cereal. Download this app, Let's have fun playing together.", STFileUtility::getStoragePath()+"shotscreen.png");
             }

@@ -43,6 +43,7 @@ public:
     void startLoading();
 protected:
     void onLoadmoregameIconSucceed(Ref* pRef);
+    void onBannerDidload(Ref* pRef);
     void moregameClicked(Ref* pObj);
     float getBannerHeight();
 };

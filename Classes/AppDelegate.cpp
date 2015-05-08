@@ -3,6 +3,9 @@
 #include "SceneHead.h"
 #include "STVisibleRect.h"
 #include "FavManager.h"
+#include "PurchaseManager.h"
+#include "STAds.h"
+#include "AdsImpl.h"
 USING_NS_CC;
 USING_NS_ST;
 
@@ -24,7 +27,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     STVisibleRect::setupVisibleRect(Size(640, 960));
     glview->setDesignResolutionSize(STVisibleRect::getRealDesignSize().width, STVisibleRect::getRealDesignSize().height, ResolutionPolicy::NO_BORDER);
@@ -33,8 +36,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
     FavManager::getInstance()->loadFavdata();
+
+    PurchaseManager::getInstance()->preloadAll();
     
-    replaceTheScene<DecorateScene>();
+    STAds ads;
+    ads.setAdsDelegate(AdsImpl::getInstance());
+    
+    replaceTheScene<LoadingScene>();
 
     return true;
 }
@@ -43,6 +51,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
     FavManager::getInstance()->saveData();
+    SoundPlayer::getInstance()->stopBackGroundMusic();
+    SoundPlayer::getInstance()->pauseEffect();
     // if you use SimpleAudioEngine, it must be pause
     // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
@@ -50,7 +60,13 @@ void AppDelegate::applicationDidEnterBackground() {
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
-
+    SoundPlayer::getInstance()->resumeBackGroundMusic();
+    SoundPlayer::getInstance()->resumeEffect();
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+    if (PurchaseManager::getInstance()->getRemoveAd() == false) {
+        STAds ads;
+        ads.requestInterstitialAds();
+    }
+
 }

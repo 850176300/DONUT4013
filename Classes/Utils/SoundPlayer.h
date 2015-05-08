@@ -31,6 +31,8 @@ public:
     void stopBackGroundMusic();
     void resumeBackGroundMusic();
     void stopAlleffect();
+    void pauseEffect();
+    void resumeEffect();
 #pragma mark 基本音效比如：返回，首页，下一步等等
     void playResetClickedEffect();
     void playNextClickedEffect();
@@ -43,13 +45,28 @@ public:
     void playCommonEffect(const string& effect);
     void playCommonLoopEffect(const string& effect);
     
-    
+#pragma mark 项目需要音效
+    void playAnimationEffect();
+    void playChooseEffect();
+    void playDecorateEffect();
+    void playRotateEffect();
+    void playShowTipEffect();
+    void playOpenMilkEffect();
+    void playPourCerealEffect();
+    void playSunRiseUpEffect();
+    void playEnterEffect();
+    void playPourMilkEffect();
+    void playEatEffect();
+    void playStriEffect();
+    void playSplashEffect();
+    void playHurahEffect();
 private:
-    unsigned int washingID;
-    unsigned int addPipeID;
+    unsigned int pourmilkID;
+    unsigned int pourcerealID;
     string bgMusic;
     bool canPlayMusic;
     bool canPlaySound;
+
 //    bool haveVolume;
     
     

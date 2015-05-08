@@ -101,9 +101,19 @@ void ScrollPage::onEnter()
             return;
     }
 #endif
-    
-    Layout::onEnter();
+    ProtectedNode::onEnter();
     scheduleUpdate();
+}
+
+void ScrollPage::onExit(){
+#if CC_ENABLE_SCRIPT_BINDING
+    if (_scriptType == kScriptTypeJavascript)
+    {
+        if (ScriptEngineManager::sendNodeEventToJSExtended(this, kNodeOnExit))
+            return;
+    }
+#endif
+    ProtectedNode::onExit();
 }
 
 bool ScrollPage::init()
@@ -112,6 +122,7 @@ bool ScrollPage::init()
     {
         setClippingEnabled(true);
         _innerContainer->setTouchEnabled(false);
+        scheduleUpdate();
         return true;
     }
     return false;

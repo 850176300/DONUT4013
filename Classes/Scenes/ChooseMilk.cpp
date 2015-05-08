@@ -111,6 +111,7 @@ void ChooseMilk::addScrollView(){
         //        Vec3 vec = it->second;
         //        cout<<it->first<<"====("<<vec.x << ","<<vec.y<<","<<vec.z<<")"<<endl;
         PageItem* pButton = PageItem::create("make/milk/"+it->first+".png");
+        pButton->setScale9Enabled(true);
         pButton->setName(it->first);
         pButton->addTouchEventListener(CC_CALLBACK_2(ChooseMilk::onScrollItemClick, this));
         pButton->setPosition(Vec2(startX, STVisibleRect::getGlvisibleSize().height/2.0+120));
@@ -123,9 +124,18 @@ void ChooseMilk::addScrollView(){
             pButton->setPressedActionEnabled(true);
             pButton->setPositionY(STVisibleRect::getGlvisibleSize().height/2.0);
         }
-        startX += pButton->getContentSize().width + 60;
+        startX += pButton->getContentSize().width + 40;
         milkScrollview->addChild(pButton);
         pButton->setTag(count++);
+        
+        DataContainer::MilkInfor _infor = it->second;
+        if (_infor.isFree == false) {
+            Sprite* lock = Sprite::create("ui/select/lock.png");
+            lock->setAnchorPoint(Vec2(1.0, 0));
+            lock->setPosition(Vec2(pButton->getContentSize().width-15, 15));
+            lock->setTag(kLockTags);
+            pButton->addChild(lock);
+        }
         
     }
     startX += STVisibleRect::getGlvisibleSize().width / 2.0 - ItemSpace;
@@ -137,15 +147,36 @@ void ChooseMilk::addScrollView(){
 
 void ChooseMilk::onEnterTransitionDidFinish(){
     GameLayerBase::onEnterTransitionDidFinish();
-    milkScrollview->scrollToPercentHorizontal(100, 1.5, true);
+    if (title != nullptr) {
+        return;
+    }
+    
+    milkScrollview->scrollToPercentHorizontal(100, 2.5f, true);
     
     milkScrollview->stopAllActions();
-    milkScrollview->runAction(Sequence::create(DelayTime::create(0.8), CallFunc::create(std::bind(&ScrollPage::scrollToLeft, milkScrollview, 1.5, true)),DelayTime::create(1.0f), CallFunc::create([=]{
-        Sprite* title = Sprite::create("ui/select/select_milk.png");
+    milkScrollview->runAction(Sequence::create(DelayTime::create(2.1), CallFunc::create(std::bind(&ScrollPage::scrollToLeft, milkScrollview, 3.0, true)),DelayTime::create(2.5f), CallFunc::create([=]{
+        title = Sprite::create("ui/select/select_milk.png");
         title->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getPointOfSceneRightUp().y + 200);
         this->addChild(title);
-        title->runAction(EaseElasticInOut::create(MoveBy::create(0.9, Vec2(0, -300)), 0.5));
+        SoundPlayer::getInstance()->playShowTipEffect();
+        title->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(0.9, Vec2(0, -300)), 0.5), DelayTime::create(0.5f),Sequence::create(EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), EaseSineInOut::create(MoveBy::create(0.2, Vec2(0, -20))), EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))),EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), EaseSineInOut::create(MoveBy::create(0.2, Vec2(0, -20))), EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), NULL),nullptr));
+        
+        this->schedule(schedule_selector(ChooseMilk::shakeTheTitle), 5.0f);
     }), NULL));
+}
+
+void ChooseMilk::shakeTheTitle(float) {
+    title->runAction(Sequence::create(EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), EaseSineInOut::create(MoveBy::create(0.2, Vec2(0, -20))), EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))),EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), EaseSineInOut::create(MoveBy::create(0.2, Vec2(0, -20))), EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), NULL));
+}
+
+
+void ChooseMilk::purchaseSucceed(){
+    if (PurchaseManager::getInstance()->getIsFlavorUnlock() == true) {
+        Vector<Node*> childrens = milkScrollview->getChildren();
+        for (int i = 0; i < childrens.size(); ++i) {
+            childrens.at(i)->removeChildByTag(kLockTags);
+        }
+    }
 }
 
 void ChooseMilk::onScrollItemClick(cocos2d::Ref *pref, Widget::TouchEventType type) {
@@ -154,14 +185,22 @@ void ChooseMilk::onScrollItemClick(cocos2d::Ref *pref, Widget::TouchEventType ty
         if (pNode->getCenterOrNot() == false) {
             return;
         }
+        if (pNode->getChildByTag(kLockTags) != nullptr) {
+            pushTheScene<ShopScene>();
+        }else {
+            unschedule(schedule_selector(ChooseMilk::shakeTheTitle));
+            DataContainer::getInstance()->setChooseMilk(pNode->getName());
+            SoundPlayer::getInstance()->playChooseEffect();
+            Sprite* pSprite = Sprite::create("make/milk/"+pNode->getName()+".png");
+            pSprite->setPosition(STVisibleRect::getCenterOfScene());
+            this->addChild(pSprite);
+            pNode->setVisible(false);
+            milkScrollview->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(-1000, 0)), 0.3), DelayTime::create(1.5f), NULL));
+            pSprite->runAction(RepeatForever::create(EaseSineInOut::create(JumpBy::create(0.8, Vec2(0, 0), 150, 1))));
+            showNextButton(1.0f);
+        }
         
-        Sprite* pSprite = Sprite::create("make/milk/"+pNode->getName()+".png");
-        pSprite->setPosition(STVisibleRect::getCenterOfScene());
-        this->addChild(pSprite);
-        pNode->setVisible(false);
-        milkScrollview->runAction(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(-1000, 0)), 0.3));
-        pSprite->runAction(RepeatForever::create(EaseSineInOut::create(JumpBy::create(0.8, Vec2(0, 0), 150, 1))));
-        showNextButton(1.0f);
+
     }
 }
 

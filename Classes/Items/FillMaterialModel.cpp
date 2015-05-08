@@ -8,6 +8,9 @@
 
 #include "FillMaterialModel.h"
 #include "CocosHelper.h"
+#include "SoundPlayer.h"
+#include "STVisibleRect.h"
+USING_NS_ST;
 
 FillMaterialModel::FillMaterialModel():
 _close(nullptr),
@@ -18,7 +21,8 @@ _eventType(EventType::NONE),
 _orignalRotate(0),
 _isTipsFrameShow(true),
 _enable(true),
-isShotScreen(true)
+isShotScreen(true),
+hidden(false)
 {
     NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(FillMaterialModel::onReciveNotify), kShotScreenEvent, nullptr);
 }
@@ -28,10 +32,10 @@ FillMaterialModel::~FillMaterialModel()
     NotificationCenter::getInstance()->removeObserver(this, kShotScreenEvent);
 }
 
-FillMaterialModel* FillMaterialModel::create(const string& ImageName)
+FillMaterialModel* FillMaterialModel::create(const string& ImageName, bool small)
 {
     auto pRet = new FillMaterialModel();
-    if(pRet->init(ImageName))
+    if(pRet->init(ImageName, small))
     {
         pRet->autorelease();
         return pRet;
@@ -44,9 +48,18 @@ FillMaterialModel* FillMaterialModel::create(const string& ImageName)
     }
 }
 
-bool FillMaterialModel::init(const string& ImageName)
+bool FillMaterialModel::init(const string& ImageName,bool small)
 {
-    if ( !Sprite::initWithFile("ui/decorate/controlTip_bg.png"))
+    if (small == true) {
+        linefile = "ui/decorate/controlTip_bg_small.png";
+        transportfile = "ui/decorate/controlTip_bg_Clear_small.png";
+        ItemSpace = 127;
+    }else {
+        linefile = "ui/decorate/controlTip_bg.png";
+        transportfile = "ui/decorate/controlTip_bg_Clear.png";
+        ItemSpace = 254;
+    }
+    if ( !Sprite::initWithFile(linefile))
     {
         return false;
     }
@@ -66,14 +79,14 @@ bool FillMaterialModel::init(const string& ImageName)
     _magnify = Sprite::create("ui/decorate/controlTip_magnify.png");
     _item = Sprite::create(ImageName);
     
-    _close->setPosition(0, 254);
-    _magnify->setPosition(254, 0);
-    _item->setPosition(127, 127);
+    
+    _close->setPosition(0, ItemSpace);
+    _magnify->setPosition(ItemSpace, 0);
+    _item->setPosition(ItemSpace*0.5, ItemSpace*0.5);
     
     this->addChild(_item);
     this->addChild(_close);
     this->addChild(_magnify);
-    
     return true;
 }
 
@@ -98,6 +111,9 @@ void FillMaterialModel::onEnter()
     scheduleOnce(schedule_selector(FillMaterialModel::updateTipsFrameStatus), 1.5f);
     Sprite::onEnter();
     isShotScreen = false;
+    if (hidden == true) {
+        updateTipsFrameStatus(0);
+    }
 }
 
 void FillMaterialModel::onExit()
@@ -126,7 +142,7 @@ bool FillMaterialModel::onTouchBegan(Touch *touch, Event *unused_event)
     {
         _close->setVisible(true);
         _magnify->setVisible(true);
-        this->setSpriteFrame(Sprite::create("ui/decorate/controlTip_bg.png")->getSpriteFrame());
+        this->setSpriteFrame(Sprite::create(linefile)->getSpriteFrame());
         _isTipsFrameShow = true;
     }
     this->getParent()->reorderChild(this, this->getLocalZOrder() + 50);
@@ -155,7 +171,7 @@ void FillMaterialModel::onTouchMoved(Touch *touch, Event *unused_event)
             
             
             float distance = po.distance(this->getPosition());
-            float orignalLengh = sqrt(127*127*2);
+            float orignalLengh = sqrt(ItemSpace*ItemSpace*0.5);
             float m_Scale = distance/orignalLengh;
             this->setScale(m_Scale);
             
@@ -187,7 +203,12 @@ void FillMaterialModel::onTouchMoved(Touch *touch, Event *unused_event)
         }
             break;
         case MOVE:
-            this->setPosition(this->getPosition()+touch->getDelta());
+        {
+            Vec2 afterP = this->getPosition()+touch->getDelta();
+            if (STVisibleRect::getMovableRect().containsPoint( afterP)) {
+                this->setPosition(afterP);
+            }
+        }
             break;
         default:
             break;
@@ -212,7 +233,7 @@ void FillMaterialModel::updateTipsFrameStatus(float)
 {
     _close->setVisible(false);
     _magnify->setVisible(false);
-    this->setSpriteFrame(Sprite::create("ui/decorate/controlTip_bg_Clear.png")->getSpriteFrame());
+    this->setSpriteFrame(Sprite::create(transportfile)->getSpriteFrame());
     _isTipsFrameShow = false;
 }
 

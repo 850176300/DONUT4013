@@ -11,35 +11,46 @@
 
 #include <iostream>
 #include "GameLayerBase.h"
-#include "ui/CocosGUI.h"
-
+#include "ScrollPage.h"
 #include "FillMaterialModel.h"
 using namespace std;
-using namespace cocos2d::ui;
 
 
 class DecorateScene : public GameLayerBase{
 public:
-    ~DecorateScene(){CC_SAFE_RELEASE(mascot);};
+    DecorateScene(){
+        if (GameLayerBase::getBannerSize() == 0) {
+            NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(DecorateScene::onBannerDidLoaded), kDidLoadBanner, nullptr);
+        }
+    }
+    ~DecorateScene(){
+        NotificationCenter::getInstance()->removeObserver(this, kDidLoadBanner); CC_SAFE_RELEASE(mascot);};
     static Scene* scene();
     
     virtual bool init();
     
     CREATE_FUNC(DecorateScene);
 protected:
+    virtual void purchaseSucceed();
+    virtual void resetClickEvent();
     virtual void nextClickEvent();
     virtual void preClickEvent();
     virtual void onEnterTransitionDidFinish();
     void addScrollView();
     void ontypeItemClicked(Ref* pRef,Widget::TouchEventType toucht);
     void onItemsThingClicked(Ref* pRef, Widget::TouchEventType ttouch);
+    void onDownButtonClicked(Ref* pRef, Widget::TouchEventType touch);
     void refreshData();
     void addFixedThings();
     void saveTheScreenShot();
+    void onBannerDidLoaded(Ref* pref);
+    
 private:
+    bool decorateItemCantBeClick = false;
+    bool isFirstOnenter = true;
     Sprite* flavorinBowl = nullptr;
-    ui::ScrollView* typeScrollView = nullptr;
-    ui::ScrollView* itemScrollView = nullptr;
+    ScrollPage* typeScrollView = nullptr;
+    ScrollPage* itemScrollView = nullptr;
     Sprite* cerealBox = nullptr;
     Sprite* plate = nullptr;
     Sprite* breakFast = nullptr;
@@ -51,6 +62,8 @@ private:
     float tableMaxy = 0;
     Layer* cannotEatLayer = nullptr;
     Layer* canEatLayer = nullptr;
+    Vec2 scrollPosition1;
+    Vec2 scrollPosition2;
 };
 
 #endif /* defined(__DONUT4013__DecorateScene__) */

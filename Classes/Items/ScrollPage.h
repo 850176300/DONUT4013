@@ -294,7 +294,7 @@ public:
     virtual std::string getDescription() const override;
     
     virtual void onEnter() override;
-    
+    virtual void onExit() override;
     /**
      *  When a widget is in a layout, you could call this method to get the next focused widget within a specified direction.
      *  If the widget is not in a layout, it will return itself

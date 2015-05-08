@@ -38,11 +38,21 @@ protected:
     void addAllButtons();
     void onBtnClicked(Ref* pRef, Control::EventType type);
     void changeScene(float);
+    void actionjump(float);
+    virtual void onEnterTransitionDidFinish();
+    void cachetexutre(float);
+    void performSunShine(float);
+    
 private:
     int currentIndex = 0;
     Vec2 tableOriginal;
-    
+    Sprite* bowl = nullptr;
     Sprite* cereal = nullptr;
+    Sprite* sunShader = nullptr;
+    vector<string> types;
+    LayerColor* theSun = nullptr;
+    Sprite* table = nullptr;
+
 };
 
 #endif /* defined(__DONUT4013__HomeScene__) */

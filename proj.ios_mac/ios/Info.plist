@@ -5,44 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>Cereal</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIconFile</key>
-	<string>Icon-57.png</string>
-	<key>CFBundleIconFiles</key>
-	<array>
-		<string>Icon-29</string>
-		<string>Icon-80</string>
-		<string>Icon-58</string>
-		<string>Icon-120</string>
-		<string>Icon.png</string>
-		<string>Icon@2x.png</string>
-		<string>Icon-57.png</string>
-		<string>Icon-114.png</string>
-		<string>Icon-72.png</string>
-		<string>Icon-144.png</string>
-	</array>
-	<key>CFBundleIconFiles~ipad</key>
-	<array>
-		<string>Icon-29</string>
-		<string>Icon-50</string>
-		<string>Icon-58</string>
-		<string>Icon-80</string>
-		<string>Icon-40</string>
-		<string>Icon-100</string>
-		<string>Icon-152</string>
-		<string>Icon-76</string>
-		<string>Icon-120</string>
-		<string>Icon.png</string>
-		<string>Icon@2x.png</string>
-		<string>Icon-57.png</string>
-		<string>Icon-114.png</string>
-		<string>Icon-72.png</string>
-		<string>Icon-144.png</string>
-	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.kidsfoodinc.easterfood</string>
+	<string>com.donut-digital.cereal</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -69,6 +36,39 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>AppIcon29x29.png</string>
+		<string>AppIcon29x29@2x.png</string>
+		<string>AppIcon40x40.png</string>
+		<string>AppIcon40x40@2x.png</string>
+		<string>AppIcon57x57.png</string>
+		<string>AppIcon57x57@2x.png</string>
+		<string>AppIcon60x60.png</string>
+		<string>AppIcon60x60@2x.png</string>
+		<string>AppIcon72x72.png</string>
+		<string>AppIcon72x72@2x.png</string>
+		<string>AppIcon76x76.png</string>
+		<string>AppIcon76x76@2x.png</string>
+		<string>iTunesArtwork.png</string>
+		<string>iTunesArtwork@2x.png</string>
+		<string>AppIcon29x29@3x.png</string>
+		<string>AppIcon40x40@3x.png</string>
+		<string>AppIcon50x50.png</string>
+		<string>AppIcon50x50@2x.png</string>
+		<string>AppIcon60x60@3x.png</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>donut-cereal</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>

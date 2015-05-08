@@ -27,11 +27,14 @@ protected:
     void addScrollView();
     void onScrollItemClick(Ref* pref, Widget::TouchEventType type);
     virtual void onEnterTransitionDidFinish();
+    void shakeTheTitle(float);
+    virtual void purchaseSucceed();
 private:
     ScrollPage* milkScrollview = nullptr;
+    Sprite* title = nullptr;
     int count = 0;
     int currentIndex = 0;
-    int ItemSpace = 285.0;
+    int ItemSpace = 359;
     float ItemScale = 0.7;
 };
 

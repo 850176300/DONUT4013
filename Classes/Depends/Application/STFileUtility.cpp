@@ -68,7 +68,7 @@ bool STFileUtility::createFile(std::string filePath)
 std::string STFileUtility::getStoragePath()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	return CCFileUtils::sharedFileUtils()->getWritablePath();
+	return FileUtils::getInstance()->getWritablePath();
 #endif
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	STSystemFunction* sys = new STSystemFunction();

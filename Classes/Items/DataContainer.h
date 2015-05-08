@@ -16,7 +16,6 @@ using namespace std;
 using namespace cocos2d;
 
 
-
 class DataContainer : public SingleTon<DataContainer>{
     friend class SingleTon<DataContainer>;
 public:
@@ -43,6 +42,7 @@ public:
         string name;
         Vec3 hsv;
         bool isHSVuse;
+        bool isFree;
     }MilkInfor;
     
     typedef struct ItemThings{
@@ -74,12 +74,15 @@ public:
     int getAnimalAnimationCount(string animal);
     flavorMap getFlavorData();
     FlavorInfor getTheFlavorByName(string name);
+    void unlockTheFlavorData();
     
     milkMap getallMilkData();
     MilkInfor getTheMilkByName(string name);
+    void unlockTheMilkData();
     
     decorateMap getallDecorateData();
     DecorateInfor getDecorateAtName(string name);
+    void unlockTheDecorateData();
     
     vector<string> getAllDecorateType();
     void clearDecorateItems();

@@ -38,7 +38,7 @@ bool ShareScene::init(){
         
         Sprite* table = Sprite::create("make/bg_make_table_table.png");
         table->setAnchorPoint(Vec2(0.5, 0));
-        table->setPosition(Vec2(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y+GameLayerBase::getBannerSize()));
+        table->setPosition(Vec2(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y));
         
         float tableMaxy = table->getBoundingBox().getMaxY();
         Sprite* bowl1 = Sprite::create("make/bowl_1.png");
@@ -80,9 +80,11 @@ bool ShareScene::init(){
         addChild(spoon, spoonItem.localZorder);
         
         showPreviousBtn(1.0f);
-        showHomeButton(1.0f);
+        showNextButton(1.0f, false);
         showShareBtn(1.2f);
         showFavoriteBtn(1.5f);
+        showHomeButton(1.0);
+        
         
         auto listener = EventListenerTouchOneByOne::create();
         listener->setSwallowTouches(true);
@@ -93,15 +95,18 @@ bool ShareScene::init(){
         listener->onTouchCancelled = CC_CALLBACK_2(Layer::onTouchCancelled, this);
         
         _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-        _touchListener = listener;
+        _plistener = listener;
+        _plistener->retain();
+        
         
         taptoEat = Sprite::create("ui/eat/tips_eat.png");
         
-        taptoEat->setPosition(Vec2(STVisibleRect::getCenterOfScene().x, STVisibleRect::getPointOfSceneLeftUp().y - 100) + Vec2(-STVisibleRect::getGlvisibleSize().width, 0));
+        taptoEat->setPosition(Vec2(STVisibleRect::getCenterOfScene().x, STVisibleRect::getPointOfSceneLeftUp().y - 100) + Vec2(0, 900));
         
         addChild(taptoEat, 20);
         
         pBtn = MoregameBtn::create();
+        pBtn->setViewModel(MoregameBtn::MoreGameModel::GameView);
         pBtn->addtoParentLayer(this);
         return true;
     }
@@ -110,11 +115,31 @@ bool ShareScene::init(){
 
 void ShareScene::onEnterTransitionDidFinish(){
     GameLayerBase::onEnterTransitionDidFinish();
+    if (PurchaseManager::getInstance()->getRemoveAd() == false) {
+        STAds ads;
+        ads.requestInterstitialAds(true);
+    }
     pBtn->startLoading();
     totalColorCount = eatLayer->getTotalCount() + flavorinBowl->getTotalCount() + breakFast->getTotalCount();
     if (taptoEat != nullptr) {
-        taptoEat->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(STVisibleRect::getGlvisibleSize().width, 0)), 0.8), DelayTime::create(1.0f), EaseElasticInOut::create(MoveBy::create(0.8, Vec2(STVisibleRect::getGlvisibleSize().width, 0)), 0.3), RemoveSelf::create(),NULL));
+        taptoEat->runAction(Sequence::create(Spawn::create(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(0, -900)), 0.8), Sequence::create(DelayTime::create(0.8), CallFunc::create([=]{
+            SoundPlayer::getInstance()->playEnterEffect();
+        }), NULL), NULL), CallFunc::create([=]{
+            this->schedule(schedule_selector(ShareScene::shakeTheTaptoEat), 4.5f);
+        }), NULL));
     }
+}
+
+void ShareScene::shakeTheTaptoEat(float) {
+    if (taptoEat == nullptr) {
+        return;
+    }
+    taptoEat->runAction(Sequence::create(EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), EaseSineInOut::create(MoveBy::create(0.2, Vec2(0, -20))), EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))),EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), EaseSineInOut::create(MoveBy::create(0.2, Vec2(0, -20))), EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), NULL));
+}
+
+void ShareScene::nextClickEvent(){
+    GameLayerBase::nextClickEvent();
+    replaceTheScene<ChooseFlavor>();
 }
 
 void ShareScene::preClickEvent(){
@@ -132,6 +157,11 @@ void ShareScene::shareClickEvent(){
     shareShotScreen();
 }
 
+void ShareScene::onBannerDidLoaded(Ref* pRef){
+    NotificationCenter::getInstance()->removeObserver(this, kDidLoadBanner);
+    homeBtn->runAction(EaseSineInOut::create(MoveBy::create(0, Vec2(0, GameLayerBase::getBannerSize()))));
+}
+
 void ShareScene::favoriteClickEvent(){
     GameLayerBase::favoriteClickEvent();
     favoriteshotScreen();
@@ -139,10 +169,33 @@ void ShareScene::favoriteClickEvent(){
     this->addChild(alertView, kDialog);
 }
 
+bool ShareScene::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
+    if (firstClick == false) {
+        unschedule(schedule_selector(ShareScene::shakeTheTaptoEat));
+        taptoEat->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(0.8, Vec2(0, 900)), 0.6), RemoveSelf::create(),NULL));
+        this->runAction(Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]{
+            taptoEat = nullptr;
+        }), NULL));
+        firstClick = true;
+    }
+    firstClick = true;
+    
+   
+    return true;
+}
+
 void ShareScene::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
-    eatLayer->paint(touch->getLocation(), touch->getStartLocation());
-    flavorinBowl->paint(touch->getLocation(), touch->getStartLocation());
-    breakFast->paint(touch->getLocation(), touch->getStartLocation());
+   
+    SoundPlayer::getInstance()->playEatEffect();
+    Vec2 pos1 = convertToWorldSpace(touch->getStartLocation());
+    Vec2 pos2 = convertToWorldSpace(touch->getLocation());
+    ParticleSystemQuad* eatParticle = ParticleSystemQuad::create("ui/biting.plist");
+    eatParticle->setPosition(pos2);
+    addChild(eatParticle, 9);
+    eatParticle->setAutoRemoveOnFinish(true);
+    eatLayer->paint(pos2, pos1);
+    flavorinBowl->paint(pos2, pos1);
+    breakFast->paint(pos2, pos1);
     if (arc4random() % 3 == 1) {
         long tempCount = eatLayer->getTotalCount() + flavorinBowl->getTotalCount() + breakFast->getTotalCount();
         if (tempCount < totalColorCount * 0.15) {
@@ -165,9 +218,17 @@ void ShareScene::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *unused_
 void ShareScene::onEatAgainClicked(cocos2d::Ref *pRef, Control::EventType type) {
     DataContainer::DecorateItems allItems = DataContainer::getInstance()->getAllDecorateItems();
     eatLayer->changeTarget(STFileUtility::getStoragePath()+"temp.png");
+    eatLayer->show();
     flavorinBowl->changeTarget("make/cereals_stir/"+DataContainer::getInstance()->getChooseFlavor()+"_1.png");
+    flavorinBowl->show();
     breakFast->changeTarget(allItems.breakfastName);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
+    breakFast->show();
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(_plistener, this);
+    eatAgain->runAction(Sequence::create(EaseElasticInOut::create(ScaleTo::create(0.5, 0), 0.4), NULL));
+    this->runAction(Sequence::create(DelayTime::create(0.5f), CallFunc::create([=]{
+        eatAgain->removeFromParent();
+        eatAgain = nullptr;
+    }), NULL));
 }
 
 void ShareScene::favoriteshotScreen(){
@@ -179,6 +240,9 @@ void ShareScene::favoriteshotScreen(){
     if (eatAgain != nullptr) {
         eatAgain->setVisible(false);
     }
+    if (taptoEat != nullptr) {
+        taptoEat->setVisible(false);
+    }
     pBtn->setVisible(false);
     pRender->begin();
     this->visit();
@@ -189,27 +253,6 @@ void ShareScene::favoriteshotScreen(){
     
 
     Director::getInstance()->getRenderer()->render();
-    
-//    
-//    Sprite* pSprite = pRender->getSprite();
-//    pSprite->setPosition(Vec2(m_pBg->getContentSize().width*0.6 / 2.0, m_pBg->getContentSize().height*0.6/2.0));
-//    
-//    RenderTexture* pRender1 = RenderTexture::create(m_pBg->getContentSize().width*0.6, m_pBg->getContentSize().height*0.6, Texture2D::PixelFormat::RGBA8888);
-//    if (STVisibleRect::getGlvisibleSize().width / STVisibleRect::getGlvisibleSize().height > 768.0/1136.0) {
-//        pSprite->setScale((1136*0.6) / STVisibleRect::getGlvisibleSize().height);
-//    }else {
-//        pSprite->setScale((768*0.6) / STVisibleRect::getGlvisibleSize().width);
-//        
-//    }
-//    pRender1->begin();
-//    pSprite->visit();
-//    pRender1->end();
-//    
-//    pSprite->setScale(1.0);
-//    
-//    pRender1->getSprite()->setFlippedX(false);
-//    pRender1->getSprite()->getTexture()->setAliasTexParameters();
-//    Director::getInstance()->getRenderer()->render();
     
     Image* ppImage = pRender->newImage();
     string favName = FavManager::getInstance()->getfavItemName();
@@ -246,6 +289,9 @@ void ShareScene::favoriteshotScreen(){
     if (eatAgain != nullptr) {
         eatAgain->setVisible(true);
     }
+    if (taptoEat != nullptr) {
+        taptoEat->setVisible(true);
+    }
     pBtn->setVisible(true);
 }
 
@@ -255,6 +301,9 @@ void ShareScene::shareShotScreen(){
     pRender->setPosition(Vec2(-STVisibleRect::getDesignOffset().x, -STVisibleRect::getDesignOffset().y));
     
     GameLayerBase::setallButton(false);
+    if (taptoEat != nullptr) {
+        taptoEat->setVisible(false);
+    }
     if (eatAgain != nullptr) {
         eatAgain->setVisible(false);
     }
@@ -268,31 +317,8 @@ void ShareScene::shareShotScreen(){
     
     
     Director::getInstance()->getRenderer()->render();
-    Image* pImage = pRender->newImage();
-    pImage->saveToFile(STFileUtility::getStoragePath()+"shotscreen.png", false);
-    pImage->release();
     
-    Sprite* pSprite = pRender->getSprite();
-    pSprite->setPosition(Vec2(m_pBg->getContentSize().width*0.6 / 2.0, m_pBg->getContentSize().height*0.6/2.0));
-    
-    RenderTexture* pRender1 = RenderTexture::create(m_pBg->getContentSize().width*0.6, m_pBg->getContentSize().height*0.6, Texture2D::PixelFormat::RGBA8888);
-    if (STVisibleRect::getGlvisibleSize().width / STVisibleRect::getGlvisibleSize().height > 768.0/1136.0) {
-        pSprite->setScale((1136*0.6) / STVisibleRect::getGlvisibleSize().height);
-    }else {
-        pSprite->setScale((768*0.6) / STVisibleRect::getGlvisibleSize().width);
-        
-    }
-    pRender1->begin();
-    pSprite->visit();
-    pRender1->end();
-    
-    pSprite->setScale(1.0);
-    
-    pRender1->getSprite()->setFlippedX(false);
-    pRender1->getSprite()->getTexture()->setAliasTexParameters();
-    Director::getInstance()->getRenderer()->render();
-    
-    Image* ppImage = pRender1->newImage();
+    Image* ppImage = pRender->newImage();
     ShareFrameItem* pItem = ShareFrameItem::create(ppImage);
     addChild(pItem, kPrompt + 10);
     ppImage->release();
@@ -300,6 +326,9 @@ void ShareScene::shareShotScreen(){
     GameLayerBase::setallButton(true);
     if (eatAgain != nullptr) {
         eatAgain->setVisible(true);
+    }
+    if (taptoEat != nullptr) {
+        taptoEat->setVisible(true);
     }
     pBtn->setVisible(true);
 }

@@ -11,6 +11,7 @@
 FavItem::FavItem(string name, int tag){
     this->name = name;
     this->tag = tag;
+    iconName = name.replace(name.size() - 4, name.size() - 1, "_icon.png");
 }
 
 void FavItem::setName(string name) {
@@ -45,16 +46,15 @@ Image* FavItem::getImage(){
 
 
 string FavItem::getIconSprite(){
-    string iconString = name.replace(name.size() - 4, name.size() - 1, "_icon.png");
     string rootPath = STFileUtility::getStoragePath() + projDir + "/" + FAVORITE + "/";
     
-    if (!STFileUtility::isFileExist(rootPath + iconString)) {
+    if (!STFileUtility::isFileExist(rootPath + iconName)) {
         log("favorite icon图片没有找到");
         return NULL;
     }
     Image* cImage = new Image();
-    cImage->initWithImageFile((rootPath+ name).c_str());
-    Director::getInstance()->getTextureCache()->addImage(cImage, iconString);
+    cImage->initWithImageFile((rootPath+ iconName).c_str());
+    Director::getInstance()->getTextureCache()->addImage(cImage, iconName);
     cImage->release();
-    return iconString;
+    return iconName;
 }

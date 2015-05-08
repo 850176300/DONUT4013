@@ -22,10 +22,12 @@ class ShareFrameItem : public Layout{
         kEmailTags,
         kSaveTag,
     };
+    typedef std::function<void()> deleteFavItem;
 public:
     ~ShareFrameItem(){CC_SAFE_RELEASE(shareImage);}
     static ShareFrameItem* create(Image* pImage, bool withDelete = false);
     virtual bool init(Image* pImage, bool withDelete);
+    void setDeleteFavCallback(deleteFavItem callback);
 protected:
     virtual void onEnter();
     virtual void onEnterTransitionDidFinish();
@@ -34,6 +36,7 @@ private:
     Sprite* frame = nullptr;
     Image* shareImage = nullptr;
     bool hasDelete = false;
+    deleteFavItem _callback;
 };
 
 

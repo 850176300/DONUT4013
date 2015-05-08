@@ -40,7 +40,7 @@ bool DecorateScene::init(){
         
         Sprite* table = Sprite::create("make/bg_make_table_table.png");
         table->setAnchorPoint(Vec2(0.5, 0));
-        table->setPosition(Vec2(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y+GameLayerBase::getBannerSize()));
+        table->setPosition(Vec2(STVisibleRect::getCenterOfScene().x, STVisibleRect::getOriginalPoint().y));
         cannotEatLayer->addChild(table, 1);
         
         tableMaxy = table->getBoundingBox().getMaxY();
@@ -60,8 +60,9 @@ bool DecorateScene::init(){
         addFixedThings();
         addScrollView();
        
-        showNextButton(2.0f);
+        showNextButton(2.0f, false);
         showPreviousBtn(2.0f);
+        showResetBtn(2.5f);
         return true;
     }
     
@@ -81,6 +82,8 @@ void DecorateScene::addFixedThings(){
     mascot = FillMaterialModel::create("decorate/mascot sticker/mascot sticker1.png");
     spoon->removeCloseBtn();
     mascot->removeCloseBtn();
+    spoon->setIsHidden(true);
+    mascot->setIsHidden(true);
     mascot->setPosition(Vec2(195, 169));
     plate->setScale(0.8);
     breakFast->setScale(0.8f);
@@ -109,6 +112,8 @@ void DecorateScene::addFixedThings(){
         FillMaterialModel* temp = FillMaterialModel::create("decorate/mascot sticker/mascot sticker1.png");
         temp->setPosition(cerealBox->convertToWorldSpace(mascot->getPosition()));
         temp->removeCloseBtn();
+        temp->setIsHidden(true);
+        temp->setScale(1/0.7f);
         cannotEatLayer->addChild(temp, 2);
         mascot->removeFromParent();
         mascot = nullptr;
@@ -122,7 +127,7 @@ void DecorateScene::addFixedThings(){
 }
 
 void DecorateScene::addScrollView(){
-    typeScrollView = ui::ScrollView::create();
+    typeScrollView = ScrollPage::create();
     
     typeScrollView->setContentSize(Size(STVisibleRect::getGlvisibleSize().width, 124));
     vector<string> types = DataContainer::getInstance()->getAllDecorateType();
@@ -140,9 +145,9 @@ void DecorateScene::addScrollView(){
         typeScrollView->addChild(pBtn);
     }
     typeScrollView->setInnerContainerSize(Size(startx, 124));
-    typeScrollView->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
+    typeScrollView->setDirection(ScrollPage::Direction::HORIZONTAL);
     typeScrollView->setPosition(Vec2(STVisibleRect::getOriginalPoint().x+STVisibleRect::getGlvisibleSize().width, STVisibleRect::getOriginalPoint().y+GameLayerBase::getBannerSize()));
-    addChild(typeScrollView, 10);
+    addChild(typeScrollView, 7);
     
     
     
@@ -151,8 +156,15 @@ void DecorateScene::addScrollView(){
 void DecorateScene::onEnterTransitionDidFinish(){
     GameLayerBase::onEnterTransitionDidFinish();
     NotificationCenter::getInstance()->postNotification(kShotScreenEvent, __String::create("Yes"));
+
+    scrollPosition1 = Vec2(STVisibleRect::getOriginalPoint().x, STVisibleRect::getOriginalPoint().y+GameLayerBase::getBannerSize());
+    scrollPosition2 = Vec2(STVisibleRect::getOriginalPoint().x , STVisibleRect::getOriginalPoint().y+GameLayerBase::getBannerSize()) + Vec2(0, -300);
+    if (isFirstOnenter == false) {
+        return;
+    }
+    isFirstOnenter = false;
     if (typeScrollView->getPosition().x > STVisibleRect::getOriginalPoint().x) {
-        typeScrollView->runAction(EaseSineInOut::create(MoveBy::create(1.0, Vec2(-STVisibleRect::getGlvisibleSize().width, 0))));
+        typeScrollView->runAction(EaseSineInOut::create(MoveTo::create(1.0, scrollPosition1)));
         this->runAction(Sequence::create(DelayTime::create(0.8), CallFunc::create([=]{
             typeScrollView->scrollToPercentHorizontal(100, 0.8, true);
         }), DelayTime::create(1.0), CallFunc::create([=]{
@@ -163,38 +175,51 @@ void DecorateScene::onEnterTransitionDidFinish(){
 
 void DecorateScene::ontypeItemClicked(cocos2d::Ref *pRef, Widget::TouchEventType toucht){
     if (toucht == Widget::TouchEventType::ENDED) {
-        Button* pNode = dynamic_cast<Button*>(pRef);
-        if (currentSelType == pNode->getName()) {
+        if (typeScrollView->getNumberOfRunningActions() != 0) {
             return;
         }
-        if (currentSelType != "") {
-            Button* preBtn = (Button*)typeScrollView->getChildByName(currentSelType);
-            preBtn->loadTextureNormal("ui/decorate/main_d.png");
-        }
-        pNode->loadTextureNormal("ui/decorate/main_s.png");
+        Button* pNode = dynamic_cast<Button*>(pRef);
+
+        typeScrollView->runAction(EaseElasticInOut::create(MoveTo::create(0.5, scrollPosition2), 0.4));
         currentSelType = pNode->getName();
         if (itemScrollView == nullptr) {
             frameBanner = Sprite::create("ui/decorate/sub_box.png");
-            itemScrollView = ui::ScrollView::create();
+            itemScrollView = ScrollPage::create();
             itemScrollView->setContentSize(Size(STVisibleRect::getGlvisibleSize().width, 159));
-            itemScrollView->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
+            itemScrollView->setDirection(ScrollPage::Direction::HORIZONTAL);
             itemScrollView->setPosition(Vec2::ZERO);
             frameBanner->addChild(itemScrollView);
             
             frameBanner->setAnchorPoint(Vec2(0, 0));
-            frameBanner->setPosition(typeScrollView->getPosition()+Vec2(STVisibleRect::getGlvisibleSize().width, typeScrollView->getContentSize().height));
-            addChild(frameBanner, 10);
+            frameBanner->setPosition(scrollPosition1 + Vec2(STVisibleRect::getGlvisibleSize().width, 0));
+            addChild(frameBanner, 7);
+            
+            Button* downButton = Button::create("ui/decorate/sub_pulldown.png");
+            downButton->setAnchorPoint(Vec2(0.5, 0));
+            downButton->setPosition(Vec2(frameBanner->getContentSize().width/2.0, frameBanner->getContentSize().height-15));
+            downButton->addTouchEventListener(CC_CALLBACK_2(DecorateScene::onDownButtonClicked, this));
+            frameBanner->addChild(downButton, 1);
+//            downButton->setScale9Enabled(true);
             
             refreshData();
             
-            frameBanner->runAction(Sequence::create(EaseSineInOut::create(MoveBy::create(0.8, Vec2(-STVisibleRect::getGlvisibleSize().width, 0))), DelayTime::create(0.0f),CallFunc::create([=]{
+            frameBanner->runAction(Sequence::create(EaseSineInOut::create(MoveTo::create(0.8, scrollPosition1)), DelayTime::create(0.0f),CallFunc::create([=]{
                 itemScrollView->scrollToPercentHorizontal(60, 0.7, true);
             }), DelayTime::create(0.8), CallFunc::create([=]{
                 itemScrollView->scrollToPercentHorizontal(0, 0.8, true);
             }),NULL));
         }else {
             refreshData();
+            frameBanner->runAction(EaseElasticInOut::create(MoveTo::create(0.5, scrollPosition1), 0.4));
         }
+    }
+}
+
+void DecorateScene::onDownButtonClicked(cocos2d::Ref *pRef, Widget::TouchEventType touch) {
+    if (touch == Widget::TouchEventType::ENDED) {
+        frameBanner->runAction(Sequence::create(EaseElasticInOut::create(MoveTo::create(0.5, scrollPosition2), 0.4f), DelayTime::create(0.1), CallFunc::create([=]{
+            typeScrollView->runAction(EaseElasticInOut::create(MoveTo::create(0.5, scrollPosition1), 0.4f));
+        }),nullptr));
     }
 }
 
@@ -223,7 +248,8 @@ void DecorateScene::refreshData(){
 
         if (i > _infor.freeCount) {
             Sprite* lock = Sprite::create("ui/select/lock.png");
-            lock->setPosition(item->getPosition());
+            lock->setAnchorPoint(Vec2(1.0, 0));
+            lock->setPosition(item->getContentSize().width-15, 15);
             pBtn->addChild(lock, 2, kLockTags);
             lock->setScale(0.5f);
         }
@@ -234,39 +260,130 @@ void DecorateScene::refreshData(){
 
 void DecorateScene::onItemsThingClicked(cocos2d::Ref *pRef, Widget::TouchEventType ttouch) {
     if (ttouch == Widget::TouchEventType::ENDED) {
-        Node* pNode = dynamic_cast<Node*>(pRef);
-        if (pNode->getChildByTag(kLockTags) != nullptr) {
-            //goto shop layer 
+        if (itemScrollView->getNumberOfRunningActions() != 0) {
             return;
         }
+        Node* pNode = dynamic_cast<Node*>(pRef);
+        if (pNode->getChildByTag(kLockTags) != nullptr) {
+            //goto shop layer
+            pushTheScene<ShopScene>();
+            return;
+        }
+        if (decorateItemCantBeClick == true) {
+            return;
+        }
+        
         string decorateType = pNode->getName();
         string filePath = "decorate/"+decorateType+"/"+decorateType+convertIntToString(pNode->getTag()) + ".png";
+        Vec2 pos = Vec2::ZERO;
+        Vec2 startPos = pNode->convertToWorldSpace(Vec2(0, 0)) + Vec2(pNode->getContentSize().width/2.0, pNode->getContentSize().height/2.0);
+        int localZorder = 0;
+        Node* decorateItem = nullptr;
         if (decorateType == "bg") {
             filePath.replace(filePath.size() - 4, filePath.size() - 1, ".jpg");
             m_pBg->setTexture(filePath);
             allItems.bgName = filePath;
+            SoundPlayer::getInstance()->playDecorateEffect();
+            
         }else if (decorateType == "breakfast food"){
+            pos = breakFast->getPosition();
+            localZorder = 2;
+            breakFast->setOpacity(0);
             breakFast->setTexture(filePath);
             allItems.breakfastName = filePath;
+            breakFast->setPosition(startPos);
+            breakFast->setZOrder(50);
+            decorateItem = breakFast;
+            
         }else if (decorateType == "mascot sticker"){
-            mascot->changeItemTexture(filePath);
+            pos = mascot->getPosition();
+            mascot->runAction(Sequence::create(FadeOut::create(0.2), CallFunc::create([=]{
+                mascot->changeItemTexture(filePath);
+            }),FadeIn::create(0.3f),CallFunc::create([=]{
+                if (pos != Vec2::ZERO) {
+                    ParticleSystemQuad* _partilce = ParticleSystemQuad::create("decorate/starBlink.plist");
+                    _partilce->setPosition(pos);
+                    addChild(_partilce, 30);
+                    _partilce->setAutoRemoveOnFinish(true);
+                    SoundPlayer::getInstance()->playDecorateEffect();
+                }
+            }), NULL));
+            
             allItems.mascotName = filePath;
+ 
         }else if (decorateType == "spoon") {
+            localZorder = 10;
+            pos = spoon->getPosition();
+            spoon->setOpacity(0);
             spoon->changeItemTexture(filePath);
             allItems.spoonName = filePath;
+            spoon->setPosition(startPos);
+            spoon->setZOrder(50);
+            decorateItem = spoon;
         }else if (decorateType == "cereal box"){
+            pos = cerealBox->getPosition();
             cerealBox->setTexture(filePath);
             allItems.cerealName = filePath;
+            if (pos != Vec2::ZERO) {
+                ParticleSystemQuad* _partilce = ParticleSystemQuad::create("decorate/starBlink.plist");
+                _partilce->setPosition(pos);
+                addChild(_partilce, 30);
+                _partilce->setAutoRemoveOnFinish(true);
+                SoundPlayer::getInstance()->playDecorateEffect();
+            }
         }else {
-            FillMaterialModel* ptool = FillMaterialModel::create(filePath);
-            ptool->setPosition(STVisibleRect::getCenterOfScene().x, tableMaxy-100);
-            canEatLayer->addChild(ptool, 12);
+            FillMaterialModel* ptool = FillMaterialModel::create(filePath, true);
+            ptool->setPosition(startPos);
+            ptool->setOpacity(0);
+            canEatLayer->addChild(ptool, 50);
+        
+            localZorder = 12;
+            decorateItem = ptool;
+            pos = Vec2(STVisibleRect::getCenterOfScene().x, tableMaxy-100);
+        }
+        if (decorateItem != nullptr) {
+            log("the position us %.2f, %.2f", pos.x, pos.y);
+            log("the localZorder is %d", localZorder);
+            decorateItemCantBeClick = true;
+            decorateItem->runAction(Sequence::create(FadeIn::create(0.05f),EaseSineInOut::create(MoveTo::create(0.5, pos)), CallFunc::create(std::bind(&Node::setLocalZOrder, decorateItem, localZorder)), CallFunc::create([=]{
+                if (pos != Vec2::ZERO) {
+                    ParticleSystemQuad* _partilce = ParticleSystemQuad::create("decorate/starBlink.plist");
+                    _partilce->setPosition(pos);
+                    addChild(_partilce, 30);
+                    _partilce->setAutoRemoveOnFinish(true);
+                    SoundPlayer::getInstance()->playDecorateEffect();
+                    decorateItemCantBeClick = false;
+                }
+            }),NULL));
+        }
+        
+    }
+}
+
+void DecorateScene::purchaseSucceed(){
+    if (PurchaseManager::getInstance()->getIsDecorationUnlock() == true) {
+        Vector<Node*> childrens = itemScrollView->getChildren();
+        for (int i = 0; i < childrens.size(); ++i) {
+            childrens.at(i)->removeChildByTag(kLockTags);
         }
     }
+    itemScrollView->runAction(EaseSineInOut::create(MoveTo::create(0.3, scrollPosition1)));
+}
+
+void DecorateScene::onBannerDidLoaded(cocos2d::Ref *pref) {
+    NotificationCenter::getInstance()->removeObserver(this, kDidLoadBanner);
+    if (typeScrollView->getNumberOfRunningActions() != 0) {
+        this->runAction(Sequence::create(DelayTime::create(1.0f), CallFunc::create([=]{
+            typeScrollView->runAction(EaseSineInOut::create(MoveBy::create(0.5, Vec2(0, GameLayerBase::getBannerSize()))));
+        }), NULL));
+        return;
+    }
+    typeScrollView->runAction(EaseSineInOut::create(MoveBy::create(0.5, Vec2(0, GameLayerBase::getBannerSize()))));
 }
 
 void DecorateScene::nextClickEvent(){
     GameLayerBase::nextClickEvent();
+    allItems.alleatThings.clear();
     allItems.alleatThings.push_back(spoon->getItemThings());
     DataContainer::getInstance()->setAllDecorateItems(allItems);
     saveTheScreenShot();
@@ -280,6 +397,31 @@ void DecorateScene::preClickEvent(){
     
 }
 
+
+void DecorateScene::resetClickEvent(){
+    GameLayerBase::resetClickEvent();
+    canEatLayer->removeAllChildren();
+    
+    allItems.bgName = "make/bg_make_table_cover.png";
+    allItems.cerealName = "decorate/cereal box/cereal box1.png";
+    allItems.breakfastName = "decorate/breakfast food/breakfast food1.png";
+    allItems.spoonName = "decorate/spoon/spoon1.png";
+    allItems.mascotName = "decorate/mascot sticker/mascot sticker1.png";
+    
+    breakFast->setTexture("decorate/breakfast food/breakfast food1.png");
+    mascot->changeItemTexture("decorate/mascot sticker/mascot sticker1.png");
+    mascot->setPosition(cerealBox->convertToWorldSpace(Vec2(195, 169)));
+    mascot->setRotation(0);
+    mascot->setScale(1/0.7f);
+    
+    cerealBox->setTexture("decorate/cereal box/cereal box1.png");
+    m_pBg->setTexture("make/bg_make_table_cover.png");
+    spoon->setPosition(Vec2(STVisibleRect::getCenterOfScene().x, tableMaxy - 100));
+    spoon->changeItemTexture("decorate/spoon/spoon1.png");
+    spoon->setScale(1.0);
+    spoon->setRotation(0);
+    
+}
 
 void DecorateScene::saveTheScreenShot(){
     NotificationCenter::getInstance()->postNotification(kShotScreenEvent, __String::create("No"));
@@ -298,7 +440,7 @@ void DecorateScene::saveTheScreenShot(){
     pImage->saveToFile(STFileUtility::getStoragePath()+"temp.png", false);
     pImage->release();
     
-    saveImageTexture->begin();
+    saveImageTexture->beginWithClear(1.0, 1.0, 1.0, 0);
     cannotEatLayer->visit();
     saveImageTexture->end();
     

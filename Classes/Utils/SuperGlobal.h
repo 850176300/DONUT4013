@@ -47,7 +47,7 @@ enum ALLItemOrder{
 
 #pragma mark game layer base will use these strings
 #define PURCHASESUCCEED "PurchaseSucceed"
-
+#define kDidLoadBanner "DidLoadBanner"
 #define kPuaseGame "pause"
 #define kResumeGame "resume"
 #define kPuaseTip "pauseTip"
@@ -59,6 +59,13 @@ string convertIntToString(int num){
     stringstream ss;
     ss<<tempString->getCString();
     return ss.str();
+}
+
+inline void AsyncCacheAnimation(const string& path , int min, int max, string formate = ".png");
+void AsyncCacheAnimation(const string& path , int min, int max, string formate){
+    for (int i = min; i <= max; ++i) {
+        Director::getInstance()->getTextureCache()->addImageAsync(path+convertIntToString(i)+formate, nullptr);
+    }
 }
 
 inline Animation* createAnimation(const string& path, int min, int max, string formate = ".png");

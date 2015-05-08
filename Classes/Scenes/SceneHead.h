@@ -18,5 +18,12 @@
 #include "CocosHelper.h"
 #include "DecorateScene.h"
 #include "ShareScene.h"
+#include "FavoriteScene.h"
+#include "ShopScene.h"
+#include "LoadingScene.h"
+#include "SoundPlayer.h"
+#include "STSystemFunction.h"
+#include "STAds.h"
+#include "PurchaseManager.h"
 
 #endif /* defined(__DONUT4013__SceneHead__) */

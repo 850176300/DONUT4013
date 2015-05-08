@@ -7,7 +7,7 @@
 //
 
 #include "DataContainer.h"
-
+#include "SuperGlobal.h"
 
 DataContainer::DataContainer(){
     initFlavorData();
@@ -69,6 +69,7 @@ void DataContainer::initmilkData(){
         __String* V = (__String*)item->objectForKey("V");
         _theInfor.hsv = Vec3(atoi(H->getCString()), atoi(S->getCString()), atoi(V->getCString()));
         _theInfor.isHSVuse = item->valueForKey("usethis")->boolValue();
+        _theInfor.isFree = item->valueForKey("IsFree")->boolValue();
         milkData[type->getCString()] = _theInfor;
     };
 }
@@ -78,6 +79,14 @@ void DataContainer::initDecorate(){
     CCAssert(dict != NULL, "Shape-file not found"); // not triggered - cocos2dx delivers empty dict if non was found
     CCAssert(dict->count() != 0, "plist file empty or not existing");
     __Array* thekeys = dict->allKeys();
+    
+    thekeys->setObject(__String::create("candy"), 0);
+    thekeys->setObject(__String::create("chocolate"), 1);
+    thekeys->setObject(__String::create("breakfast food"), 2);
+    thekeys->setObject(__String::create("cereal box"), 3);
+    thekeys->setObject(__String::create("spoon"), 4);
+    thekeys->setObject(__String::create("mascot sticker"), 5);
+    thekeys->setObject(__String::create("bg"), 6);
     
     Ref *_obj;
     CCARRAY_FOREACH(thekeys, _obj){
@@ -127,4 +136,25 @@ DataContainer::DecorateInfor DataContainer::getDecorateAtName(string name) {
 
 vector<string> DataContainer::getAllDecorateType(){
     return decorateTypes;
+}
+
+void DataContainer::unlockTheFlavorData(){
+    DataContainer::flavorMap::iterator it = flavorData.begin();
+    for (; it != flavorData.end(); ++it) {
+        it->second.isFree = true;
+    }
+}
+
+void DataContainer::unlockTheMilkData(){
+    DataContainer::milkMap::iterator it = milkData.begin();
+    for (; it != milkData.end(); ++it) {
+        it->second.isFree = true;
+    }
+}
+
+void DataContainer::unlockTheDecorateData(){
+    DataContainer::decorateMap::iterator it = decorateData.begin();
+    for (; it != decorateData.end(); ++it) {
+        it->second.freeCount = it->second.totalCount + 1;
+    }
 }

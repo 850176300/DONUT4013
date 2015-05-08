@@ -51,11 +51,11 @@ static IOSIAPManager *s_instance=nil;
         isPurchasing = YES;
         
 //        //调用公司的公共库代码去购买
-        [[IAPurchase sharedPurchase] setDelegate:(id)self];
-        [[IAPurchase sharedPurchase] startRequestWithProductIdentifier:pid];
-//        IAPurchase* item = [[[IAPurchase alloc] init] autorelease];
-//        item.curProductID = pid;
-//        [self purchaseSuccess:item];
+//        [[IAPurchase sharedPurchase] setDelegate:(id)self];
+//        [[IAPurchase sharedPurchase] startRequestWithProductIdentifier:pid];
+        IAPurchase* item = [[[IAPurchase alloc] init] autorelease];
+        item.curProductID = pid;
+        [self purchaseSuccess:item];
         isPurchasing = NO;
     }
 }

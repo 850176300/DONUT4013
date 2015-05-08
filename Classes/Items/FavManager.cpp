@@ -70,13 +70,8 @@ bool FavManager::removeFavByIndex(int index) {
     log("the index is %d", index);
     bool flag = false;
     FavItem* item = (FavItem*)allFavs->getObjectAtIndex(index);
-    string rootPath("");
-#if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    rootPath = STFileUtility::getStoragePath()+"/"+projDir + "/" + FAVORITE + "/";
-#else
-    rootPath = STFileUtility::getStoragePath() + projDir + "/" + FAVORITE + "/";
-#endif
-    if (STFileUtility::removeDir((rootPath+item->getName()).c_str())) {
+    string rootPath = STFileUtility::getStoragePath() + projDir + "/" + FAVORITE + "/";
+    if (STFileUtility::removeDir((rootPath+item->getName()).c_str()) && STFileUtility::removeDir((rootPath+item->getIconName()).c_str())) {
         log("delete the file succeed!!!");
         allFavs->removeObject(item);
         flag = true;

@@ -25,6 +25,7 @@ public:
     void setTag(int tag);
     string getName();
     int getTag();
+    CC_SYNTHESIZE(string, iconName, IconName);
     
     Image* getImage();
     string getIconSprite();

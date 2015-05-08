@@ -10,6 +10,14 @@
 #include "PageItem.h"
 #include "SwallowTouchLayout.h"
 
+ChooseFlavor::ChooseFlavor(){
+    flavorData = DataContainer::getInstance()->getFlavorData();
+    DataContainer::flavorMap::iterator it = flavorData.begin();
+    for (; it != flavorData.end(); ++it) {
+        Director::getInstance()->getTextureCache()->addImage(it->first);
+    }
+}
+
 Scene* ChooseFlavor::scene(){
     Scene* pScene = Scene::create();
     
@@ -23,7 +31,7 @@ Scene* ChooseFlavor::scene(){
 bool ChooseFlavor::init(){
     if (GameLayerBase::initWithBgFileName("make/bg_make_cover.png")) {
 
-        flavorData = DataContainer::getInstance()->getFlavorData();
+        
         DataContainer::flavorMap::iterator it = flavorData.begin();
         bg2 = Sprite::create("make/bg/bg_"+it->first+".png");
         bg2->setPosition(STVisibleRect::getCenterOfScene() + Vec2(0, 120));
@@ -31,6 +39,8 @@ bool ChooseFlavor::init(){
 
         addScrollView();
         showPreviousBtn(3.0);
+        
+         this->scheduleOnce(schedule_selector(ChooseFlavor::cachePictures), 1.5f);
         return true;
     }
     return false;
@@ -50,19 +60,19 @@ void ChooseFlavor::addScrollView(){
             float pos1 = -1;
             float pos2 = -1;
             float selfpos = flavorScrollview->getChildByTag(index)->getPosition().x + pos.x - STVisibleRect::getGlvisibleSize().width/2.0;
-            flavorScrollview->getChildByTag(index)->setScale(1.0-0.2*(fabs(selfpos)/ItemSpace));
+            flavorScrollview->getChildByTag(index)->setScale(1.0-(1.0-ItemScale)*(fabs(selfpos)/ItemSpace));
             flavorScrollview->getChildByTag(index)->setPositionY(STVisibleRect::getGlvisibleSize().height/2.0+ 120*(fabs(selfpos))/ItemSpace);
             if (index - 1 >= 0) {
                 pos1 = flavorScrollview->getChildByTag(index - 1)->getPosition().x + pos.x - STVisibleRect::getGlvisibleSize().width/2.0;
                 if (fabs(pos1) < ItemSpace){
-                    flavorScrollview->getChildByTag(index - 1)->setScale(ItemScale+0.2*(ItemSpace-fabs(pos1))/ItemSpace);
+                    flavorScrollview->getChildByTag(index - 1)->setScale(ItemScale+(1.0-ItemScale)*(ItemSpace-fabs(pos1))/ItemSpace);
                     flavorScrollview->getChildByTag(index - 1)->setPositionY(STVisibleRect::getGlvisibleSize().height/2.0 + + 120*(fabs(pos1))/ItemSpace);
                 }
             }
             if (index + 1 < count) {
                 pos2 = flavorScrollview->getChildByTag(index + 1)->getPosition().x + pos.x - STVisibleRect::getGlvisibleSize().width/2.0;
                 if (fabs(pos2) < ItemSpace){
-                    flavorScrollview->getChildByTag(index + 1)->setScale(ItemScale+0.2*(ItemSpace-fabs(pos2))/ItemSpace);
+                    flavorScrollview->getChildByTag(index + 1)->setScale(ItemScale+(1.0-ItemScale)*(ItemSpace-fabs(pos2))/ItemSpace);
                     flavorScrollview->getChildByTag(index + 1)->setPositionY(STVisibleRect::getGlvisibleSize().height/2.0 + 120*(fabs(pos2))/ItemSpace);
                 }
             }
@@ -116,6 +126,7 @@ void ChooseFlavor::addScrollView(){
     for(it = flavorData.begin();it != flavorData.end();++it){
         PageItem* pButton = PageItem::create("make/flavor/"+it->first+".png");
         pButton->setName(it->first);
+        pButton->setScale9Enabled(true);
         pButton->addTouchEventListener(CC_CALLBACK_2(ChooseFlavor::onScrollItemClick, this));
         pButton->setPosition(Vec2(startX, STVisibleRect::getGlvisibleSize().height/2.0+120));
         if (count != 0) {
@@ -126,9 +137,18 @@ void ChooseFlavor::addScrollView(){
             pButton->setCenterOrNot(true);
             pButton->setPressedActionEnabled(true);
         }
-        startX += pButton->getContentSize().width + 60;
+        startX += pButton->getContentSize().width + 40;
         flavorScrollview->addChild(pButton);
         pButton->setTag(count++);
+        
+        DataContainer::FlavorInfor _infor = it->second;
+        if (_infor.isFree == false) {
+            Sprite* lock = Sprite::create("ui/select/lock.png");
+            lock->setAnchorPoint(Vec2(1.0, 0));
+            lock->setPosition(Vec2(pButton->getContentSize().width-15, 15));
+            lock->setTag(kLockTags);
+            pButton->addChild(lock);
+        }
         
     }
     startX += STVisibleRect::getGlvisibleSize().width / 2.0 - 40 - 346;
@@ -144,22 +164,37 @@ void ChooseFlavor::onScrollItemClick(cocos2d::Ref *pRef, Widget::TouchEventType 
         if (pNode->getCenterOrNot() == false) {
             return;
         }
-        SwallowTouchLayout* maskLayout = SwallowTouchLayout::create();
-        maskLayout->setPosition(STVisibleRect::getCenterOfScene());
-        maskLayout->setBackGroundImage("ui/mask.png");
-        maskLayout->setTouchEnabled(true);
-        maskLayout->setBackGroundImageOpacity(0);
-        this->addChild(maskLayout, kHomeBtn - 11);
+        if (pNode->getChildByTag(kLockTags) != nullptr) {
+            pushTheScene<ShopScene>();
+        }else {
+            unschedule(schedule_selector(ChooseFlavor::shakeTheTitle));
+            SoundPlayer::getInstance()->playChooseEffect();
+            SwallowTouchLayout* maskLayout = SwallowTouchLayout::create();
+            maskLayout->setPosition(STVisibleRect::getCenterOfScene());
+            maskLayout->setBackGroundImage("ui/mask.png");
+            maskLayout->setTouchEnabled(true);
+            maskLayout->setBackGroundImageOpacity(0);
+            this->addChild(maskLayout, kHomeBtn - 11);
+            
+            Sprite* pSprite = Sprite::create("make/flavor/"+pNode->getName()+".png");
+            pSprite->setPosition(STVisibleRect::getCenterOfScene());
+            this->addChild(pSprite);
+            pNode->setVisible(false);
+            flavorScrollview->runAction(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(-1000, 0)), 0.3));
+            
+            pSprite->runAction(RepeatForever::create(EaseSineInOut::create(JumpBy::create(0.8, Vec2(0, 0), 150, 1))));
+            pSprite->runAction(Sequence::create(DelayTime::create(2.0), CallFunc::create(std::bind(&ChooseFlavor::animalAction, this, pNode, maskLayout)), NULL));
+        }
         
-        Sprite* pSprite = Sprite::create("make/flavor/"+pNode->getName()+".png");
-        pSprite->setPosition(STVisibleRect::getCenterOfScene());
-        this->addChild(pSprite);
-        pNode->setVisible(false);
-        flavorScrollview->runAction(EaseElasticInOut::create(MoveBy::create(1.0, Vec2(-1000, 0)), 0.3));
-        
-        pSprite->runAction(RepeatForever::create(EaseSineInOut::create(JumpBy::create(0.8, Vec2(0, 0), 150, 1))));
-        pSprite->runAction(Sequence::create(DelayTime::create(2.0), CallFunc::create(std::bind(&ChooseFlavor::animalAction, this, pNode, maskLayout)), NULL));
-        
+    }
+}
+
+void ChooseFlavor::purchaseSucceed(){
+    if (PurchaseManager::getInstance()->getIsCerealUnlock() == true) {
+        Vector<Node*> childrens = flavorScrollview->getChildren();
+        for (int i = 0; i < childrens.size(); ++i) {
+            childrens.at(i)->removeChildByTag(kLockTags);
+        }
     }
 }
 
@@ -168,17 +203,21 @@ void ChooseFlavor::animalAction(cocos2d::Node *pNode, cocos2d::ui::Layout *pLayo
     pLayout->setBackGroundImageOpacity(150);
     DataContainer::getInstance()->setChooseFlavor(pNode->getName());
     
+    SoundPlayer::getInstance()->playAnimationEffect();
+    
     int max = DataContainer::getInstance()->getAnimalAnimationCount(type);
     Animation* panimation = createAnimation("animals/animation/"+type+"/"+type, 0, max);
     panimation->setLoops(-1);
-    panimation->setDelayPerUnit(0.2);
+    panimation->setDelayPerUnit(0.1f);
     Sprite* animal = Sprite::create("animals/animation/"+type+"/"+type+convertIntToString(0)+".png");
+    animal->setScale(0.6f);
     animal->setAnchorPoint(Vec2(0.5, 0));
     animal->setPosition(STVisibleRect::getPointOfSceneRightBottom() + Vec2(300, 20));
     addChild(animal, kHomeBtn - 10);
     
-    animal->runAction(Sequence::create(EaseSineInOut::create(JumpTo::create(0.8, Vec2(STVisibleRect::getCenterOfScene().x, 20), 500, 1)), Animate::create(panimation),NULL));
+    animal->runAction(Sequence::create(EaseSineInOut::create(JumpTo::create(2.5, Vec2(STVisibleRect::getCenterOfScene().x+200, 70), 500, 3)), Animate::create(panimation),NULL));
     showNextButton(1.5f);
+   
 }
 
 void ChooseFlavor::changeBackGround(float) {
@@ -188,17 +227,38 @@ void ChooseFlavor::changeBackGround(float) {
 
 void ChooseFlavor::onEnterTransitionDidFinish(){
     GameLayerBase::onEnterTransitionDidFinish();
-
-    flavorScrollview->scrollToPercentHorizontal(100, 1.5, true);
-    
+    if (title != nullptr) {
+        return;
+    }
     flavorScrollview->stopAllActions();
-    flavorScrollview->runAction(Sequence::create(DelayTime::create(0.8), CallFunc::create(std::bind(&ScrollPage::scrollToLeft, flavorScrollview, 1.5, true)),DelayTime::create(1.0f), CallFunc::create([=]{
-        Sprite* title = Sprite::create("ui/select/select_flavor.png");
+    flavorScrollview->runAction(Sequence::create(DelayTime::create(0.8), CallFunc::create([=]{
+        flavorScrollview->scrollToPercentHorizontal(50, 2.5, true);
+    }),DelayTime::create(2.1f), CallFunc::create(std::bind(&ScrollPage::scrollToLeft, flavorScrollview, 3.0, true)), NULL));
+    
+    this->runAction(Sequence::create(DelayTime::create(3.0), CallFunc::create([=]{
+        title = Sprite::create("ui/select/select_flavor.png");
         title->setPosition(STVisibleRect::getCenterOfScene().x, STVisibleRect::getPointOfSceneRightUp().y + 200);
         this->addChild(title);
-        title->runAction(EaseElasticInOut::create(MoveBy::create(0.9, Vec2(0, -300)), 0.5));
+        SoundPlayer::getInstance()->playShowTipEffect();
+        title->runAction(Sequence::create(EaseElasticInOut::create(MoveBy::create(0.9, Vec2(0, -300)), 0.5), DelayTime::create(0.5f),Sequence::create(EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), EaseSineInOut::create(MoveBy::create(0.2, Vec2(0, -20))), EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))),EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), EaseSineInOut::create(MoveBy::create(0.2, Vec2(0, -20))), EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), NULL),nullptr));
+        
+        this->schedule(schedule_selector(ChooseFlavor::shakeTheTitle), 5.0f);
     }), NULL));
     
+
+    
+}
+
+void ChooseFlavor::cachePictures(float) {
+    vector<string> types = {"bees","bird","squirrel","rabbit"};
+    for (vector<string>::size_type i = 0; i < types.size(); ++i) {
+        int max = DataContainer::getInstance()->getAnimalAnimationCount(types.at(i));
+        AsyncCacheAnimation("animals/animation/"+types.at(i)+"/"+types.at(i), 0, max, ".png");
+    }
+}
+
+void ChooseFlavor::shakeTheTitle(float) {
+    title->runAction(Sequence::create(EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), EaseSineInOut::create(MoveBy::create(0.2, Vec2(0, -20))), EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))),EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), EaseSineInOut::create(MoveBy::create(0.2, Vec2(0, -20))), EaseSineInOut::create(MoveBy::create(0.1, Vec2(0, 10))), NULL));
 }
 
 void ChooseFlavor::nextClickEvent(){
@@ -208,5 +268,9 @@ void ChooseFlavor::nextClickEvent(){
 
 void ChooseFlavor::preClickEvent(){
     GameLayerBase::preClickEvent();
+    if (PurchaseManager::getInstance()->getRemoveAd() == false) {
+        STAds ads;
+        ads.requestInterstitialAds(true);
+    }
     replaceTheScene<HomeScene>();
 }

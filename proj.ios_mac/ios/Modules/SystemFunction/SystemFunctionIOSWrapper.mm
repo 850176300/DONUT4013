@@ -81,15 +81,15 @@ static SystemFunctionManager *s_instance=nil;
 {
     NSMutableString *emailBody = [[NSMutableString alloc] initWithString:@"<html><body>"];
     [emailBody appendString:[NSString stringWithFormat:@"%@%@%@%@%@",
-                             @"<p>Hey!</p>",
-                             @"<p>Fantastic! I just made the delicious Cereal. Download this app, Let's have fun playing together!</p>",
+                             @"<p>Fantastic!</p>",
+                             @"<p>I just made the delicious Cereal. Download this app, Let's have fun playing together!</p>",
                              @"<p>I think you will like this also!</p>",
                              @"<p>Get it NOW!</p>",
-                             @"<p><a href=‘https://itunes.apple.com/app/id694502530’>https://itunes.apple.com/app/id694502530</a></p>"]];
+                             @"<p><a href=‘https://itunes.apple.com/app/id981035205’>https://itunes.apple.com/app/id981035205</a></p>"]];
     
     //    [emailBody appendString:content];
     
-    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation([UIImage imageNamed:file])];
+    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation([UIImage imageWithContentsOfFile:file])];
     [emailBody appendString:@"</body></html>"];
     Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
     if (nil != mailClass) {

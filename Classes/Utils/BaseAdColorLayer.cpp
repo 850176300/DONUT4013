@@ -8,7 +8,7 @@
 
 #include "BaseAdColorLayer.h"
 #include "STAds.h"
-//#include "PurchaseManager.h"
+#include "PurchaseManager.h"
 #include "GameLayerBase.h"
 #include "SuperGlobal.h"
 
@@ -25,12 +25,12 @@ void BaseAdColorLayer::onEnter(){
     LayerColor::onEnter();
     if (getParent()) {
         GameLayerBase* _layer = (GameLayerBase*)getParent();
-//        if (_layer->isNeedShowAD()) {
-//            if (PurchaseManager::getInstance()->getRemoveAd() == false) {
-//                STAds ads;
-//                ads.setAdsVisibility(false);
-//            }
-//        }
+        if (_layer->isNeedShowAD()) {
+            if (PurchaseManager::getInstance()->getRemoveAd() == false) {
+                STAds ads;
+                ads.setAdsVisibility(false);
+            }
+        }
     }
 }
 
@@ -38,13 +38,13 @@ void BaseAdColorLayer::onExit(){
     LayerColor::onExit();
     if (getParent()) {
         GameLayerBase* _layer = (GameLayerBase*)getParent();
-//        if (_layer->isNeedShowAD()) {
-//            if (PurchaseManager::getInstance()->getRemoveAd() == false) {
-//                STAds ads;
-//                ads.requestAds();
-//                ads.setAdsVisibility(true);
-//            }
-//        }
+        if (_layer->isNeedShowAD()) {
+            if (PurchaseManager::getInstance()->getRemoveAd() == false) {
+                STAds ads;
+                ads.requestAds();
+                ads.setAdsVisibility(true);
+            }
+        }
     }
 }
 

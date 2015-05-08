@@ -45,8 +45,14 @@ protected:
     void startHandTip();
     virtual void onAcceleration(cocos2d::Acceleration *acc, cocos2d::Event *unused_event);
     void startDeviceTip();
+    void shakeTheTitle(float);
+    void stritheCereal(float);
+    void setStriDoneTexture();
+    void setStriResetTexture();
 private:
     float upH = -335 + 40;
+    int recordCount = 0;
+    bool striMove = false;
     ControlButton* flavorBox = nullptr;
     Sprite* milkBox = nullptr;
     Sprite* flavorinBowl = nullptr;

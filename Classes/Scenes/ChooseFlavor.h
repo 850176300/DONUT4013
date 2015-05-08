@@ -22,7 +22,7 @@ class ChooseFlavor : public GameLayerBase{
 public:
     static Scene* scene();
     
-    ChooseFlavor(){  };
+    ChooseFlavor();
     ~ChooseFlavor(){  };
     
     virtual bool init();
@@ -37,15 +37,19 @@ protected:
     void animalAction(Node* pNode, Layout* pLayout);
     virtual void nextClickEvent();
     virtual void preClickEvent();
+    void shakeTheTitle(float);
+    void cachePictures(float);
+    virtual void purchaseSucceed();
 private:
     ScrollPage* flavorScrollview = nullptr;
     int count = 0;//统计flavor个数
-    int ItemSpace = 384.0;
+    int ItemSpace = 386.0;
     float ItemScale = 0.7;
 //    Image* hsvBackground = nullptr;
     Sprite* bg2 = nullptr;
     int currentIndex = 0;
     DataContainer::flavorMap flavorData;
+    Sprite* title= nullptr;
 };
 
 #endif /* defined(__DONUT4013__ChooseFlavor__) */

@@ -10,6 +10,7 @@
 #include "SystemFunctionIOSWrapper.h"
 #import "ImageSave.h"
 #import "MoreGameURL.h"
+#import "DeviceHelper.h"
 
 STSystemFunction::STSystemFunction()
 {
@@ -72,6 +73,9 @@ bool STSystemFunction::checkNetworkAvailable()
 
 bool STSystemFunction::isTabletAvailable()
 {
+    if ([DeviceHelper isIphoneTarget] == YES) {
+        return false;
+    }
     return true;
 }
 

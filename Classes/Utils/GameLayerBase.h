@@ -53,16 +53,19 @@ public:
     void setADVisible(bool visible);
     Action* getJellyAction();
     void showHomeButton(float dt);
-    void showNextButton(float dt);
+    void showNextButton(float dt, bool withJump = true);
     void showPreviousBtn(float dt);
     void showFavoriteBtn(float dt);
     void showShareBtn(float dt);
+    void showResetBtn(float dt);
     
     virtual void homeClickEvent();
     virtual void nextClickEvent();
     virtual void preClickEvent();
     virtual void shareClickEvent();
     virtual void favoriteClickEvent();
+    virtual void resetClickEvent();
+    virtual void purchaseSucceed();
     
     virtual void onPause();
     virtual void onResume();
@@ -85,12 +88,16 @@ protected:
     void onPreButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
     void onShareButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
     void onFavoriteButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
+    void onResetButtonClicked(cocos2d::Ref *pRef, Control::EventType type);
     void onPauseGame(Ref *ref);
     void onResumeGame(Ref* ref);
+    void nextButtonAction(float);
+    void onRecievePurchaseMesg(Ref* pRef);
     
 public:
     ControlButton* homeBtn = nullptr;
     ControlButton* nextBtn = nullptr;
+    ControlButton* resetBtn = nullptr;
     ControlButton* preBtn = nullptr;
     ControlButton* favoriteBtn = nullptr;
     ControlButton* shareBtn = nullptr;

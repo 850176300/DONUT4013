@@ -7,7 +7,7 @@
 		<key>pcount</key>
 		<string>2</string>
 		<key>IsFree</key>
-		<false/>
+		<true/>
 		<key>type</key>
 		<string>squirrel</string>
 		<key>S</key>
@@ -22,7 +22,7 @@
 		<key>pcount</key>
 		<string>1</string>
 		<key>IsFree</key>
-		<false/>
+		<true/>
 		<key>type</key>
 		<string>bird</string>
 		<key>S</key>
@@ -37,7 +37,7 @@
 		<key>pcount</key>
 		<string>1</string>
 		<key>IsFree</key>
-		<false/>
+		<true/>
 		<key>type</key>
 		<string>rabbit</string>
 		<key>S</key>
@@ -52,7 +52,7 @@
 		<key>pcount</key>
 		<string>2</string>
 		<key>IsFree</key>
-		<false/>
+		<true/>
 		<key>type</key>
 		<string>rabbit</string>
 		<key>S</key>
@@ -67,7 +67,7 @@
 		<key>pcount</key>
 		<string>1</string>
 		<key>IsFree</key>
-		<false/>
+		<true/>
 		<key>type</key>
 		<string>rabbit</string>
 		<key>S</key>

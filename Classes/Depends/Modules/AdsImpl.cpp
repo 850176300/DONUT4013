@@ -3,6 +3,7 @@
 #include "SuperGlobal.h"
 void AdsImpl::onBannerLoadSuccessfully()
 {
+//     NotificationCenter::getInstance()->postNotification(kDidLoadBanner);
 }
 
 void AdsImpl::onBannerLoadFailed( int errorCode )

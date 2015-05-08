@@ -4,6 +4,8 @@
 <dict>
 	<key>apple</key>
 	<dict>
+		<key>IsFree</key>
+		<true/>
 		<key>usethis</key>
 		<true/>
 		<key>H</key>
@@ -15,6 +17,8 @@
 	</dict>
 	<key>banana</key>
 	<dict>
+		<key>IsFree</key>
+		<true/>
 		<key>usethis</key>
 		<true/>
 		<key>H</key>
@@ -26,6 +30,8 @@
 	</dict>
 	<key>blueberry</key>
 	<dict>
+		<key>IsFree</key>
+		<true/>
 		<key>usethis</key>
 		<true/>
 		<key>H</key>
@@ -37,6 +43,8 @@
 	</dict>
 	<key>cherry</key>
 	<dict>
+		<key>IsFree</key>
+		<true/>
 		<key>usethis</key>
 		<true/>
 		<key>H</key>
@@ -48,6 +56,8 @@
 	</dict>
 	<key>chocolate</key>
 	<dict>
+		<key>IsFree</key>
+		<true/>
 		<key>usethis</key>
 		<true/>
 		<key>H</key>
@@ -59,41 +69,49 @@
 	</dict>
 	<key>lowfate</key>
 	<dict>
-		<key>usethis</key>
+		<key>IsFree</key>
 		<false/>
+		<key>usethis</key>
+		<true/>
 		<key>H</key>
-		<string>11</string>
+		<string>-5</string>
 		<key>S</key>
-		<string>41</string>
+		<string>-2</string>
 		<key>V</key>
-		<string>0</string>
+		<string>5</string>
 	</dict>
 	<key>milk</key>
 	<dict>
-		<key>usethis</key>
+		<key>IsFree</key>
 		<false/>
+		<key>usethis</key>
+		<true/>
 		<key>H</key>
-		<string>11</string>
+		<string>-5</string>
 		<key>S</key>
-		<string>41</string>
+		<string>-2</string>
 		<key>V</key>
-		<string>0</string>
+		<string>5</string>
 	</dict>
 	<key>soy</key>
 	<dict>
-		<key>usethis</key>
+		<key>IsFree</key>
 		<false/>
+		<key>usethis</key>
+		<true/>
 		<key>H</key>
-		<string>11</string>
+		<string>-5</string>
 		<key>S</key>
-		<string>41</string>
+		<string>-2</string>
 		<key>V</key>
-		<string>0</string>
+		<string>5</string>
 	</dict>
 	<key>strawberry</key>
 	<dict>
 		<key>usethis</key>
 		<true/>
+		<key>IsFree</key>
+		<false/>
 		<key>H</key>
 		<string>24</string>
 		<key>S</key>

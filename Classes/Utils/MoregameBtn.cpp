@@ -9,15 +9,21 @@
 #include "MoregameBtn.h"
 #include "STSystemFunction.h"
 #include "STAds.h"
+#include "SuperGlobal.h"
+#include "PurchaseManager.h"
 
 MoregameBtn::MoregameBtn(){
     _direction = HORIZONTAL;
     _viewModel = HomeView;
     NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(MoregameBtn::onLoadmoregameIconSucceed), kMoreGameLoadSucceed, nullptr);
+    if (getBannerHeight() == 0) {
+        NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(MoregameBtn::onBannerDidload), kDidLoadBanner, nullptr);
+    }
 }
 
 MoregameBtn::~MoregameBtn(){
     NotificationCenter::getInstance()->removeObserver(this, kMoreGameLoadSucceed);
+    NotificationCenter::getInstance()->removeObserver(this, kDidLoadBanner);
 }
 
 bool MoregameBtn::init(){
@@ -59,6 +65,13 @@ void MoregameBtn::startLoading(){
 void MoregameBtn::moregameClicked(cocos2d::Ref *pObj) {
     STSystemFunction st;
     st.showMoreGame();
+}
+
+void MoregameBtn::onBannerDidload(cocos2d::Ref *pRef) {
+    NotificationCenter::getInstance()->removeObserver(this, kDidLoadBanner);
+    if (_viewModel == GameView) {
+        this->runAction(EaseSineInOut::create(MoveBy::create(0, Vec2(0, getBannerHeight()))));
+    }
 }
 
 void MoregameBtn::onEnter(){
@@ -119,20 +132,18 @@ float MoregameBtn::getBannerHeight(){
     if (_viewModel == HomeView) {
         return 0;
     }
-    float size[2] = {0,0};
-    STAds ads;
-    ads.getBannerSize(size);
-    float bannerSize = size[1];
-    
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+
+    if (PurchaseManager::getInstance()->getRemoveAd() == true) {
+        return 0;
+    }
+    float bannerSize = 0;
     STSystemFunction st;
     bool istablet = st.isTabletAvailable();
-    if (istablet == true) {
+    if (istablet == false) {
         bannerSize = 50;
     }else {
         bannerSize = 90;
         
     }
-#endif
     return bannerSize;
 }

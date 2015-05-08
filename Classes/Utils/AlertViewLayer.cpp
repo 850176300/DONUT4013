@@ -98,6 +98,9 @@ bool AlertViewLayer::initWithTitle(const char* title, AlertButtonCount pcount)
         _No->removeFromParent();
         _No = nullptr;
         _Yes->setPositionX(450/2.0);
+       _Yes->setBackgroundSpriteForState(Scale9Sprite::create("ui/popup/popup_btn_ok.png"), Control::State::NORMAL);
+        _Yes->setBackgroundSpriteForState(Scale9Sprite::create("ui/popup/popup_btn_ok.png"), Control::State::HIGH_LIGHTED);
+        _Yes->setBackgroundSpriteForState(Scale9Sprite::create("ui/popup/popup_btn_ok.png"), cocos2d::extension::Control::State::DISABLED);
     }
     _banner->runAction(Sequence::create(EaseBackOut::create(ScaleTo::create(.3f, 1)),CallFunc::create([&](){
         if (_No) {

@@ -11,6 +11,7 @@
 //#include "PurchaseManager.h"
 #include "STAds.h"
 #include "STSystemFunction.h"
+#include "PurchaseManager.h"
 
 GameLayerBase::GameLayerBase()
 {
@@ -18,6 +19,7 @@ GameLayerBase::GameLayerBase()
     nextBtn = nullptr;
     NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(GameLayerBase::onPauseGame), kPuaseGame, nullptr);
     NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(GameLayerBase::onResumeGame), kResumeGame, nullptr);
+    NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(GameLayerBase::onRecievePurchaseMesg), PURCHASESUCCEED, nullptr);
     
 }
 
@@ -25,6 +27,15 @@ GameLayerBase::~GameLayerBase(){
     log("the class %s consturctor========", __FUNCTION__);
     NotificationCenter::getInstance()->removeObserver(this, kPuaseGame);
     NotificationCenter::getInstance()->removeObserver(this, kResumeGame);
+    NotificationCenter::getInstance()->removeObserver(this, PURCHASESUCCEED);
+}
+
+void GameLayerBase::onRecievePurchaseMesg(cocos2d::Ref *pRef) {
+    purchaseSucceed();
+}
+
+void GameLayerBase::purchaseSucceed(){
+    log("the purchase has been succeed!");
 }
 
 void GameLayerBase::onPauseGame(cocos2d::Ref *ref) {
@@ -78,16 +89,16 @@ void GameLayerBase::setShowAds(bool isShow) {
 void GameLayerBase::onEnter(){
     KeypadBaseLayer::onEnter();
     if (isShowAds) {
-//        if (PurchaseManager::getInstance()->getRemoveAd() == false) {
-//            STAds ads;
-//            ads.requestAds();
-//            ads.setAdsVisibility(true);
-//        }
+        if (PurchaseManager::getInstance()->getRemoveAd() == false) {
+            STAds ads;
+            ads.requestAds();
+            ads.setAdsVisibility(true);
+        }
     }else {
-//        if (PurchaseManager::getInstance()->getRemoveAd() == false) {
-//            STAds ads;
-//            ads.setAdsVisibility(false);
-//        }
+        if (PurchaseManager::getInstance()->getRemoveAd() == false) {
+            STAds ads;
+            ads.setAdsVisibility(false);
+        }
     }
 }
 
@@ -106,7 +117,7 @@ void GameLayerBase::showHomeButton(float dt){
         return;
     }
     homeBtn = CocosHelper::getButton("ui/publish/home.png", "ui/publish/home.png");
-    homeBtn->setPosition(STVisibleRect::getPointOfSceneRightUp() + Vec2(-20-homeBtn->getContentSize().width/2.0, -homeBtn->getContentSize().height/2.0 - 15) + Vec2(800, 0));
+    homeBtn->setPosition(STVisibleRect::getPointOfSceneRightBottom() + Vec2(-20-homeBtn->getContentSize().width/2.0, homeBtn->getContentSize().height/2.0 + 15 + GameLayerBase::getBannerSize()) + Vec2(800, 0));
     homeBtn->addTargetWithActionForControlEvents(this, cccontrol_selector(GameLayerBase::onHomeButtonClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
     homeBtn->setZoomOnTouchDown(false);
     addChild(homeBtn, kHomeBtn);
@@ -183,10 +194,11 @@ void GameLayerBase::alertViewClickedButtonAtIndex(AlertViewLayer *alert, int ind
 }
 
 void GameLayerBase::homeClickEvent(){
-//    if (PurchaseManager::getInstance()->getRemoveAd() == false) {
+    SoundPlayer::getInstance()->playclickeffect();
+    if (PurchaseManager::getInstance()->getRemoveAd() == false) {
         STAds ads;
         ads.requestInterstitialAds(true);
-//    }
+    }
 }
 
 void GameLayerBase::showPreviousBtn(float dt){
@@ -203,7 +215,7 @@ void GameLayerBase::showPreviousBtn(float dt){
     preBtn->runAction(Sequence::create(DelayTime::create(dt), EaseElasticInOut::create(MoveBy::create(2.0, Vec2(800, 0)), 1.7), NULL));
 }
 
-void GameLayerBase::showNextButton(float dt){
+void GameLayerBase::showNextButton(float dt, bool withJump){
     if (nextBtn != nullptr) {
         return;
     }
@@ -215,7 +227,50 @@ void GameLayerBase::showNextButton(float dt){
     addChild(nextBtn, kHomeBtn);
     
     nextBtn->runAction(Sequence::create(DelayTime::create(dt), EaseElasticInOut::create(MoveBy::create(2.0, Vec2(-800, 0)), 1.7), NULL));
+    
+    if (withJump == true) {
+        nextBtn->runAction(JumpBy::create(0.8, Vec2(0, 0), 20, 2));
+        this->schedule(schedule_selector(GameLayerBase::nextButtonAction), 5.0f);
+    }
 }
+
+void GameLayerBase::nextButtonAction(float) {
+    nextBtn->runAction(JumpBy::create(0.8, Vec2(0, 0), 20, 2));
+}
+
+void GameLayerBase::showResetBtn(float dt){
+    if (resetBtn != nullptr) {
+        return;
+    }
+    resetBtn = CocosHelper::getButton("ui/publish/btn_reset.png", "ui/publish/btn_reset.png");
+    //    homeBtn->setAnchorPoint(Vec2(1.0, 1.0));
+    resetBtn->setPosition(STVisibleRect::getPointOfSceneLeftUp() + Vec2(20+resetBtn->getContentSize().width/2.0, -resetBtn->getContentSize().height*1.5 - 15) + Vec2(-800, 0));
+    resetBtn->addTargetWithActionForControlEvents(this, cccontrol_selector(GameLayerBase::onResetButtonClicked), cocos2d::extension::Control::EventType::TOUCH_UP_INSIDE);
+    resetBtn->setZoomOnTouchDown(false);
+    addChild(resetBtn, kHomeBtn);
+    
+    resetBtn->runAction(Sequence::create(DelayTime::create(dt), EaseElasticInOut::create(MoveBy::create(2.0, Vec2(800, 0)), 1.7), NULL));
+}
+
+void GameLayerBase::onResetButtonClicked(cocos2d::Ref *pRef, Control::EventType type) {
+    if (canbeClicked == false) {
+        return;
+    }
+    canbeClicked = true;
+    //    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    ControlButton* pNode = dynamic_cast<ControlButton*>(pRef);
+    if (pNode->getNumberOfRunningActions() != 0) {
+        return;
+    }
+    pNode->setEnabled(false);
+    pNode->runAction(Sequence::create((Sequence*)getJellyAction(),CallFunc::create(std::bind(&GameLayerBase::resetClickEvent, this)), NULL));
+}
+
+void GameLayerBase::resetClickEvent(){
+    SoundPlayer::getInstance()->playclickeffect();
+    resetBtn->setEnabled(true);
+}
+
 
 void GameLayerBase::onNextButtonClicked(cocos2d::Ref *pRef, Control::EventType type) {
     if (canbeClicked == false) {
@@ -274,19 +329,21 @@ void GameLayerBase::onFavoriteButtonClicked(cocos2d::Ref *pRef, Control::EventTy
 }
 
 void GameLayerBase::favoriteClickEvent(){
+    SoundPlayer::getInstance()->playclickeffect();
     favoriteBtn->setEnabled(true);
 }
 
 void GameLayerBase::shareClickEvent(){
+    SoundPlayer::getInstance()->playclickeffect();
     shareBtn->setEnabled(true);
 }
 
 void GameLayerBase::preClickEvent(){
-    
+    SoundPlayer::getInstance()->playclickeffect();
 }
 
 void GameLayerBase::nextClickEvent(){
-    SoundPlayer::getInstance()->playNextClickedEffect();
+    SoundPlayer::getInstance()->playclickeffect();
 //    SceneManager::getInstance()->gotoChooseMap();
 }
 
@@ -380,20 +437,17 @@ void GameLayerBase::setNextButtonZorder(int zorder) {
 }
 
 float GameLayerBase::getBannerSize(){
-    float size[2] = {0,0};
-    STAds ads;
-    ads.getBannerSize(size);
-    float bannerSize = size[1];
-    
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+    float bannerSize = 0;
+    if (PurchaseManager::getInstance()->getRemoveAd() == true) {
+        return 0;
+    }
     STSystemFunction st;
     bool istablet = st.isTabletAvailable();
-    if (istablet == true) {
+    if (istablet == false) {
         bannerSize = 50;
     }else {
         bannerSize = 90;
         
     }
-#endif
     return bannerSize;
 }

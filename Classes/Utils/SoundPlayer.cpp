@@ -17,8 +17,8 @@ USING_NS_CC;
 
 SoundPlayer::SoundPlayer():
 bgMusic("nomusic"),
-washingID(0),
-addPipeID(0)
+pourmilkID(0),
+pourcerealID(0)
 {
 
     canPlaySound = UserDefault::getInstance()->getBoolForKey("isSoundOpen", true);
@@ -109,12 +109,31 @@ void SoundPlayer::resumeBackGroundMusic(){
 }
 
 void SoundPlayer::stopAlleffect(){
-    addPipeID = 0;
+    pourcerealID = 0;
+    pourmilkID = 0;
     SimpleAudioEngine::getInstance()->stopAllEffects();
+}
+
+void SoundPlayer::pauseEffect(){
+    if (pourcerealID != 0) {
+        SimpleAudioEngine::getInstance()->pauseEffect(pourcerealID);
+    }
+    if (pourmilkID != 0) {
+        SimpleAudioEngine::getInstance()->pauseEffect(pourmilkID);
+    }
+}
+
+void SoundPlayer::resumeEffect(){
+    if (pourcerealID != 0) {
+        SimpleAudioEngine::getInstance()->resumeEffect(pourcerealID);
+    }
+    if (pourmilkID != 0) {
+        SimpleAudioEngine::getInstance()->resumeEffect(pourmilkID);
+    }
 }
 #pragma mark 基本音效播放
 void SoundPlayer::playclickeffect(){
-    SimpleAudioEngine::getInstance()->playEffect("click.wav");
+    SimpleAudioEngine::getInstance()->playEffect("sound/all button_sound.mp3");
 }
 
 
@@ -135,7 +154,7 @@ void SoundPlayer::playResetClickedEffect(){
 }
 
 void SoundPlayer::playStartClickedEffect(){
-    SimpleAudioEngine::getInstance()->playEffect("sound/studio basic/start.mp3");
+    SimpleAudioEngine::getInstance()->playEffect("sound/play.mp3");
 }
 
 void SoundPlayer::playCommonEffect(const string &effect) {
@@ -146,3 +165,62 @@ void SoundPlayer::playCommonEffect(const string &effect) {
 void SoundPlayer::playCommonLoopEffect(const string &effect) {
     SimpleAudioEngine::getInstance()->playEffect(effect.c_str(), true);
 }
+
+#pragma mark 项目需要音效
+void SoundPlayer::playAnimationEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/animation.mp3");
+}
+
+void SoundPlayer::playChooseEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/choose.mp3");
+}
+
+void SoundPlayer::playDecorateEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/decoration1 .mp3");
+}
+
+void SoundPlayer::playRotateEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/decoration.mp3");
+}
+
+void SoundPlayer::playShowTipEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/general_swish_2.mp3");
+}
+
+void SoundPlayer::playOpenMilkEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/open milk.mp3");
+}
+
+void SoundPlayer::playPourCerealEffect(){
+    pourcerealID = SimpleAudioEngine::getInstance()->playEffect("sound/pour cereal .mp3", true);
+}
+
+void SoundPlayer::playSunRiseUpEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/sun rise.mp3");
+}
+
+void SoundPlayer::playEnterEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/swish.mp3");
+}
+
+void SoundPlayer::playPourMilkEffect(){
+    pourmilkID = SimpleAudioEngine::getInstance()->playEffect("sound/milk.mp3", true);
+}
+
+void SoundPlayer::playEatEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/eat.mp3");
+}
+
+void SoundPlayer::playStriEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/stir.mp3", true);
+}
+
+
+void SoundPlayer::playSplashEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/splash.mp3");
+}
+
+void SoundPlayer::playHurahEffect(){
+    SimpleAudioEngine::getInstance()->playEffect("sound/hurrah.mp3");
+}
+
