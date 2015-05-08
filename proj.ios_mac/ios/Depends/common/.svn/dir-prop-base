@@ -1,0 +1,9 @@
+K 13
+svn:externals
+V 340
+AdsPopupSDK     http://svn.stm.com/svn/common/components/AdsPopup/branches/1.4.1_analy_promo
+AnalysisManager http://svn.stm.com/svn/common/components/AnalysisManager/tags/1.0.0
+PrivacyPage     http://svn.stm.com/svn/common/components/PrivacyPage/tags/1.0.0
+AnalyticsTool   http://svn.stm.com/svn/common/components/AnalyticsTool/tags/v1.1.0
+
+END

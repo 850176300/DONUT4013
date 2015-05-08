@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility
+END
+MPInternalUtils.h
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPInternalUtils.h
+END
+MPSessionTracker.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPSessionTracker.h
+END
+MPStoreKitProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPStoreKitProvider.h
+END
+MPGlobal.h
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPGlobal.h
+END
+MPReachability.h
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPReachability.h
+END
+MPTimer.h
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPTimer.h
+END
+MPAnalyticsTracker.h
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPAnalyticsTracker.h
+END
+MPIdentityProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPIdentityProvider.h
+END
+MPUserInteractionGestureRecognizer.h
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPUserInteractionGestureRecognizer.h
+END
+MPLogging.h
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPLogging.h
+END
+MPError.h
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/MPError.h
+END

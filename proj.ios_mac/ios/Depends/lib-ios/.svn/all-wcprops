@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/common/!svn/ver/3307/frameworks/Cocos2d-xSDK/tags/v3.2-m-1.0.1/lib-ios-no-armv7s
+END
+libcocos2dx-extensions-ios.a
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/common/!svn/ver/3307/frameworks/Cocos2d-xSDK/tags/v3.2-m-1.0.1/lib-ios-no-armv7s/libcocos2dx-extensions-ios.a
+END
+libcocos2dx-ios.a
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/common/!svn/ver/3307/frameworks/Cocos2d-xSDK/tags/v3.2-m-1.0.1/lib-ios-no-armv7s/libcocos2dx-ios.a
+END
+libCocosDenshion-ios.a
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/common/!svn/ver/3307/frameworks/Cocos2d-xSDK/tags/v3.2-m-1.0.1/lib-ios-no-armv7s/libCocosDenshion-ios.a
+END
+libbox2d-ios.a
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/common/!svn/ver/3307/frameworks/Cocos2d-xSDK/tags/v3.2-m-1.0.1/lib-ios-no-armv7s/libbox2d-ios.a
+END
+libchipmunk-ios.a
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/common/!svn/ver/3307/frameworks/Cocos2d-xSDK/tags/v3.2-m-1.0.1/lib-ios-no-armv7s/libchipmunk-ios.a
+END

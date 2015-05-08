@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/Categories
+END
+NSURL+MPAdditions.h
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/Categories/NSURL+MPAdditions.h
+END
+UIWebView+MPAdditions.h
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/Categories/UIWebView+MPAdditions.h
+END
+NSJSONSerialization+MPAdditions.h
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/Categories/NSJSONSerialization+MPAdditions.h
+END
+UIViewController+MPAdditions.h
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Utility/Categories/UIViewController+MPAdditions.h
+END

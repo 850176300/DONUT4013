@@ -1,0 +1,131 @@
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads
+END
+MPNativeAdAdapter.h
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAdAdapter.h
+END
+MPServerAdPositioning.h
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPServerAdPositioning.h
+END
+MPNativeAdRequest.h
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAdRequest.h
+END
+MPNativeAdError.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAdError.h
+END
+MPClientAdPositioning.h
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPClientAdPositioning.h
+END
+MPAdPositioning.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPAdPositioning.h
+END
+MPNativeAdSourceDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAdSourceDelegate.h
+END
+MPNativeAdRequestTargeting.h
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAdRequestTargeting.h
+END
+MPNativeAdSource.h
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAdSource.h
+END
+MPNativeCustomEventDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeCustomEventDelegate.h
+END
+MPTableViewAdPlacer.h
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPTableViewAdPlacer.h
+END
+MPCollectionViewAdPlacer.h
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPCollectionViewAdPlacer.h
+END
+MPTableViewAdManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPTableViewAdManager.h
+END
+MPNativeCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeCustomEvent.h
+END
+MPStreamAdPlacementData.h
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPStreamAdPlacementData.h
+END
+MPNativeAdData.h
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAdData.h
+END
+MPNativeAdDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAdDelegate.h
+END
+MPStreamAdPlacer.h
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPStreamAdPlacer.h
+END
+MPNativeAdConstants.h
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAdConstants.h
+END
+MPNativeAdRendering.h
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAdRendering.h
+END
+MPNativeAd.h
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Native%20Ads/MPNativeAd.h
+END

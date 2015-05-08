@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Interstitials
+END
+MPLegacyInterstitialCustomEventAdapter.h
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Interstitials/MPLegacyInterstitialCustomEventAdapter.h
+END
+MPPrivateInterstitialCustomEventDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Interstitials/MPPrivateInterstitialCustomEventDelegate.h
+END
+MPInterstitialAdManagerDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Interstitials/MPInterstitialAdManagerDelegate.h
+END
+MPBaseInterstitialAdapter.h
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Interstitials/MPBaseInterstitialAdapter.h
+END
+MPInterstitialCustomEventAdapter.h
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Interstitials/MPInterstitialCustomEventAdapter.h
+END
+MPInterstitialViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Interstitials/MPInterstitialViewController.h
+END
+MPInterstitialAdManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/Interstitials/MPInterstitialAdManager.h
+END

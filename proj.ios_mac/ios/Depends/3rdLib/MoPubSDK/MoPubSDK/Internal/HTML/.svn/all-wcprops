@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/HTML
+END
+MPAdWebViewAgent.h
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/HTML/MPAdWebViewAgent.h
+END
+MPAdWebView.h
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/HTML/MPAdWebView.h
+END
+MPHTMLInterstitialCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/HTML/MPHTMLInterstitialCustomEvent.h
+END
+MPHTMLInterstitialViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/HTML/MPHTMLInterstitialViewController.h
+END
+MPHTMLBannerCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/HTML/MPHTMLBannerCustomEvent.h
+END

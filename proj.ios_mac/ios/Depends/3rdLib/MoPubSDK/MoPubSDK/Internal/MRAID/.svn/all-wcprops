@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID
+END
+LICENSE
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/LICENSE
+END
+MRImageDownloader.h
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRImageDownloader.h
+END
+MRJavaScriptEventEmitter.h
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRJavaScriptEventEmitter.h
+END
+MRCalendarManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRCalendarManager.h
+END
+MRBundleManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRBundleManager.h
+END
+MRPictureManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRPictureManager.h
+END
+MRAdViewDisplayController.h
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRAdViewDisplayController.h
+END
+MPMRAIDBannerCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MPMRAIDBannerCustomEvent.h
+END
+MRVideoPlayerManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRVideoPlayerManager.h
+END
+MRCommand.h
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRCommand.h
+END
+MRDimmingView.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRDimmingView.h
+END
+MRAdView.h
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRAdView.h
+END
+MRAdView+Controllers.h
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRAdView+Controllers.h
+END
+MPMRAIDInterstitialCustomEvent.h
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MPMRAIDInterstitialCustomEvent.h
+END
+MRProperty.h
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MRProperty.h
+END
+MPMRAIDInterstitialViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/common/!svn/ver/3181/frameworks/MoPubSDK/tags/v3.2.0-Chartboost-iAd-Fix/MoPubSDK/Internal/MRAID/MPMRAIDInterstitialViewController.h
+END

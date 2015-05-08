@@ -1,0 +1,7 @@
+K 13
+svn:externals
+V 186
+AboutPage          http://svn.stm.com/svn/common/components/AboutPage/tags/2.2.1_analy
+AboutPageResources http://svn.stm.com/svn/common/components/AboutPage/AboutResources/donut-digital
+
+END
